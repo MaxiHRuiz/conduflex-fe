@@ -17,6 +17,7 @@ import ListAltIcon from "@mui/icons-material/ListAlt";
 import styled from "styled-components";
 import { Badge, BadgeProps } from "@mui/material";
 import { useTodo } from "../../context/TodoContext";
+import OrdenButton from "components/OrdenButton";
 
 const pages = ["productos", "stocks", "pedidos"];
 
@@ -112,40 +113,7 @@ function ResponsiveAppBar() {
           {userSession?.user && (
             <>
               <Box sx={{ px: 1 }}>
-                <IconButton aria-label="Lista">
-                  <StyledBadge badgeContent={0} color="primary" onClick={handleOpenNavMenu}>
-                    <ListAltIcon />
-                  </StyledBadge>
-                </IconButton>
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseNavMenu}
-                >
-                  <MenuItem>
-                    <Typography textAlign="center">Cerrar sesión</Typography>
-                  </MenuItem>
-                  <MenuItem>
-                    <Typography textAlign="center">Cerrar sesión</Typography>
-                  </MenuItem>
-                  <MenuItem>
-                    <Typography textAlign="center">Cerrar sesión</Typography>
-                  </MenuItem>
-                  <MenuItem>
-                    <Typography textAlign="center">Cerrar sesión</Typography>
-                  </MenuItem>
-                </Menu>
+                <OrdenButton />
               </Box>
 
               <Box

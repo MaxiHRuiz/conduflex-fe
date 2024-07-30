@@ -20,7 +20,7 @@ const columns: GridColDef[] = [
     width: 120,
     getActions: (props) => [
       <Add buttonType="gridAction" code={props.row.id} formType="order" />,
-      <Edit buttonType="gridAction" code={props.row.id} formType="order" />,
+      // <Edit buttonType="gridAction" code={props.row.id} formType="order" />,
       <Delete
         buttonType="gridAction"
         code={props.row.id}
