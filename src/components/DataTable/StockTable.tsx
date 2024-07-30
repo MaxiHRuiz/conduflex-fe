@@ -28,27 +28,42 @@ const columns: GridColDef[] = [
   },
   {
     field: "id",
-    headerName: "ID",
+    headerName: "Orden de produccion",
     sortable: false,
     disableColumnMenu: true,
+    width: 170
+  },
+  {
+    field: "codigo",
+    headerName: "código",
+    sortable: false,
+    disableColumnMenu: true,
+  },  {
+    field: "descripcion",
+    headerName: "Descripcion",
+    sortable: false,
+    disableColumnMenu: true,
+    width: 180
   },
   {
     field: "cantidad_metros",
-    headerName: "Cantidad metros",
+    headerName: "metros",
     sortable: false,
     disableColumnMenu: true,
   },
   {
     field: "cantidad_metros_vendidos",
-    headerName: "Cantidad metros vendidos",
+    headerName: "Metros vendidos",
     sortable: false,
     disableColumnMenu: true,
+    width: 130
   },
   {
     field: "detalle",
     headerName: "Detalle",
     sortable: false,
     disableColumnMenu: true,
+    width: 220
   },
 ];
 
@@ -74,6 +89,7 @@ export default function StockTable({ stock }: IStockTableProps) {
     <DataGrid
       rows={stock}
       columns={columns}
+      rowCount={stock.length}
       localeText={esES.components.MuiDataGrid.defaultProps.localeText}
       // loading
       slotProps={{
@@ -82,11 +98,6 @@ export default function StockTable({ stock }: IStockTableProps) {
           noRowsVariant: "linear-progress",
         },
       }}
-      // autosizeOptions={{
-      //   columns: ["descripcion"],
-      //   includeOutliers: true,
-      //   includeHeaders: true,
-      // }}
       slots={{
         toolbar: CustomToolbar,
       }}

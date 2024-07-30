@@ -6,23 +6,34 @@ import { useTodo } from "context/TodoContext";
 import { toast } from "react-toastify";
 
 function Delete({ buttonType, code, formType }: IActionsButtonProps) {
-  const { deleteProduct, deleteStock } = useTodo();
+  const { deleteProduct, deleteStock, deleteOrder } = useTodo();
   const label = "Eliminar";
 
   const onHandleClick = () => {
-    if (formType === "product") deleteProduct(code);
-    if (formType === "stock") deleteStock(code);
-    // if (formType === "order") () => undefined;
-    toast.success("Se elimino el producto correctamente");
+    if (formType === "product") {
+      deleteProduct(code);
+    }
+    if (formType === "stock") {
+      deleteStock(code);
+    }
+    if (formType === "order") 
+      deleteOrder(code);
+    toast.success("Se elimino correctamente");
   };
 
   if (buttonType === "gridAction") {
-    return <GridActionsCellItem icon={<DeleteIcon />} label={label} />;
+    return (
+      <GridActionsCellItem
+        icon={<DeleteIcon />}
+        label={label}
+        onClick={onHandleClick}
+      />
+    );
   }
 
   if (buttonType === "menuItem") {
     <MenuItem>
-      <ListItemIcon>
+      <ListItemIcon onClick={onHandleClick}>
         <DeleteIcon />
       </ListItemIcon>
       {label}

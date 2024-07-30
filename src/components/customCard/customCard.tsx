@@ -13,9 +13,17 @@ import { capitalizeFirstLetter } from "../../utils/helpers";
 import { ICustomCardProps } from "./ICustomCardProps";
 import CustomCardTable from "./customCardTable";
 import Stock from "components/Stock";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 const CustomCard = ({ product, hiddenActions }: ICustomCardProps) => {
   const theme = useTheme();
+
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('es-AR', {
+      style: 'currency',
+      currency: 'ARS',
+    }).format(value);
+  };
 
   return (
     <>
@@ -34,7 +42,7 @@ const CustomCard = ({ product, hiddenActions }: ICustomCardProps) => {
             backgroundColor: !product.stock
               ? theme.palette.warning.light
               : theme.palette.info.light,
-            height: 5,
+            height: 4,
             width: "auto",
             borderTopRightRadius: 5,
             borderTopLeftRadius: 5,
@@ -51,6 +59,7 @@ const CustomCard = ({ product, hiddenActions }: ICustomCardProps) => {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
+              pt: 1
             }}
           >
             <Box
@@ -72,9 +81,9 @@ const CustomCard = ({ product, hiddenActions }: ICustomCardProps) => {
             component="h2"
             variant="h4"
             gutterBottom
-          >{`$ ${product.precio}`}</Typography>
+          >{formatCurrency(product.precio)}</Typography>
           <AccordionCustom elevation={0}>
-            <AccordionSummaryCustom>Detalles</AccordionSummaryCustom>
+            <AccordionSummaryCustom  expandIcon={<ExpandMoreIcon />}>Detalles</AccordionSummaryCustom>
             <AccordionDetails sx={{
                 overflowX: "auto"
             }}>

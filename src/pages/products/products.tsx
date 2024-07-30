@@ -7,8 +7,7 @@ import {
 } from "@mui/material";
 import CustomContainer from "../../components/customContainer/CustomContainer";
 import CustomCard from "../../components/customCard/customCard";
-import { IProduct } from "dtos/product.dto";
-import { SyntheticEvent, useState } from "react";
+import { SyntheticEvent } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTodo } from "context/TodoContext";
 import DataTable from "components/DataTable/DataTable";
@@ -45,7 +44,7 @@ export const Products = () => {
             <FormControlLabel
               value={tableChecked}
               onChange={handleChange}
-              control={<Switch name="Interruptor para cambiar tabla" />}
+              control={<Switch color="secondary" name="Interruptor para cambiar tabla" />}
               label="Cambiar tabla"
             />
           </Box>
@@ -54,6 +53,7 @@ export const Products = () => {
             <Button
               variant="contained"
               disableElevation
+              color="secondary"
               onClick={() => navigate("/productos/crear")}
             >
               Agregar producto
@@ -62,13 +62,8 @@ export const Products = () => {
         </Box>
       </Box>
       {!tableChecked &&
-        products.map((x, index) => {
-          return (
-            <>
-              <CustomCard key={x.codigo} product={x} />
-            </>
-          );
-        })}
+        products.map((x, index) =>  <CustomCard key={x.codigo} product={x} />
+        )}
       {tableChecked && <DataTable product={products} />}
     </CustomContainer>
   );

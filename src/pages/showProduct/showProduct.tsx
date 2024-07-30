@@ -17,7 +17,7 @@ import { useEffect, useMemo } from "react";
 import StockTable from "components/DataTable/StockTable";
 
 const ShowProduct = () => {
-  const { products, stocks } = useTodo();
+  const { products, stocks, updateProduct } = useTodo();
   const { id } = useParams();
   const navigate = useNavigate();
   useEffect(() => {

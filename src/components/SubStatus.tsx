@@ -5,7 +5,7 @@ const SubStatus = ({status}: ISubStatusProps) => {
     return ( 
         <Chip
           size="small"
-          color={status === 'despachado' ? "success" : status === 'en_produccion' ? "default" : status === 'fraccionado' ? "success" : "primary"}
+          color={status === 'despachado' ? "success" : status === 'en_produccion' ? "warning" : status === 'fraccionado' ? "primary" : "info"}
           label={status}
         />
      );

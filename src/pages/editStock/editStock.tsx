@@ -12,7 +12,7 @@ const EditProduct = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!stocks.find((x) => x.codigo === id)) {
+    if (!stocks.find((x) => x.id === id)) {
       alert("No existe este producto");
       navigate("/");
     }
@@ -23,11 +23,11 @@ const EditProduct = () => {
       <CustomContainer breadCrumbs>
         <StockForm
           title="Editar stock"
-          stock={stocks.find((x) => x.codigo === id)}
+          stock={stocks.find((x) => x.id === id)}
           onSubmitStock={function (stock: IStock): void {
-            updateStock(stock.codigo, stock);
+            updateStock(stock.id, stock);
             toast.success("Se edito el stock correctamente");
-            navigate("/");
+            navigate(-1);
           }}
           isEdit
         />

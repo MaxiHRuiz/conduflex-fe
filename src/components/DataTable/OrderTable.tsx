@@ -19,12 +19,12 @@ const columns: GridColDef[] = [
     headerName: "Acciones",
     width: 120,
     getActions: (props) => [
-      <Add buttonType="gridAction" code={props.row.id} formType="stock" />,
-      <Edit buttonType="gridAction" code={props.row.id} formType="stock" />,
+      <Add buttonType="gridAction" code={props.row.id} formType="order" />,
+      <Edit buttonType="gridAction" code={props.row.id} formType="order" />,
       <Delete
         buttonType="gridAction"
         code={props.row.id}
-        formType="stock"
+        formType="order"
       />,
     ],
   },
@@ -49,13 +49,8 @@ const columns: GridColDef[] = [
     headerName: "Vendedor",
     sortable: false,
     disableColumnMenu: true,
+    width: 180
   },
-  // {
-  //   field: "fecha",
-  //   headerName: "fecha",
-  //   sortable: false,
-  //   disableColumnMenu: true,
-  // },
 ];
 
 export default function OrderTable({ order }: IOrderTableProps) {
@@ -80,19 +75,14 @@ export default function OrderTable({ order }: IOrderTableProps) {
     <DataGrid
       rows={order}
       columns={columns}
+      rowCount={order.length}
       localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-      // loading
       slotProps={{
         loadingOverlay: {
           variant: "linear-progress",
           noRowsVariant: "linear-progress",
         },
       }}
-      // autosizeOptions={{
-      //   columns: ["descripcion"],
-      //   includeOutliers: true,
-      //   includeHeaders: true,
-      // }}
       slots={{
         toolbar: CustomToolbar,
       }}

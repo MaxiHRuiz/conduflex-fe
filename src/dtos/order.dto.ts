@@ -1,5 +1,5 @@
 export type StatusType = 'aprobado' | 'pendiente' | 'finalizado' | 'cancelado'
-export type SubStatusType = 'en_produccion' | 'despachado' | 'listo para despachar' |'fraccionado'
+export type SubStatusType = 'en_produccion' | 'despachado' | 'listo_para_despachar' |'fraccionado'
 
 export interface IOrderList {
     id_stock: string

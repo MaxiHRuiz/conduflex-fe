@@ -52,6 +52,7 @@ const defaultValues: IProduct = {
   paso_final: "",
   precio: 0,
   stock: false,
+  id: "xxxxx"
 };
 
 export const ProductForm = ({

@@ -11,7 +11,7 @@ import Delete from "../actions/delete";
 import Add from "../actions/show";
 import Edit from "../actions/edit";
 import { IDataTableProps } from "./IDataTableProps";
-import { esES } from '@mui/x-data-grid/locales';
+import { esES } from "@mui/x-data-grid/locales";
 
 const columns: GridColDef[] = [
   {
@@ -20,9 +20,21 @@ const columns: GridColDef[] = [
     headerName: "Acciones",
     width: 120,
     getActions: (props) => [
-      <Add buttonType="gridAction" code={props.row.codigo} formType="product" />,
-      <Edit buttonType="gridAction" code={props.row.codigo} formType="product"/>,
-      <Delete buttonType="gridAction" code={props.row.codigo}formType="product"/>,
+      <Add
+        buttonType="gridAction"
+        code={props.row.codigo}
+        formType="product"
+      />,
+      <Edit
+        buttonType="gridAction"
+        code={props.row.codigo}
+        formType="product"
+      />,
+      <Delete
+        buttonType="gridAction"
+        code={props.row.codigo}
+        formType="product"
+      />,
     ],
   },
   {
@@ -42,6 +54,12 @@ const columns: GridColDef[] = [
     headerName: "Precio",
     sortable: false,
     disableColumnMenu: true,
+    renderCell: (props) => {
+      return new Intl.NumberFormat('es-AR', {
+        style: 'currency',
+        currency: 'ARS',
+      }).format(props.row.precio)
+    }
   },
   {
     field: "stock",
@@ -49,9 +67,7 @@ const columns: GridColDef[] = [
     sortable: false,
     disableColumnMenu: true,
     renderCell: (props) => {
-      return (
-        <Stock inStock={props.value} />
-      );
+      return <Stock inStock={props.value} />;
     },
   },
   {
@@ -308,7 +324,7 @@ const columns: GridColDef[] = [
   },
 ];
 
-export default function DataTable({product}: IDataTableProps) {
+export default function DataTable({ product }: IDataTableProps) {
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -329,9 +345,13 @@ export default function DataTable({product}: IDataTableProps) {
   return (
     <div style={{ height: 400, width: "100%" }}>
       <DataGrid
-        getRowId={(row: IProduct) => row.codigo}
+        getRowId={row => {
+          console.log("ddd",row)
+         return  row?.codigo
+        }}
         rows={product}
         columns={columns}
+        rowCount={product.length}
         localeText={esES.components.MuiDataGrid.defaultProps.localeText}
         loading={false}
         slotProps={{

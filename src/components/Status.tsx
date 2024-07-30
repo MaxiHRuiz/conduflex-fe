@@ -5,7 +5,7 @@ const Status = ({status}: IStatusProps) => {
     return ( 
         <Chip
           size="small"
-          color={status === 'aprobado' ? "info" : status === 'pendiente' ? "default" : status === 'finalizado' ? "success" : "primary"}
+          color={status === 'aprobado' ? "info" : status === 'pendiente' ? "warning" : status === 'finalizado' ? "success" : "primary"}
           label={status}
         />
      );

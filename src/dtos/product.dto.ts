@@ -1,4 +1,5 @@
 export interface IProduct {
+  id: string
   stock: boolean
   codigo: string;
   espesor_aislacion_promedio: number;

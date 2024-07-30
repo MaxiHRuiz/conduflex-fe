@@ -44,7 +44,7 @@ const ShowOrders = () => {
               return (
                 <>
                   <Divider sx={{
-                    mb:1
+                    my:1
                   }}/>
                   <Grid container spacing={2}>
                     <Grid item>
