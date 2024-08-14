@@ -7,6 +7,7 @@ import { amber, grey } from "@mui/material/colors";
 import { createTheme, ThemeProvider } from "@mui/material";
 import TodoProvider from "./context/TodoContext";
 import { ToastContainer, Bounce } from "react-toastify";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 import "react-toastify/dist/ReactToastify.css";
 
@@ -24,28 +25,32 @@ const theme = createTheme({
   },
 });
 
+const queryClient = new QueryClient();
+
 export default function App() {
   return (
-    <TodoProvider>
-      <Router>
-        <AuthProvider>
-          <ThemeProvider theme={theme}>
-            <ResponsiveAppBar />
-            <AppRoutes />
-            <Footer />
-            <ToastContainer
-              position="top-right"
-              autoClose={5000}
-              closeOnClick
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="light"
-              transition={Bounce}
-            />
-          </ThemeProvider>
-        </AuthProvider>
-      </Router>
-    </TodoProvider>
+    <QueryClientProvider client={queryClient}>
+      <TodoProvider>
+        <Router>
+          <AuthProvider>
+            <ThemeProvider theme={theme}>
+              <ResponsiveAppBar />
+              <AppRoutes />
+              <Footer />
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                closeOnClick
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+                transition={Bounce}
+              />
+            </ThemeProvider>
+          </AuthProvider>
+        </Router>
+      </TodoProvider>
+    </QueryClientProvider>
   );
 }

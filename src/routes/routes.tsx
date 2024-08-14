@@ -11,6 +11,7 @@ import CreateStock from "pages/createStock/createStock"
 import EditStock from "pages/editStock/editStock"
 import Stocks from "pages/stocks/stocks"
 import ShowOrders from "pages/showOrders/showOrders"
+import StockDetails from "pages/stockDetails/stockDetails"
 
 function AppRoutes() {
   return (
@@ -23,6 +24,7 @@ function AppRoutes() {
         <Route path="/productos/:id/editar" element={<EditProduct />} />
         <Route path="/productos/:id" element={<ShowProduct />} />
         <Route path="/stocks" element={<Stocks />} />
+        <Route path="/stocks/:stock" element={<StockDetails />} />
         <Route path="/stocks/crear" element={<CreateStock />} />
         <Route path="/stocks/:id/editar" element={<EditStock />} />
         <Route path="/stocks/:id" element={<Navigate to={'/stocks'} />} />
