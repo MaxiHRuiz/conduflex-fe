@@ -1,4 +1,3 @@
-import { IProduct } from "dtos/product.dto";
 import { IStock } from "dtos/stock.dto";
 
 export interface IStockFormProps {

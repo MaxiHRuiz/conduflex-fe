@@ -5,7 +5,6 @@ import {
   GridToolbarContainer,
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
-import { IProduct } from "dtos/product.dto";
 import Stock from "../Stock";
 import Delete from "../actions/delete";
 import Add from "../actions/show";
@@ -22,23 +21,23 @@ const columns: GridColDef[] = [
     getActions: (props) => [
       <Add
         buttonType="gridAction"
-        code={props.row.codigo}
+        code={props.row.id}
         formType="product"
       />,
       <Edit
         buttonType="gridAction"
-        code={props.row.codigo}
+        code={props.row.id}
         formType="product"
       />,
       <Delete
         buttonType="gridAction"
-        code={props.row.codigo}
+        code={props.row.id}
         formType="product"
       />,
     ],
   },
   {
-    field: "codigo",
+    field: "id",
     headerName: "Código",
     sortable: false,
     disableColumnMenu: true,
@@ -47,6 +46,7 @@ const columns: GridColDef[] = [
     field: "descripcion",
     headerName: "Descripcion",
     sortable: false,
+    width: 200,
     disableColumnMenu: true,
   },
   {
@@ -62,7 +62,7 @@ const columns: GridColDef[] = [
     }
   },
   {
-    field: "stock",
+    field: "hay_stock",
     headerName: "Stock",
     sortable: false,
     disableColumnMenu: true,
@@ -324,7 +324,7 @@ const columns: GridColDef[] = [
   },
 ];
 
-export default function DataTable({ product }: IDataTableProps) {
+export default function DataTable({ product, isLoading, pagination, count, onChangePagination }: IDataTableProps) {
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -342,18 +342,17 @@ export default function DataTable({ product }: IDataTableProps) {
     );
   }
 
+
   return (
     <div style={{ height: 400, width: "100%" }}>
       <DataGrid
-        getRowId={row => {
-          console.log("ddd",row)
-         return  row?.codigo
-        }}
         rows={product}
         columns={columns}
-        rowCount={product.length}
+        rowCount={count}
         localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-        loading={false}
+        loading={isLoading}
+        paginationModel={pagination}
+        onPaginationModelChange={onChangePagination}
         slotProps={{
           loadingOverlay: {
             variant: "linear-progress",
@@ -364,12 +363,10 @@ export default function DataTable({ product }: IDataTableProps) {
           toolbar: CustomToolbar,
         }}
         initialState={{
-          density: "compact",
-          pagination: {
-            paginationModel: { page: 0, pageSize: 5 },
-          },
+          density: "compact"
         }}
-        pageSizeOptions={[5, 10]}
+        pageSizeOptions={[10, 25, 30]}
+        paginationMode="server"
       />
     </div>
   );

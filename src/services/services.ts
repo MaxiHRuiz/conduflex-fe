@@ -1,4 +1,4 @@
-import core from './createAxiosClient'
+import core from '../api/createAxiosClient'
 
 interface IGetProducts {
   descripcion: string
@@ -6,7 +6,11 @@ interface IGetProducts {
 
 export const GetProducts = async (params?: IGetProducts) => {
   try {
-    const response = await core.get('https://conduflex-be.onrender.com/product/search?description=UNIPOLAR');
+    const response = await core.get('/product/search', {
+      params: {
+        description: 'UNIPOLAR'
+      }
+    });
     return response.data;
   } catch (error) {
     console.error('Error fetching search results:', error);

@@ -52,10 +52,13 @@ function ResponsiveAppBar() {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}>
-            <img
-              src={logo}
-              alt="logo"
+            <input
+              type="image"
+              alt="logo conduflex"
+              id="myimage"
               style={{ height: "30%", width: "30%" }}
+              src={logo}
+              onClick={() => navigate('/productos')}
             />
           </Box>
           {userSession?.user && (

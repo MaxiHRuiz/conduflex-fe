@@ -1,4 +1,4 @@
-import { IProduct } from "dtos/product.dto";
+import { IProduct } from "types/product"
 
 export interface IProductFormProps {
     isEdit?: boolean

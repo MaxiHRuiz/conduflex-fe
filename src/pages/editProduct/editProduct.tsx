@@ -1,10 +1,10 @@
 import CustomContainer from "components/customContainer/CustomContainer";
 import { ProductForm } from "components/product/ProductForm";
 import { useTodo } from "context/TodoContext";
-import { IProduct } from "dtos/product.dto";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Bounce, toast, ToastContainer } from "react-toastify";
+import { IProduct } from "types/product";
 
 const EditProduct = () => {
   const { products, updateProduct } = useTodo();
@@ -12,7 +12,7 @@ const EditProduct = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!products.find((x) => x.codigo === id)) {
+    if (!products.find((x) => id === id)) {
       alert("No existe este producto");
       navigate("/");
     }
@@ -23,9 +23,9 @@ const EditProduct = () => {
       <CustomContainer breadCrumbs>
         <ProductForm
           title="Editar Producto"
-          product={products.find((x) => x.codigo === id)}
+          product={products.find((x) => id === id)}
           onSubmitProduct={function (product: IProduct): void {
-            updateProduct(product.codigo, product);
+            updateProduct(product.id, product);
             toast.success("Se edito el producto correctamente");
             navigate("/");
           }}

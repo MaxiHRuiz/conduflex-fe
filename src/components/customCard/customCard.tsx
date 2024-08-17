@@ -13,15 +13,15 @@ import { capitalizeFirstLetter } from "../../utils/helpers";
 import { ICustomCardProps } from "./ICustomCardProps";
 import CustomCardTable from "./customCardTable";
 import Stock from "components/Stock";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-const CustomCard = ({ product, hiddenActions }: ICustomCardProps) => {
+const CustomCard = ({ product, hiddenActions}: ICustomCardProps) => {
   const theme = useTheme();
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat('es-AR', {
-      style: 'currency',
-      currency: 'ARS',
+    return new Intl.NumberFormat("es-AR", {
+      style: "currency",
+      currency: "ARS",
     }).format(value);
   };
 
@@ -39,7 +39,7 @@ const CustomCard = ({ product, hiddenActions }: ICustomCardProps) => {
       >
         <Box
           sx={{
-            backgroundColor: !product.stock
+            backgroundColor: !product.hay_stock
               ? theme.palette.warning.light
               : theme.palette.info.light,
             height: 4,
@@ -59,7 +59,7 @@ const CustomCard = ({ product, hiddenActions }: ICustomCardProps) => {
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
-              pt: 1
+              pt: 1,
             }}
           >
             <Box
@@ -71,22 +71,24 @@ const CustomCard = ({ product, hiddenActions }: ICustomCardProps) => {
               }}
             >
               <Typography component="h2" variant="h6">{`${
-                product.codigo
+                product.id
               } - ${capitalizeFirstLetter(product.descripcion)}`}</Typography>
-                <Stock inStock={product.stock} />
+              <Stock inStock={product.hay_stock} />
             </Box>
-            {!hiddenActions && <Actions code={product.codigo}  />}
+            {!hiddenActions && <Actions code={product.id} />}
           </Box>
-          <Typography
-            component="h2"
-            variant="h4"
-            gutterBottom
-          >{formatCurrency(product.precio)}</Typography>
+          <Typography component="h2" variant="h4" gutterBottom>
+            {formatCurrency(product.precio)}
+          </Typography>
           <AccordionCustom elevation={0}>
-            <AccordionSummaryCustom  expandIcon={<ExpandMoreIcon />}>Detalles</AccordionSummaryCustom>
-            <AccordionDetails sx={{
-                overflowX: "auto"
-            }}>
+            <AccordionSummaryCustom expandIcon={<ExpandMoreIcon />}>
+              Detalles
+            </AccordionSummaryCustom>
+            <AccordionDetails
+              sx={{
+                overflowX: "auto",
+              }}
+            >
               <CustomCardTable product={product} />
             </AccordionDetails>
           </AccordionCustom>
@@ -112,4 +114,3 @@ const AccordionSummaryCustom = styled(AccordionSummary)`
 `;
 
 export default CustomCard;
-

@@ -1,6 +1,6 @@
 import { IOrder } from "dtos/order.dto";
-import { IProduct } from "dtos/product.dto";
 import { IStock } from "dtos/stock.dto";
+import { IProduct } from "./product";
 
 
   export type TodoContextType = {

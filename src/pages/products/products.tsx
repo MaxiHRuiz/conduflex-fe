@@ -4,24 +4,50 @@ import {
   FormControlLabel,
   Switch,
   Button,
-  Pagination,
-  TablePagination,
+  CircularProgress,
 } from "@mui/material";
 import CustomContainer from "../../components/customContainer/CustomContainer";
 import CustomCard from "../../components/customCard/customCard";
-import { SyntheticEvent } from "react";
+import { SyntheticEvent, useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTodo } from "context/TodoContext";
 import DataTable from "components/DataTable/DataTable";
 import TablePaginationDemo from "components/TablePagination";
-import axios from "axios";
 import React from "react";
-import axiosCore from "services/createAxiosClient";
+import { useGetProducts } from "services/hooks/useGetProductos";
+import { GridPaginationModel } from "@mui/x-data-grid";
 
 export const Products = () => {
-  const { products } = useTodo();
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = React.useState(0);
   const navigate = useNavigate();
   const { tableChecked, setTableChecked } = useTodo();
+
+  const { data, isFetching, refetch } = useGetProducts({
+    offset: page,
+    limit: rowsPerPage,
+  });
+
+  useEffect(() => {
+    refetch();
+  }, [page, rowsPerPage]);
+
+  const onChangePage = (page: number) => {
+    setPage(page);
+  };
+
+  const onChangeRowsPerPage = (pages: number) => {
+    setRowsPerPage(pages);
+  };
+
+  const onChangePagination = (pagination: GridPaginationModel) => {
+    if (page !== pagination.page) {
+      setPage(pagination.page);
+      return;
+    }
+    if (rowsPerPage !== pagination.pageSize)
+      setRowsPerPage(pagination.pageSize);
+  };
 
   const handleChange = (
     event: SyntheticEvent<Element, Event>,
@@ -30,22 +56,55 @@ export const Products = () => {
     setTableChecked(checked);
   };
 
-  const [post, setPost] = React.useState<{limit: string}>({limit: ''});
+  const dataSection = () => {
+    if (isFetching && !tableChecked)
+      return (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            minHeight: 400,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      );
 
-  React.useEffect(() => {
-    axios.get('https://conduflex-be.onrender.com/product/search').then((response) => {
-      console.log(response.data)
-    });
-  }, []);
+    if (tableChecked) {
+      return (
+        <DataTable
+          product={data?.response ?? []}
+          count={data?.total ?? 0}
+          isLoading={isFetching}
+          pagination={{
+            page,
+            pageSize: rowsPerPage,
+          }}
+          onChangePagination={onChangePagination}
+        />
+      );
+    }
+
+    return (
+      <>
+        {data &&
+          data.response.map((x, index) => (
+            <CustomCard key={x.id} product={x} />
+          ))}
+      </>
+    );
+  };
 
   return (
     <CustomContainer>
-      {/* <Box
+      <Box
         sx={{
           mb: 1,
         }}
-      > */}
-        {/* <Typography component="h1" variant="h5" gutterBottom>
+      >
+        <Typography component="h1" variant="h5" gutterBottom>
           Productos
         </Typography>
         <Box
@@ -56,12 +115,12 @@ export const Products = () => {
         >
           <Box sx={{ width: "100%" }}>
             <FormControlLabel
-              value={tableChecked}
-              onChange={handleChange}
               control={
                 <Switch
                   color="secondary"
                   name="Interruptor para cambiar tabla"
+                  defaultChecked={tableChecked}
+                  onChange={handleChange}
                 />
               }
               label="Cambiar tabla"
@@ -80,14 +139,23 @@ export const Products = () => {
           </Box>
         </Box>
       </Box>
-      {!tableChecked &&
-        products.map((x, index) => <CustomCard key={x.codigo} product={x} />)}
-      {tableChecked && <DataTable product={products} />} */}
-      <Box
-        sx={{ width: "100%", py: 1, display: "flex", justifyContent: "center" }}
-      >
-        <TablePaginationDemo />
-      </Box>
+      {dataSection()}
+      {!tableChecked && <Box
+          sx={{
+            width: "100%",
+            py: 1,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <TablePaginationDemo
+            rowsPerPage={rowsPerPage}
+            page={page}
+            setRowsPerPage={onChangeRowsPerPage}
+            setPage={onChangePage}
+            count={data?.total ?? 0}
+          />
+        </Box>}
     </CustomContainer>
   );
 };

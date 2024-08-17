@@ -1,9 +1,14 @@
+import { GridPaginationModel } from "@mui/x-data-grid";
 import { IOrder } from "dtos/order.dto";
-import { IProduct } from "dtos/product.dto";
 import { IStock } from "dtos/stock.dto";
+import { IProduct } from "types/product";
 
 export interface IDataTableProps {
+    isLoading: boolean
     product: Array<IProduct>
+    pagination: GridPaginationModel
+    count: number
+    onChangePagination: (pagination: GridPaginationModel) => void
 }
 
 export interface IStockTableProps {

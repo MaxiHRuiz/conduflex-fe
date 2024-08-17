@@ -12,17 +12,17 @@ import {
   import { useTodo } from "../../context/TodoContext";
   import { useNavigate, useParams } from "react-router-dom";
   import CustomCard from "../../components/customCard/customCard";
-  import { IProduct } from "dtos/product.dto";
   import { useEffect, useMemo } from "react";
   import StockTable from "components/DataTable/StockTable";
 import { StockDetails } from "components/StockDetails";
+import { IProduct } from "types/product";
   
   const ShowProduct = () => {
     const { products, stocks, updateProduct } = useTodo();
     const { id } = useParams();
     const navigate = useNavigate();
     useEffect(() => {
-      if (!products.find((x) => x.codigo === id)) {
+      if (!products.find((x: IProduct) => x.id === id)) {
         navigate("/");
       }
     }, [id]);

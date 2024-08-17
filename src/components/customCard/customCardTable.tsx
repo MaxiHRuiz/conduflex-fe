@@ -3,9 +3,9 @@ import {
     GridColDef,
     GridSlotsComponentsProps,
   } from "@mui/x-data-grid";
-  import { IProduct } from "dtos/product.dto";
 import { ICustomCardTableProps } from "./ICustomCardProps";
 import { Box } from "@mui/material";
+import { useCallback } from "react";
 
 type FooterStatus = 'connected' | 'disconnected';
 
@@ -270,51 +270,27 @@ declare module '@mui/x-data-grid' {
     },
   ];
 
-  export function CustomFooterStatusComponent(
-    props: NonNullable<GridSlotsComponentsProps['footer']>,
-  ) {
-    return (
-      <></>
-    );
-  }
+  // export function CustomFooterStatusComponent(
+  //   props: NonNullable<GridSlotsComponentsProps['footer']>,
+  // ) {
+  //   return (
+  //     <></>
+  //   );
+  // }
   
   export default function CustomCardTable({product}: ICustomCardTableProps) {
-    // function capitalizeFirstLetter(string: string) {
-    //   return (
-    //     string.charAt(0).toUpperCase() + string.slice(1).toLowerCase()
-    //   ).replace("_", " ");
-    // }
-    // React.useEffect(() => {
-    //   let string = "";
-    //   for (const [key, val] of Object.entries(row)) {
-    //     string = [
-    //       string,
-    //       `{field: "${key}", headerName: "${capitalizeFirstLetter(
-    //         key
-    //       )}",  sortable:  false, disableColumnMenu:  true}`,
-    //     ].join(",");
-    //   }
-  
-    //   console.log(string);
-    // }, []);
-  
+
     return (
         <DataGrid sx={{mt: 1}}
           rows={[product]}
           columns={columns}
           hideFooter
-          // loading
           slotProps={{
             loadingOverlay: {
               variant: "linear-progress",
               noRowsVariant: "linear-progress",
             },
           }}
-          // autosizeOptions={{
-          //   columns: ["descripcion"],
-          //   includeOutliers: true,
-          //   includeHeaders: true,
-          // }}
           initialState={{
             density: "compact"
           }}

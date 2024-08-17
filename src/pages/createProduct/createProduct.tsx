@@ -2,9 +2,9 @@ import { Button } from "@mui/material";
 import CustomContainer from "components/customContainer/CustomContainer";
 import { ProductForm } from "components/product/ProductForm";
 import { useTodo } from "context/TodoContext";
-import { IProduct } from "dtos/product.dto";
 import { useNavigate } from "react-router-dom";
 import { Bounce, toast, ToastContainer } from "react-toastify";
+import { IProduct } from "types/product";
 
 const CreateProduct = () => {
   const { saveProduct } = useTodo();

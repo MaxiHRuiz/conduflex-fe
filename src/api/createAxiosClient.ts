@@ -12,7 +12,7 @@ const axiosCore: IAxiosProps = axios.create({
   headers: {
     'Content-Type': 'application/json'
   },
-  withCredentials: true,
+  // withCredentials: true,
   timeout: TIME_OUT
 })
 

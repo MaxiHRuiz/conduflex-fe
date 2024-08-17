@@ -1,37 +1,15 @@
 import * as React from "react";
 import TablePagination from "@mui/material/TablePagination";
-import { GetProducts } from "services/services";
-import { useQuery } from "react-query";
-import { Button } from "@mui/material";
 
-export default function TablePaginationDemo() {
-  const [page, setPage] = React.useState(2);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+export interface ITablePagination {
+  rowsPerPage: number
+  page: number
+  count: number
+  setRowsPerPage: (rowsPerpage: number) => void
+  setPage: (page: number) => void
+}
 
-  const [getResult, setGetResult] = React.useState(null);
-
-  const { isLoading: isLoadingTutorials, refetch: getAllTutorials } = useQuery(
-    "query-tutorials",
-    async () => {
-      return GetProducts();
-    },
-    {
-      enabled: false,
-      onSuccess: (res) => {
-        const result = {
-          status: res.status + "-" + res.statusText,
-          headers: res.headers,
-          data: res.data,
-        };
-
-        console.log("response", result);
-      },
-      onError: (err) => {
-        console.log("response", err);
-      },
-    }
-  );
-
+export default function TablePaginationDemo({rowsPerPage, setRowsPerPage, page, setPage, count}: ITablePagination) {
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
@@ -47,16 +25,14 @@ export default function TablePaginationDemo() {
   };
 
   return (
-    <>
-      <Button onClick={async () => getAllTutorials()}>clic</Button>
       <TablePagination
         component="div"
-        count={100}
+        count={count}
         page={page}
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+        rowsPerPageOptions={[10, 25, 30]}
       />
-    </>
   );
 }

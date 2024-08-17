@@ -12,7 +12,7 @@ const CreateStock = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!stocks.find((x) => x.codigo === id)) {
+    if (!stocks.find((x) => id === id)) {
       alert("No existe este producto");
       navigate("/");
     }

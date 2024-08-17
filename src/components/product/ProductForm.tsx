@@ -1,12 +1,11 @@
 import { Button, Grid, Paper, styled, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { FormInputText } from "../form/FormInputText";
-import { IProduct } from "dtos/product.dto";
 import { IProductFormProps } from "./IProductFormProps";
 import { useNavigate } from "react-router-dom";
+import { IProduct } from "types/product";
 
 const defaultValues: IProduct = {
-  codigo: "",
   descripcion: "",
   espesor_aislacion_promedio: 0,
   espesor_aislacion_minimo: 0,
@@ -51,7 +50,7 @@ const defaultValues: IProduct = {
   obs3: "",
   paso_final: "",
   precio: 0,
-  stock: false,
+  hay_stock: false,
   id: "xxxxx"
 };
 

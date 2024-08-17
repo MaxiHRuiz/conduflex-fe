@@ -7,7 +7,7 @@ import { amber, grey } from "@mui/material/colors";
 import { createTheme, ThemeProvider } from "@mui/material";
 import TodoProvider from "./context/TodoContext";
 import { ToastContainer, Bounce } from "react-toastify";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "react-toastify/dist/ReactToastify.css";
 
