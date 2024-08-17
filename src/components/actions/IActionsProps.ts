@@ -1,5 +1,5 @@
 export interface ActionsProps {
-    code: string
+    product_id: string
 }
 
 type ButtonType = 'menuItem' | 'icon' | 'gridAction'
@@ -8,5 +8,6 @@ type FormType = 'product' | 'stock' | 'order'
 export interface IActionsButtonProps {
     buttonType?: ButtonType
     formType: FormType
-    code: string
+    productId?: string
+    stockId?: string
 }

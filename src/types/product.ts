@@ -1,3 +1,4 @@
+import { IBaseParams } from "./base"
 
 export interface IProduct {
     id: string
@@ -48,16 +49,7 @@ export interface IProduct {
     tension_en_agua: number
 }
 
-export interface IProductCollection {
-    limit: number
-    offset: number
-    total: number
-    response: Array<IProduct>
-}
-
-export interface IProductParams {
+export interface IProductParams extends IBaseParams {
     descripcion?: string
     codigo?: string
-    limit?: number
-    offset?: number
 }

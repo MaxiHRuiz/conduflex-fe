@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <AuthContext.Provider value={value}>
       {loading ? (
-        <Loading />
+        <Loading linearProgress />
       ) : (
         children
       )}

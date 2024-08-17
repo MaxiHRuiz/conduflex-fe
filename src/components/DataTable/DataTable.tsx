@@ -7,10 +7,11 @@ import {
 } from "@mui/x-data-grid";
 import Stock from "../Stock";
 import Delete from "../actions/delete";
-import Add from "../actions/show";
+import Show from "../actions/show";
 import Edit from "../actions/edit";
 import { IDataTableProps } from "./IDataTableProps";
 import { esES } from "@mui/x-data-grid/locales";
+import { IProduct } from "types/product";
 
 const columns: GridColDef[] = [
   {
@@ -19,19 +20,19 @@ const columns: GridColDef[] = [
     headerName: "Acciones",
     width: 120,
     getActions: (props) => [
-      <Add
+      <Show
         buttonType="gridAction"
-        code={props.row.id}
+        productId={props.row.id}
         formType="product"
       />,
       <Edit
         buttonType="gridAction"
-        code={props.row.id}
+        productId={props.row.id}
         formType="product"
       />,
       <Delete
         buttonType="gridAction"
-        code={props.row.id}
+        productId={props.row.id}
         formType="product"
       />,
     ],
@@ -324,7 +325,7 @@ const columns: GridColDef[] = [
   },
 ];
 
-export default function DataTable({ product, isLoading, pagination, count, onChangePagination }: IDataTableProps) {
+export default function DataTable({ data: product, isLoading, pagination, count, onChangePagination }: IDataTableProps<IProduct>) {
   function CustomToolbar() {
     return (
       <GridToolbarContainer>

@@ -8,21 +8,43 @@ import {
 import Delete from "../actions/delete";
 import Add from "../actions/show";
 import Edit from "../actions/edit";
-import { IStockTableProps } from "./IDataTableProps";
-import { esES } from '@mui/x-data-grid/locales';
+import { IDataTableProps, IStockTableProps } from "./IDataTableProps";
+import { esES } from "@mui/x-data-grid/locales";
+import { IStock } from "types/stock";
+import Show from "../actions/show";
+import QR from "components/actions/QR";
+import { BASE_URL } from "lib/constanst";
+
+const formType = "stock";
 
 const columns: GridColDef[] = [
   {
     field: "actions",
     type: "actions",
     headerName: "Acciones",
-    width: 120,
+    width: 200,
     getActions: (props) => [
-      <Edit buttonType="gridAction" code={props.row.id} formType="stock" />,
+      <Show
+        buttonType="gridAction"
+        stockId={props.row.id}
+        productId={props.row.product_id}
+        formType={formType}
+      />,
+      <Edit
+        buttonType="gridAction"
+        stockId={props.row.id}
+        productId={props.row.product_id}
+        formType={formType}
+      />,
       <Delete
         buttonType="gridAction"
-        code={props.row.id}
-        formType="stock"
+        stockId={props.row.id}
+        productId={props.row.product_id}
+        formType={formType}
+      />,
+      <QR
+        value={`https://${window.location.origin}/productos/${props.row.product_id}/stocks/${props.row.id}`}
+        stockId={props.row.id}
       />,
     ],
   },
@@ -31,19 +53,20 @@ const columns: GridColDef[] = [
     headerName: "Orden de produccion",
     sortable: false,
     disableColumnMenu: true,
-    width: 170
+    width: 170,
   },
   {
-    field: "codigo",
+    field: "id",
     headerName: "código",
     sortable: false,
     disableColumnMenu: true,
-  },  {
+  },
+  {
     field: "descripcion",
     headerName: "Descripcion",
     sortable: false,
     disableColumnMenu: true,
-    width: 180
+    width: 180,
   },
   {
     field: "cantidad_metros",
@@ -56,18 +79,24 @@ const columns: GridColDef[] = [
     headerName: "Metros vendidos",
     sortable: false,
     disableColumnMenu: true,
-    width: 130
+    width: 130,
   },
   {
     field: "detalle",
     headerName: "Detalle",
     sortable: false,
     disableColumnMenu: true,
-    width: 220
+    width: 220,
   },
 ];
 
-export default function StockTable({ stock }: IStockTableProps) {
+export default function StockTable({
+  data: stocks,
+  isLoading,
+  pagination,
+  count,
+  onChangePagination,
+}: IDataTableProps<IStock>) {
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -87,11 +116,13 @@ export default function StockTable({ stock }: IStockTableProps) {
 
   return (
     <DataGrid
-      rows={stock}
+      rows={stocks}
       columns={columns}
-      rowCount={stock.length}
+      rowCount={count}
+      loading={isLoading}
       localeText={esES.components.MuiDataGrid.defaultProps.localeText}
-      // loading
+      paginationModel={pagination}
+      onPaginationModelChange={onChangePagination}
       slotProps={{
         loadingOverlay: {
           variant: "linear-progress",
@@ -103,11 +134,9 @@ export default function StockTable({ stock }: IStockTableProps) {
       }}
       initialState={{
         density: "compact",
-        pagination: {
-          paginationModel: { page: 0, pageSize: 5 },
-        },
       }}
-      pageSizeOptions={[5, 10]}
+      pageSizeOptions={[10, 25, 30]}
+      paginationMode="server"
     />
   );
 }

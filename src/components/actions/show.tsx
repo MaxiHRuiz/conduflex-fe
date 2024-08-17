@@ -1,30 +1,39 @@
-import { IconButton, ListItemIcon, MenuItem } from "@mui/material";
+import { IconButton, ListItemIcon, MenuItem, Tooltip } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { IActionsButtonProps } from "./IActionsProps";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 
-const Show = ({ buttonType = "icon", code, formType }: IActionsButtonProps) => {
+const Show = ({
+  buttonType = "icon",
+  productId,
+  stockId,
+  formType,
+}: IActionsButtonProps) => {
   const navigate = useNavigate();
-  const label = "Ver";
+  const label = "Ver detalle";
 
   const getUrl = () => {
     let page = "";
-    if (formType === "stock") page = "stocks";
+    if (formType === "stock") {
+      return `/productos/${productId}/stocks/${stockId}`;
+    }
     if (formType === "product") page = "productos";
     if (formType === "order") page = "pedidos";
-    return `/${page}/${code}`
+    return `/${page}/${productId}`;
   };
 
   const handleClick = () => navigate(getUrl());
 
   if (buttonType === "gridAction") {
     return (
-      <GridActionsCellItem
-        icon={<VisibilityIcon />}
-        label={label}
-        onClick={handleClick}
-      />
+      <Tooltip title={label}>
+        <GridActionsCellItem
+          icon={<VisibilityIcon />}
+          label={label}
+          onClick={handleClick}
+        />
+      </Tooltip>
     );
   }
 
@@ -38,9 +47,11 @@ const Show = ({ buttonType = "icon", code, formType }: IActionsButtonProps) => {
   }
 
   return (
-    <IconButton color="secondary" aria-label={label} onClick={handleClick}>
-      <VisibilityIcon />
-    </IconButton>
+    <Tooltip title={label}>
+      <IconButton color="secondary" onClick={handleClick}>
+        <VisibilityIcon />
+      </IconButton>
+    </Tooltip>
   );
 };
 

@@ -1,30 +1,65 @@
-import {
-  Box,
-  Button,
-  Checkbox,
-  Grid,
-  Paper,
-  styled,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import CustomContainer from "../../components/customContainer/CustomContainer";
-import { useTodo } from "../../context/TodoContext";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import CustomCard from "../../components/customCard/customCard";
-import { useEffect, useMemo } from "react";
 import StockTable from "components/DataTable/StockTable";
-import { IProduct } from "types/product";
+import { useGetProduct } from "services/hooks/useGetProduct";
+import { GridPaginationModel } from "@mui/x-data-grid";
+import React, { useEffect } from "react";
+import Loading from "components/Loading";
+import { useGetStocksByProductId } from "services/hooks/useGetStocksByProductId";
 
 const ShowProduct = () => {
-  const { products, stocks, updateProduct } = useTodo();
-  const { id } = useParams();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!products.find((x) => id === id)) {
-      navigate("/");
+  const { productId = "" } = useParams();
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = React.useState(0);
+  const { data, isFetching, isError } = useGetProduct(productId);
+
+  const {
+    data: stocks,
+    isFetching: isFetchingStocks,
+    isError: isErrorStocks,
+    refetch,
+  } = useGetStocksByProductId(productId, {
+    offset: page * rowsPerPage,
+    limit: rowsPerPage
+  });
+
+  const onChangePagination = (pagination: GridPaginationModel) => {
+    if (page !== pagination.page) {
+      setPage(pagination.page);
+      return;
     }
-  }, [id]);
+    if (rowsPerPage !== pagination.pageSize)
+      setRowsPerPage(pagination.pageSize);
+  };
+
+  useEffect(() => {
+    refetch();
+  }, [page, rowsPerPage]);
+
+  const getStockDetails = () => {
+    if (isErrorStocks) return <Typography>Error al cargar stocks</Typography>
+
+    if (stocks && stocks.response.length === 0) return <Typography>El producto no tiene stock</Typography>
+
+    return (
+      <StockTable
+          isLoading={isFetchingStocks}
+          data={stocks?.response ?? []}
+          pagination={{
+            page,
+            pageSize: rowsPerPage,
+          }}
+          count={stocks?.total ?? 0}
+          onChangePagination={onChangePagination}
+        />
+    )
+  }
+
+  if (isFetching) return <Loading />;
+
+  if (isError) return <Navigate to="/notFound" />;
 
   return (
     <CustomContainer breadCrumbs>
@@ -36,15 +71,9 @@ const ShowProduct = () => {
           mb: 1,
         }}
       >
-        {products.find((x) => x.id === id) && (
-          <CustomCard
-            product={products.find((x) => x.id === id) || ({} as IProduct)}
-            hiddenActions
-          />
-        )}
+        {data && <CustomCard product={data} hiddenActions />}
       </Box>
-
-      <StockTable stock={stocks.filter((x) => id === id)} />
+      {getStockDetails()}
     </CustomContainer>
   );
 };

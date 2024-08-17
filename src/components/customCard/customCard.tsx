@@ -75,7 +75,7 @@ const CustomCard = ({ product, hiddenActions}: ICustomCardProps) => {
               } - ${capitalizeFirstLetter(product.descripcion)}`}</Typography>
               <Stock inStock={product.hay_stock} />
             </Box>
-            {!hiddenActions && <Actions code={product.id} />}
+            {!hiddenActions && <Actions product_id={product.id} />}
           </Box>
           <Typography component="h2" variant="h4" gutterBottom>
             {formatCurrency(product.precio)}

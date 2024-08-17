@@ -1,33 +1,34 @@
-import { IconButton, ListItemIcon, MenuItem } from "@mui/material";
+import { IconButton, ListItemIcon, MenuItem, Tooltip } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/DeleteOutline";
 import { IActionsButtonProps } from "./IActionsProps";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useTodo } from "context/TodoContext";
 import { toast } from "react-toastify";
 
-function Delete({ buttonType, code, formType }: IActionsButtonProps) {
+function Delete({ buttonType, productId = "", formType }: IActionsButtonProps) {
   const { deleteProduct, deleteStock, deleteOrder } = useTodo();
   const label = "Eliminar";
 
   const onHandleClick = () => {
     if (formType === "product") {
-      deleteProduct(code);
+      deleteProduct(productId);
     }
     if (formType === "stock") {
-      deleteStock(code);
+      deleteStock(productId);
     }
-    if (formType === "order") 
-      deleteOrder(code);
+    if (formType === "order") deleteOrder(productId);
     toast.success("Se elimino correctamente");
   };
 
   if (buttonType === "gridAction") {
     return (
-      <GridActionsCellItem
-        icon={<DeleteIcon />}
-        label={label}
-        onClick={onHandleClick}
-      />
+      <Tooltip title={label}>
+        <GridActionsCellItem
+          icon={<DeleteIcon />}
+          label={label}
+          onClick={onHandleClick}
+        />
+      </Tooltip>
     );
   }
 
@@ -41,9 +42,11 @@ function Delete({ buttonType, code, formType }: IActionsButtonProps) {
   }
 
   return (
-    <IconButton color="secondary" aria-label="Delete" onClick={onHandleClick}>
-      <DeleteIcon />
-    </IconButton>
+    <Tooltip title={label}>
+      <IconButton color="secondary" onClick={onHandleClick}>
+        <DeleteIcon />
+      </IconButton>
+    </Tooltip>
   );
 }
 

@@ -19,17 +19,17 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<Navigate to={'/productos'} />} />
-        <Route path="/productos" element={<Products />} />
+        <Route path="/productos/:productId/stocks/:stockId/editar" element={<EditStock />} />
+        <Route path="/productos/:productId/stocks/:stockId" element={<StockDetails />} />
+        <Route path="/productos/stocks/crear" element={<CreateStock />} />
+        <Route path="/productos/stocks" element={<Stocks />} />
         <Route path="/productos/crear" element={<CreateProduct />} />
-        <Route path="/productos/:id/editar" element={<EditProduct />} />
-        <Route path="/productos/:id" element={<ShowProduct />} />
-        <Route path="/stocks" element={<Stocks />} />
-        <Route path="/stocks/:stock" element={<StockDetails />} />
-        <Route path="/stocks/crear" element={<CreateStock />} />
-        <Route path="/stocks/:id/editar" element={<EditStock />} />
-        <Route path="/stocks/:id" element={<Navigate to={'/stocks'} />} />
-        <Route path="/pedidos" element={<Orders />} />
+        <Route path="/productos/:productId/editar" element={<EditProduct />} />
+        <Route path="/productos/:productId" element={<ShowProduct />} />
+        <Route path="/productos" element={<Products />} />
+        {/* <Route path="/stocks/:id" element={<Navigate to={'/stocks'} />} /> */}
         <Route path="/pedidos/:id" element={<ShowOrders />} />
+        <Route path="/pedidos" element={<Orders />} />
         <Route path='*' element={<NotFound />} />
       </Route>
     </Routes>

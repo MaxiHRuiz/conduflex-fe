@@ -4,18 +4,18 @@ import {
   FormControlLabel,
   Switch,
   Button,
-  CircularProgress,
 } from "@mui/material";
 import CustomContainer from "../../components/customContainer/CustomContainer";
 import CustomCard from "../../components/customCard/customCard";
-import { SyntheticEvent, useCallback, useEffect, useState } from "react";
+import { SyntheticEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTodo } from "context/TodoContext";
 import DataTable from "components/DataTable/DataTable";
 import TablePaginationDemo from "components/TablePagination";
 import React from "react";
-import { useGetProducts } from "services/hooks/useGetProductos";
+import { useGetProducts } from "services/hooks/useGetProducts";
 import { GridPaginationModel } from "@mui/x-data-grid";
+import Loading from "components/Loading";
 
 export const Products = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -24,7 +24,7 @@ export const Products = () => {
   const { tableChecked, setTableChecked } = useTodo();
 
   const { data, isFetching, refetch } = useGetProducts({
-    offset: page,
+    offset: page * rowsPerPage,
     limit: rowsPerPage,
   });
 
@@ -59,23 +59,13 @@ export const Products = () => {
   const dataSection = () => {
     if (isFetching && !tableChecked)
       return (
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            minHeight: 400,
-          }}
-        >
-          <CircularProgress />
-        </Box>
+        <Loading />
       );
 
     if (tableChecked) {
       return (
         <DataTable
-          product={data?.response ?? []}
+          data={data?.response ?? []}
           count={data?.total ?? 0}
           isLoading={isFetching}
           pagination={{

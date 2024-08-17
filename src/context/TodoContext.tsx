@@ -8,72 +8,7 @@ const products: Array<IProduct> = [
  
 ];
 
-const stocks: Array<IStock> = [
-  {
-    id: "20240729001",
-    codigo: "104",
-    descripcion: "UNIPOLAR 1 X 0,75",
-    cantidad_metros: 6,
-    cantidad_metros_vendidos: 2,
-    detalle: "Detalle de stock",
-  },
-  {
-    id: "20240729002",
-    codigo: "104",
-    descripcion: "UNIPOLAR 1 X 0,75",
-    cantidad_metros: 6,
-    cantidad_metros_vendidos: 2,
-    detalle: "Detalle de stock",
-  },
-  {
-    id: "20240729003",
-    codigo: "104",
-    descripcion: "UNIPOLAR 1 X 0,75",
-    cantidad_metros: 6,
-    cantidad_metros_vendidos: 2,
-    detalle: "Detalle de stock",
-  },
-  {
-    id: "20240728001",
-    codigo: "103",
-    descripcion: "Unipolar 1 x 0,50",
-    cantidad_metros: 6,
-    cantidad_metros_vendidos: 2,
-    detalle: "Detalle de stock",
-  },
-  {
-    id: "20240728002",
-    codigo: "103",
-    descripcion: "Unipolar 1 x 0,50",
-    cantidad_metros: 6,
-    cantidad_metros_vendidos: 2,
-    detalle: "Detalle de stock",
-  },
-  {
-    id: "20240728003",
-    codigo: "103",
-    descripcion: "Unipolar 1 x 0,50",
-    cantidad_metros: 6,
-    cantidad_metros_vendidos: 2,
-    detalle: "Detalle de stock",
-  },
-  {
-    id: "20240720001",
-    codigo: "105V",
-    descripcion: "Unipolar 1 x 1",
-    cantidad_metros: 6,
-    cantidad_metros_vendidos: 2,
-    detalle: "Detalle de stock",
-  },
-  {
-    id: "20240720001",
-    codigo: "105V",
-    descripcion: "Unipolar 1 x 1",
-    cantidad_metros: 6,
-    cantidad_metros_vendidos: 2,
-    detalle: "Detalle de stock",
-  },
-];
+const stocks: Array<IStock> = [];
 
 const orders: Array<IOrder> = [
   {

@@ -1,10 +1,10 @@
-import { IconButton, ListItemIcon, MenuItem } from "@mui/material";
+import { IconButton, ListItemIcon, MenuItem, Tooltip } from "@mui/material";
 import EditIcon from "@mui/icons-material/ModeEditOutline";
 import { useNavigate } from "react-router-dom";
 import { IActionsButtonProps } from "./IActionsProps";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 
-function Edit({code, buttonType, formType}: IActionsButtonProps) {
+function Edit({ productId, buttonType, formType }: IActionsButtonProps) {
   const navigate = useNavigate();
   const label = "Editar";
 
@@ -13,22 +13,24 @@ function Edit({code, buttonType, formType}: IActionsButtonProps) {
     if (formType === "stock") page = "stocks";
     if (formType === "product") page = "productos";
     if (formType === "order") page = "pedidos";
-    return `/${page}/${code}/editar`
+    return `/${page}/${productId}/editar`;
   };
 
   const handleClick = () => navigate(getUrl());
 
   if (buttonType === "gridAction") {
     return (
-      <GridActionsCellItem
-        icon={<EditIcon />}
-        label={label}
-        onClick={handleClick}
-      />
+      <Tooltip title={label}>
+        <GridActionsCellItem
+          icon={<EditIcon />}
+          label={label}
+          onClick={handleClick}
+        />
+      </Tooltip>
     );
   }
 
-  if (buttonType === 'menuItem') {
+  if (buttonType === "menuItem") {
     <MenuItem onClick={handleClick}>
       <ListItemIcon>
         <EditIcon />
@@ -39,13 +41,11 @@ function Edit({code, buttonType, formType}: IActionsButtonProps) {
 
   return (
     <>
-      <IconButton
-        color="secondary"
-        aria-label={label}
-        onClick={handleClick}
-      >
-        <EditIcon />
-      </IconButton>
+      <Tooltip title={label}>
+        <IconButton color="secondary" onClick={handleClick}>
+          <EditIcon />
+        </IconButton>
+      </Tooltip>
     </>
   );
 }

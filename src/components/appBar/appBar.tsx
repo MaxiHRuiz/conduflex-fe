@@ -13,28 +13,13 @@ import logo from "../../assets/images/logo-conduflex-logo.png";
 import { LoginButton } from "./loginButton";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/Auth";
-import ListAltIcon from "@mui/icons-material/ListAlt";
-import styled from "styled-components";
-import { Badge, BadgeProps } from "@mui/material";
-import { useTodo } from "../../context/TodoContext";
 import OrdenButton from "components/OrdenButton";
 
 const pages = ["productos", "stocks", "pedidos"];
 
-const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    right: -3,
-    top: 13,
-    padding: "0 4px",
-  },
-}));
-
 function ResponsiveAppBar() {
   const { userSession } = useAuth();
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
   const navigate = useNavigate();
@@ -46,6 +31,15 @@ function ResponsiveAppBar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  const onClickMenuItem = (page: string) => {
+    if (page === 'stocks') {
+      navigate('productos/stocks')
+      return
+    }
+    navigate(`/${page}`)
+    
+  }
 
   return (
     <AppBar position="static" color="transparent">
@@ -99,7 +93,7 @@ function ResponsiveAppBar() {
                 color="secondary"
               >
                 {pages.map((page) => (
-                  <MenuItem key={page} onClick={() => navigate(`/${page}`)}>
+                  <MenuItem key={page} onClick={() => onClickMenuItem(page)}>
                     <Typography textAlign="center">{page}</Typography>
                   </MenuItem>
                 ))}
@@ -125,7 +119,7 @@ function ResponsiveAppBar() {
                 {pages.map((page) => (
                   <Button
                     key={page}
-                    onClick={() => navigate(`/${page}`)}
+                    onClick={() => onClickMenuItem(page)}
                     sx={{ my: 2, display: "block" }}
                     color="primary"
                   >

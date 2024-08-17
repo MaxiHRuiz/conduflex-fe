@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const Actions = ({ code }: ActionsProps) => {
+const Actions = ({ product_id }: ActionsProps) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -52,18 +52,18 @@ const Actions = ({ code }: ActionsProps) => {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <Add buttonType="menuItem" code={code} formType="product" />
-          <Edit buttonType="menuItem" code={code} formType="product" />
-          <Delete buttonType="menuItem" code={code} formType="product" />
+          <Add buttonType="menuItem" productId={product_id} formType="product" />
+          <Edit buttonType="menuItem" productId={product_id} formType="product" />
+          <Delete buttonType="menuItem" productId={product_id} formType="product" />
         </Menu>
       </React.Fragment>
     );
   }
   return (
     <div>
-      <Add code={code} formType="product" />
-      <Edit code={code} formType="product" />
-      <Delete code={code} formType="product" />
+      <Add productId={product_id} formType="product" />
+      <Edit productId={product_id} formType="product" />
+      <Delete productId={product_id} formType="product" />
     </div>
   );
 };

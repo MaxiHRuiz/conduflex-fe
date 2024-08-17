@@ -7,8 +7,7 @@ import {
 } from "@mui/x-data-grid";
 import Delete from "../actions/delete";
 import Add from "../actions/show";
-import Edit from "../actions/edit";
-import { IOrderTableProps, IStockTableProps } from "./IDataTableProps";
+import { IOrderTableProps } from "./IDataTableProps";
 import { esES } from '@mui/x-data-grid/locales';
 import Status from "components/Status";
 
@@ -19,11 +18,11 @@ const columns: GridColDef[] = [
     headerName: "Acciones",
     width: 120,
     getActions: (props) => [
-      <Add buttonType="gridAction" code={props.row.id} formType="order" />,
+      <Add buttonType="gridAction" productId={props.row.id} formType="order" />,
       // <Edit buttonType="gridAction" code={props.row.id} formType="order" />,
       <Delete
         buttonType="gridAction"
-        code={props.row.id}
+        productId={props.row.id}
         formType="order"
       />,
     ],
@@ -92,7 +91,8 @@ export default function OrderTable({ order }: IOrderTableProps) {
           paginationModel: { page: 0, pageSize: 5 },
         },
       }}
-      pageSizeOptions={[5, 10]}
+      pageSizeOptions={[10, 25, 30]}
+      paginationMode="server"
     />
   );
 }
