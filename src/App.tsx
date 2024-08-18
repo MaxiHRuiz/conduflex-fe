@@ -29,10 +29,10 @@ const queryClient = new QueryClient();
 
 export default function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TodoProvider>
-        <Router>
-          <AuthProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <TodoProvider>
+          <Router>
             <ThemeProvider theme={theme}>
               <ResponsiveAppBar />
               <AppRoutes />
@@ -48,9 +48,9 @@ export default function App() {
                 transition={Bounce}
               />
             </ThemeProvider>
-          </AuthProvider>
-        </Router>
-      </TodoProvider>
-    </QueryClientProvider>
+          </Router>
+        </TodoProvider>
+      </QueryClientProvider>
+    </AuthProvider>
   );
 }

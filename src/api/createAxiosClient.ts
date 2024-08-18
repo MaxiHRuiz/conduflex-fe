@@ -1,5 +1,6 @@
 import axios, { Axios, AxiosInstance } from "axios";
 import { useAuth } from "context/Auth";
+import { supabase } from "lib/api";
 import { REACT_APP_BASE_URL } from "lib/constanst";
 
 const TIME_OUT = 50000;
@@ -16,22 +17,16 @@ const axiosCore: IAxiosProps = axios.create({
   timeout: TIME_OUT
 })
 
-// axiosCore.interceptors.request.use(config => {
-//   const { userSession } = useAuth()
-//   const _config = config
+axiosCore.interceptors.request.use(async config => {
+  const _config = config
+  // await supabase.auth.getSession().then(({ data: { session } }) => {
+  //   _config.headers.Authorization = `Bearer ${session?.access_token}`
+  // });
 
-//   const token = userSession?.access_token ?? ''
-
-//   if (token) {
-//     _config.headers.Authorization = `Bearer ${token}`
-//     _config.maxBodyLength = Infinity
-//     _config.maxContentLength = Infinity
-//   }
-
-//   return _config
-// },
-//   error => Promise.reject(error)
-// );
+  return _config
+},
+  error => Promise.reject(error)
+);
 
 // axiosCore.interceptors.response.use(response => response.data)
 
