@@ -1,8 +1,6 @@
 import React, { useContext, useEffect } from "react";
 import { TodoContextType } from "../types/todo";
-import { IStock } from "dtos/stock.dto";
 import { IOrder } from "dtos/order.dto";
-import { IProduct } from "types/product";
 
 // const products: Array<IProduct> = [
 

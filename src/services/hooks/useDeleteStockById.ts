@@ -1,8 +1,8 @@
 import { UseMutationResult, useQueryClient, useMutation } from "@tanstack/react-query";
 import axiosCore from "api/createAxiosClient";
 import { AxiosResponse } from "axios";
-import { IStock } from "dtos/stock.dto";
 import { toast } from "react-toastify";
+import { IStock } from "types/stock";
 
 
 const deleteStockById = async (productId: string, stockId: string): Promise<AxiosResponse<IStock, any>> => {

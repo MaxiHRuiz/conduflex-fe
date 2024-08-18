@@ -1,5 +1,4 @@
 import { IOrder } from "dtos/order.dto";
-import { IStock } from "dtos/stock.dto";
 import { IProduct } from "./product";
 
 
