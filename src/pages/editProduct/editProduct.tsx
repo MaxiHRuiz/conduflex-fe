@@ -1,34 +1,27 @@
+import { Typography } from "@mui/material";
 import CustomContainer from "components/customContainer/CustomContainer";
+import Loading from "components/Loading";
 import { ProductForm } from "components/product/ProductForm";
-import { useTodo } from "context/TodoContext";
-import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
-import { IProduct } from "types/product";
+import { useParams } from "react-router-dom";
+import { useGetProduct } from "services/hooks/useGetProduct";
+import { useUpdateProduct } from "services/hooks/useUpdateProduct";
 
 const EditProduct = () => {
-  const { products, updateProduct } = useTodo();
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const {productId = ''} = useParams()
+  const { data, isFetching, isError } = useGetProduct(productId)
+  const {mutateAsync: updateProduct, isPending} = useUpdateProduct(productId)
 
-  useEffect(() => {
-    if (!products.find((x) => id === id)) {
-      alert("No existe este producto");
-      navigate("/");
-    }
-  }, [id]);
+  if (isError) return <Typography>No existe este producto</Typography>
+
+  if (isFetching || isPending) return <Loading />
 
   return (
     <>
       <CustomContainer breadCrumbs>
         <ProductForm
           title="Editar Producto"
-          product={products.find((x) => id === id)}
-          onSubmitProduct={function (product: IProduct): void {
-            updateProduct(product.id, product);
-            toast.success("Se edito el producto correctamente");
-            navigate("/");
-          }}
+          product={data}
+          onSubmitProduct={updateProduct}
           isEdit
         />
       </CustomContainer>

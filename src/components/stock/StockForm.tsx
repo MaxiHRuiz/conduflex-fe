@@ -3,16 +3,19 @@ import { useForm } from "react-hook-form";
 import { FormInputText } from "../form/FormInputText";
 import { IStockFormProps } from "./IStockFormProps";
 import { useNavigate } from "react-router-dom";
-import { IStock } from "dtos/stock.dto";
+import { IStock } from "types/stock";
 
 const defaultValues: IStock = {
-    id: "",
-    codigo: "",
-    descripcion: "",
-    cantidad_metros: 0,
-    cantidad_metros_vendidos: 0,
-    detalle: ""
-}
+  id: "",
+  descripcion: "",
+  cantidad_metros: 0,
+  cantidad_metros_vendidos: 0,
+  detalle: "",
+  product_id: "",
+  cantidad_metros_restantes: 0,
+  disponible: false,
+  estado: "",
+};
 
 export const StockForm = ({
   title,
@@ -23,8 +26,8 @@ export const StockForm = ({
   const { handleSubmit, reset, control, setValue } = useForm<IStock>({
     defaultValues: stock ?? defaultValues,
   });
-  const onSubmit = (data: IStock) =>{ 
-    onSubmitStock(data)
+  const onSubmit = (data: IStock) => {
+    onSubmitStock(data);
   };
 
   const FormGrid = styled(Grid)(() => ({
@@ -46,10 +49,13 @@ export const StockForm = ({
 
       <Grid container spacing={3}>
         <FormGrid item xs={12} md={6}>
+          <FormInputText name="id" control={control} label="ID" type="text" />
+        </FormGrid>
+        <FormGrid item xs={12} md={6}>
           <FormInputText
-            name="codigo"
+            name="product_id"
             control={control}
-            label="Código"
+            label="Product ID"
             type="text"
           />
         </FormGrid>
@@ -57,7 +63,7 @@ export const StockForm = ({
           <FormInputText
             name="descripcion"
             control={control}
-            label="Descripcion"
+            label="Descripción"
             type="text"
           />
         </FormGrid>
@@ -65,17 +71,24 @@ export const StockForm = ({
           <FormInputText
             name="cantidad_metros"
             control={control}
-            label="Cantidad metros"
-            type="text"
+            label="Cantidad de Metros"
+            type="number"
           />
         </FormGrid>
         <FormGrid item xs={12} md={6}>
           <FormInputText
             name="cantidad_metros_vendidos"
             control={control}
-            label="Cantidad metros vendidos"
+            label="Cantidad de Metros Vendidos"
             type="number"
-            disabled
+          />
+        </FormGrid>
+        <FormGrid item xs={12} md={6}>
+          <FormInputText
+            name="cantidad_metros_restantes"
+            control={control}
+            label="Cantidad de Metros Restantes"
+            type="number"
           />
         </FormGrid>
         <FormGrid item xs={12} md={6}>
@@ -83,6 +96,22 @@ export const StockForm = ({
             name="detalle"
             control={control}
             label="Detalle"
+            type="text"
+          />
+        </FormGrid>
+        <FormGrid item xs={12} md={6}>
+          <FormInputText
+            name="disponible"
+            control={control}
+            label="Disponible"
+            type="checkbox"
+          />
+        </FormGrid>
+        <FormGrid item xs={12} md={6}>
+          <FormInputText
+            name="estado"
+            control={control}
+            label="Estado"
             type="text"
           />
         </FormGrid>

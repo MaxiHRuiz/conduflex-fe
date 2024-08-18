@@ -51,7 +51,7 @@ const defaultValues: IProduct = {
   paso_final: "",
   precio: 0,
   hay_stock: false,
-  id: "xxxxx"
+  id: "",
 };
 
 export const ProductForm = ({
@@ -60,12 +60,12 @@ export const ProductForm = ({
   isEdit,
   onSubmitProduct,
 }: IProductFormProps) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { handleSubmit, reset, control, setValue } = useForm<IProduct>({
     defaultValues: product ?? defaultValues,
   });
-  const onSubmit = (data: IProduct) =>{ 
-    onSubmitProduct(data)
+  const onSubmit = (data: IProduct) => {
+    onSubmitProduct(data);
   };
 
   const FormGrid = styled(Grid)(() => ({
@@ -86,38 +86,22 @@ export const ProductForm = ({
       </Typography>
 
       <Grid container spacing={3}>
-        {/* {isEdit && <FormGrid item xs={12} md={6}>
-          <FormInputText name="id" control={control} label="Id" type="number" disabled/>
-        </FormGrid>} */}
         <FormGrid item xs={12} md={6}>
-          <FormInputText
-            name="codigo"
-            control={control}
-            label="Código"
-            type="text"
-          />
+          <FormInputText name="id" control={control} label="Código" type="text" />
         </FormGrid>
         <FormGrid item xs={12} md={6}>
           <FormInputText
             name="descripcion"
             control={control}
-            label="Descripcion"
+            label="Descripción"
             type="text"
-          />
-        </FormGrid>
-        <FormGrid item xs={12} md={6}>
-          <FormInputText
-            name="precio"
-            control={control}
-            label="Precio"
-            type="number"
           />
         </FormGrid>
         <FormGrid item xs={12} md={6}>
           <FormInputText
             name="espesor_aislacion_promedio"
             control={control}
-            label="Espesor aislacion promedio"
+            label="Espesor Aislación Promedio"
             type="number"
           />
         </FormGrid>
@@ -125,7 +109,7 @@ export const ProductForm = ({
           <FormInputText
             name="espesor_aislacion_minimo"
             control={control}
-            label="Espesor aislacion minimo"
+            label="Espesor Aislación Mínimo"
             type="number"
           />
         </FormGrid>
@@ -133,7 +117,7 @@ export const ProductForm = ({
           <FormInputText
             name="espesor_envoltura_promedio"
             control={control}
-            label="Espesor envoltura promedio"
+            label="Espesor Envoltura Promedio"
             type="number"
           />
         </FormGrid>
@@ -141,7 +125,7 @@ export const ProductForm = ({
           <FormInputText
             name="espesor_envoltura_minimo"
             control={control}
-            label="Espesor envoltura minimo"
+            label="Espesor Envoltura Mínimo"
             type="number"
           />
         </FormGrid>
@@ -149,7 +133,7 @@ export const ProductForm = ({
           <FormInputText
             name="diametro_nominal"
             control={control}
-            label="Diametro nominal"
+            label="Diámetro Nominal"
             type="number"
           />
         </FormGrid>
@@ -157,7 +141,7 @@ export const ProductForm = ({
           <FormInputText
             name="diametro_maximo_extremo"
             control={control}
-            label="Diametro maximo extremo"
+            label="Diámetro Máximo Extremo"
             type="number"
           />
         </FormGrid>
@@ -165,7 +149,7 @@ export const ProductForm = ({
           <FormInputText
             name="resist_aislacion_70c"
             control={control}
-            label="Resist aislacion 70c"
+            label="Resistencia Aislación 70°C"
             type="number"
           />
         </FormGrid>
@@ -173,7 +157,7 @@ export const ProductForm = ({
           <FormInputText
             name="tension_electrodos"
             control={control}
-            label="Tension electrodos"
+            label="Tensión Electrodos"
             type="text"
           />
         </FormGrid>
@@ -181,7 +165,7 @@ export const ProductForm = ({
           <FormInputText
             name="resist_electrica_20c"
             control={control}
-            label="Resist electrica 20c"
+            label="Resistencia Eléctrica 20°C"
             type="number"
           />
         </FormGrid>
@@ -189,7 +173,7 @@ export const ProductForm = ({
           <FormInputText
             name="tension_en_agua"
             control={control}
-            label="Tension en agua"
+            label="Tensión en Agua"
             type="number"
           />
         </FormGrid>
@@ -197,7 +181,7 @@ export const ProductForm = ({
           <FormInputText
             name="cantidad_hilos"
             control={control}
-            label="Cantidad hilos"
+            label="Cantidad de Hilos"
             type="number"
           />
         </FormGrid>
@@ -205,7 +189,7 @@ export const ProductForm = ({
           <FormInputText
             name="diametros_hilos"
             control={control}
-            label="Diametros hilos"
+            label="Diámetros de Hilos"
             type="number"
           />
         </FormGrid>
@@ -213,7 +197,7 @@ export const ProductForm = ({
           <FormInputText
             name="diametro_cuerda"
             control={control}
-            label="Diametro cuerda"
+            label="Diámetro de Cuerda"
             type="number"
           />
         </FormGrid>
@@ -221,7 +205,7 @@ export const ProductForm = ({
           <FormInputText
             name="pico_cuerda"
             control={control}
-            label="Pico cuerda"
+            label="Pico de Cuerda"
             type="number"
           />
         </FormGrid>
@@ -229,7 +213,7 @@ export const ProductForm = ({
           <FormInputText
             name="diametro_conductor_calculado"
             control={control}
-            label="Diametro conductor calculado"
+            label="Diámetro Conductor Calculado"
             type="number"
           />
         </FormGrid>
@@ -237,7 +221,7 @@ export const ProductForm = ({
           <FormInputText
             name="diametro_conductor_Produccion"
             control={control}
-            label="Diametro conductor produccion"
+            label="Diámetro Conductor Producción"
             type="number"
           />
         </FormGrid>
@@ -253,7 +237,7 @@ export const ProductForm = ({
           <FormInputText
             name="cantidad_almas"
             control={control}
-            label="Cantidad almas"
+            label="Cantidad de Almas"
             type="number"
           />
         </FormGrid>
@@ -261,7 +245,7 @@ export const ProductForm = ({
           <FormInputText
             name="diametro_cableado"
             control={control}
-            label="Diametro cableado"
+            label="Diámetro Cableado"
             type="number"
           />
         </FormGrid>
@@ -269,7 +253,7 @@ export const ProductForm = ({
           <FormInputText
             name="pico_relleno"
             control={control}
-            label="Pico relleno"
+            label="Pico Relleno"
             type="number"
           />
         </FormGrid>
@@ -277,7 +261,7 @@ export const ProductForm = ({
           <FormInputText
             name="diametro_relleno_calculado"
             control={control}
-            label="Diametro relleno calculado"
+            label="Diámetro Relleno Calculado"
             type="number"
           />
         </FormGrid>
@@ -285,7 +269,7 @@ export const ProductForm = ({
           <FormInputText
             name="diametro_relleno_produccion"
             control={control}
-            label="Diametro relleno produccion"
+            label="Diámetro Relleno Producción"
             type="number"
           />
         </FormGrid>
@@ -301,7 +285,7 @@ export const ProductForm = ({
           <FormInputText
             name="diametro_sobre_fleje"
             control={control}
-            label="Diametro sobre fleje"
+            label="Diámetro sobre Fleje"
             type="number"
           />
         </FormGrid>
@@ -309,7 +293,7 @@ export const ProductForm = ({
           <FormInputText
             name="diametro_envoltura_calculado"
             control={control}
-            label="Diametro envoltura calculado"
+            label="Diámetro Envoltura Calculado"
             type="number"
           />
         </FormGrid>
@@ -317,7 +301,7 @@ export const ProductForm = ({
           <FormInputText
             name="diametro_envoltura_produccion"
             control={control}
-            label="Diametro envoltura produccion"
+            label="Diámetro Envoltura Producción"
             type="number"
           />
         </FormGrid>
@@ -325,7 +309,7 @@ export const ProductForm = ({
           <FormInputText
             name="matriz_envoltura"
             control={control}
-            label="Matriz envoltura"
+            label="Matriz Envoltura"
             type="number"
           />
         </FormGrid>
@@ -333,7 +317,7 @@ export const ProductForm = ({
           <FormInputText
             name="kgs_a"
             control={control}
-            label="Kgs a"
+            label="Kgs A"
             type="number"
           />
         </FormGrid>
@@ -341,7 +325,7 @@ export const ProductForm = ({
           <FormInputText
             name="kgs_r"
             control={control}
-            label="Kgs r"
+            label="Kgs R"
             type="number"
           />
         </FormGrid>
@@ -349,7 +333,7 @@ export const ProductForm = ({
           <FormInputText
             name="kgs_v"
             control={control}
-            label="Kgs v"
+            label="Kgs V"
             type="number"
           />
         </FormGrid>
@@ -357,7 +341,7 @@ export const ProductForm = ({
           <FormInputText
             name="kgs_cu"
             control={control}
-            label="Kgs cu"
+            label="Kgs Cu"
             type="number"
           />
         </FormGrid>
@@ -365,7 +349,7 @@ export const ProductForm = ({
           <FormInputText
             name="kgs_totales"
             control={control}
-            label="Kgs totales"
+            label="Kgs Totales"
             type="number"
           />
         </FormGrid>
@@ -373,7 +357,7 @@ export const ProductForm = ({
           <FormInputText
             name="kgs_terminado"
             control={control}
-            label="Kgs terminado"
+            label="Kgs Terminado"
             type="number"
           />
         </FormGrid>
@@ -381,7 +365,15 @@ export const ProductForm = ({
           <FormInputText
             name="kgs_produccion"
             control={control}
-            label="Kgs produccion"
+            label="Kgs Producción"
+            type="number"
+          />
+        </FormGrid>
+        <FormGrid item xs={12} md={6}>
+          <FormInputText
+            name="kgs_produccion"
+            control={control}
+            label="Kgs Producción"
             type="number"
           />
         </FormGrid>
@@ -389,7 +381,7 @@ export const ProductForm = ({
           <FormInputText
             name="kgs_armadura_metalica"
             control={control}
-            label="Kgs armadura metalica"
+            label="Kgs Armadura Metálica"
             type="number"
           />
         </FormGrid>
@@ -405,7 +397,7 @@ export const ProductForm = ({
           <FormInputText
             name="matriz_relleno"
             control={control}
-            label="Matriz relleno"
+            label="Matriz Relleno"
             type="text"
           />
         </FormGrid>
@@ -421,7 +413,7 @@ export const ProductForm = ({
           <FormInputText
             name="obs1"
             control={control}
-            label="Obs1"
+            label="Observación 1"
             type="text"
           />
         </FormGrid>
@@ -429,7 +421,7 @@ export const ProductForm = ({
           <FormInputText
             name="obs2"
             control={control}
-            label="Obs2"
+            label="Observación 2"
             type="text"
           />
         </FormGrid>
@@ -437,7 +429,7 @@ export const ProductForm = ({
           <FormInputText
             name="obs3"
             control={control}
-            label="Obs3"
+            label="Observación 3"
             type="text"
           />
         </FormGrid>
@@ -445,10 +437,26 @@ export const ProductForm = ({
           <FormInputText
             name="paso_final"
             control={control}
-            label="Paso final"
+            label="Paso Final"
             type="text"
           />
         </FormGrid>
+        <FormGrid item xs={12} md={6}>
+          <FormInputText
+            name="precio"
+            control={control}
+            label="Precio"
+            type="number"
+          />
+        </FormGrid>
+        {/* <FormGrid item xs={12} md={6}>
+          <FormInputText
+            name="hay_stock"
+            control={control}
+            label="Hay Stock"
+            type="checkbox"
+          />
+        </FormGrid> */}
       </Grid>
 
       <Button onClick={handleSubmit(onSubmit)} variant={"contained"}>

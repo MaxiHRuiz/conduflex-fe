@@ -1,34 +1,36 @@
+import { Typography } from "@mui/material";
 import CustomContainer from "components/customContainer/CustomContainer";
+import Loading from "components/Loading";
 import { StockForm } from "components/stock/StockForm";
-import { useTodo } from "context/TodoContext";
-import { IStock } from "dtos/stock.dto";
-import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { Bounce, toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import { useCreateStockById } from "services/hooks/useCreateStockById";
 
 const CreateStock = () => {
-  const { stocks, saveStock } = useTodo();
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const { productId = "" } = useParams();
+  const {
+    mutateAsync: saveStock,
+    isPending,
+    isError,
+  } = useCreateStockById(productId);
 
-  useEffect(() => {
-    if (!stocks.find((x) => id === id)) {
-      alert("No existe este producto");
-      navigate("/");
+  const createStockContent = () => {
+    if (isError)
+      return (
+        <Typography>
+          Hubo un error al cargar el formulario de creación
+        </Typography>
+      );
+
+    if (isPending) {
+      return <Loading />;
     }
-  }, [id]);
+
+    return <StockForm title="Agregar nuevo stock" onSubmitStock={saveStock} />;
+  };
+
   return (
     <>
-      <CustomContainer breadCrumbs>
-        <StockForm
-          title="Agregar nuevo stock"
-          onSubmitStock={function (stock: IStock): void {
-            saveStock(stock);
-            toast.success("Se creo el producto correctamente");
-            navigate("/");
-          }}
-        />
-      </CustomContainer>
+      <CustomContainer breadCrumbs>{createStockContent()}</CustomContainer>
     </>
   );
 };

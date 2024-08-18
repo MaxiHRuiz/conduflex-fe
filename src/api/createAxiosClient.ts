@@ -1,6 +1,6 @@
 import axios, { Axios, AxiosInstance } from "axios";
 import { useAuth } from "context/Auth";
-import { BASE_URL } from "lib/constanst";
+import { REACT_APP_BASE_URL } from "lib/constanst";
 
 const TIME_OUT = 50000;
 interface IAxiosProps extends AxiosInstance {
@@ -8,7 +8,7 @@ interface IAxiosProps extends AxiosInstance {
 }
 
 const axiosCore: IAxiosProps = axios.create({
-  baseURL: 'https://conduflex-be.onrender.com',
+  baseURL: REACT_APP_BASE_URL,
   headers: {
     'Content-Type': 'application/json'
   },
@@ -21,7 +21,6 @@ const axiosCore: IAxiosProps = axios.create({
 //   const _config = config
 
 //   const token = userSession?.access_token ?? ''
-//   console.log('token', '')
 
 //   if (token) {
 //     _config.headers.Authorization = `Bearer ${token}`

@@ -3,14 +3,14 @@ import { AxiosResponse } from 'axios';
 import axiosCore from 'api/createAxiosClient';
 import { IProduct } from 'types/product';
 
-const getProduct = async (codeId: string): Promise<AxiosResponse<IProduct, any>> => {
-    return await axiosCore.get<IProduct>(`/product/${codeId}`);
+const getProduct = async (productId: string): Promise<AxiosResponse<IProduct, any>> => {
+    return await axiosCore.get<IProduct>(`/product/${productId}`);
 };
 
-export const useGetProduct = (codeId: string): QueryObserverResult<IProduct, any> => {
+export const useGetProduct = (productId: string): QueryObserverResult<IProduct, any> => {
     return useQuery<IProduct, any>({
         queryFn: async () => {
-            const { data } = await getProduct(codeId);
+            const { data } = await getProduct(productId);
             return data;
         },
         queryKey: [ 'get-product' ],

@@ -1,34 +1,27 @@
+import { Typography } from "@mui/material";
 import CustomContainer from "components/customContainer/CustomContainer";
+import Loading from "components/Loading";
 import { StockForm } from "components/stock/StockForm";
-import { useTodo } from "context/TodoContext";
-import { IStock } from "dtos/stock.dto";
-import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import { useGetStockById } from "services/hooks/useGetStockById";
+import { useUpdateStockById } from "services/hooks/useUpdateStockById";
 
 const EditProduct = () => {
-  const { stocks, updateStock } = useTodo();
-  const { id } = useParams();
-  const navigate = useNavigate();
+  const {productId = '', stockId = ''} = useParams()
+  const { data, isFetching, isError } = useGetStockById(productId, stockId)
+  const {mutateAsync: updateStock, isPending} = useUpdateStockById(productId, stockId)
 
-  useEffect(() => {
-    if (!stocks.find((x) => x.id === id)) {
-      alert("No existe este producto");
-      navigate("/");
-    }
-  }, [id]);
+  if (isError) return <Typography>No existe este Stock</Typography>
+
+  if (isFetching || isPending) return <Loading />
 
   return (
     <>
       <CustomContainer breadCrumbs>
         <StockForm
           title="Editar stock"
-          stock={stocks.find((x) => x.id === id)}
-          onSubmitStock={function (stock: IStock): void {
-            updateStock(stock.id, stock);
-            toast.success("Se edito el stock correctamente");
-            navigate(-1);
-          }}
+          stock={data}
+          onSubmitStock={updateStock}
           isEdit
         />
       </CustomContainer>

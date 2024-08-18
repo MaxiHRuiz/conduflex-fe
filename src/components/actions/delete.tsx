@@ -4,9 +4,14 @@ import { IActionsButtonProps } from "./IActionsProps";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 import { useTodo } from "context/TodoContext";
 import { toast } from "react-toastify";
+import { useDeleteProduct } from "services/hooks/useDeleteProduct";
+import { useDeleteStockById } from "services/hooks/useDeleteStockById";
 
-function Delete({ buttonType, productId = "", formType }: IActionsButtonProps) {
-  const { deleteProduct, deleteStock, deleteOrder } = useTodo();
+function Delete({ buttonType, productId = "", stockId = "", formType }: IActionsButtonProps) {
+  const { deleteOrder } = useTodo();
+  const { mutateAsync: deleteProduct, isPending } = useDeleteProduct();
+  const { mutateAsync: deleteStock, isPending: isPendingStock } = useDeleteStockById(productId)
+
   const label = "Eliminar";
 
   const onHandleClick = () => {
@@ -14,7 +19,7 @@ function Delete({ buttonType, productId = "", formType }: IActionsButtonProps) {
       deleteProduct(productId);
     }
     if (formType === "stock") {
-      deleteStock(productId);
+      deleteStock(stockId);
     }
     if (formType === "order") deleteOrder(productId);
     toast.success("Se elimino correctamente");
@@ -24,6 +29,7 @@ function Delete({ buttonType, productId = "", formType }: IActionsButtonProps) {
     return (
       <Tooltip title={label}>
         <GridActionsCellItem
+          disabled={isPending || isPendingStock}
           icon={<DeleteIcon />}
           label={label}
           onClick={onHandleClick}
@@ -33,7 +39,7 @@ function Delete({ buttonType, productId = "", formType }: IActionsButtonProps) {
   }
 
   if (buttonType === "menuItem") {
-    <MenuItem>
+    <MenuItem disabled={isPending || isPendingStock}>
       <ListItemIcon onClick={onHandleClick}>
         <DeleteIcon />
       </ListItemIcon>
@@ -43,7 +49,11 @@ function Delete({ buttonType, productId = "", formType }: IActionsButtonProps) {
 
   return (
     <Tooltip title={label}>
-      <IconButton color="secondary" onClick={onHandleClick}>
+      <IconButton
+        color="secondary"
+        onClick={onHandleClick}
+        disabled={isPending || isPendingStock}
+      >
         <DeleteIcon />
       </IconButton>
     </Tooltip>

@@ -1,4 +1,4 @@
-import { IStock } from "dtos/stock.dto";
+import { IStock } from "types/stock"
 
 export interface IStockFormProps {
     isEdit?: boolean

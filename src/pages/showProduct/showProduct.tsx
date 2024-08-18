@@ -8,6 +8,7 @@ import { GridPaginationModel } from "@mui/x-data-grid";
 import React, { useEffect } from "react";
 import Loading from "components/Loading";
 import { useGetStocksByProductId } from "services/hooks/useGetStocksByProductId";
+import { useDeleteProduct } from "services/hooks/useDeleteProduct";
 
 const ShowProduct = () => {
   const { productId = "" } = useParams();

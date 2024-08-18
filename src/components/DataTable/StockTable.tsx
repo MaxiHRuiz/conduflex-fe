@@ -13,7 +13,7 @@ import { esES } from "@mui/x-data-grid/locales";
 import { IStock } from "types/stock";
 import Show from "../actions/show";
 import QR from "components/actions/QR";
-import { BASE_URL } from "lib/constanst";
+import { REACT_APP_BASE_URL } from "lib/constanst";
 
 const formType = "stock";
 

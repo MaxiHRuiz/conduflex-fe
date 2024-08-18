@@ -4,11 +4,11 @@ import { IStock } from "dtos/stock.dto";
 import { IOrder } from "dtos/order.dto";
 import { IProduct } from "types/product";
 
-const products: Array<IProduct> = [
- 
-];
+// const products: Array<IProduct> = [
 
-const stocks: Array<IStock> = [];
+// ];
+
+// const stocks: Array<IStock> = [];
 
 const orders: Array<IOrder> = [
   {
@@ -95,26 +95,26 @@ const defaultValues: TodoContextType = {
   setTableChecked: function (value: boolean): void {
     throw new Error("Function not implemented.");
   },
-  products: [],
-  saveProduct: function (product: IProduct): void {
-    throw new Error("Function not implemented.");
-  },
-  updateProduct: function (codigo: string, product: IProduct): void {
-    throw new Error("Function not implemented.");
-  },
-  deleteProduct: function (codigo: string): void {
-    throw new Error("Function not implemented.");
-  },
-  stocks: [],
-  saveStock: function (stock: IStock): void {
-    throw new Error("Function not implemented.");
-  },
-  updateStock: function (id: string, stock: IStock): void {
-    throw new Error("Function not implemented.");
-  },
-  deleteStock: function (id: string): void {
-    throw new Error("Function not implemented.");
-  },
+  // products: [],
+  // saveProduct: function (product: IProduct): void {
+  //   throw new Error("Function not implemented.");
+  // },
+  // updateProduct: function (codigo: string, product: IProduct): void {
+  //   throw new Error("Function not implemented.");
+  // },
+  // deleteProduct: function (codigo: string): void {
+  //   throw new Error("Function not implemented.");
+  // },
+  // stocks: [],
+  // saveStock: function (stock: IStock): void {
+  //   throw new Error("Function not implemented.");
+  // },
+  // updateStock: function (id: string, stock: IStock): void {
+  //   throw new Error("Function not implemented.");
+  // },
+  // deleteStock: function (id: string): void {
+  //   throw new Error("Function not implemented.");
+  // },
   orders: [],
   saveOrder: function (order: IOrder): void {
     throw new Error("Function not implemented.");
@@ -134,14 +134,14 @@ function getInitialStateTableChecked() {
   return tableCheckedLS ? JSON.parse(tableCheckedLS) : false;
 }
 
-function getInitialState() {
-  const productsLS = localStorage.getItem("products");
-  return productsLS ? JSON.parse(productsLS) : products;
-}
-function getInitialStateStock() {
-  const stocksLS = localStorage.getItem("stocks");
-  return stocksLS ? JSON.parse(stocksLS) : stocks;
-}
+// function getInitialState() {
+//   const productsLS = localStorage.getItem("products");
+//   return productsLS ? JSON.parse(productsLS) : products;
+// }
+// function getInitialStateStock() {
+//   const stocksLS = localStorage.getItem("stocks");
+//   return stocksLS ? JSON.parse(stocksLS) : stocks;
+// }
 
 function getInitialStateOrder() {
   const ordersLS = localStorage.getItem("orders");
@@ -151,65 +151,67 @@ function getInitialStateOrder() {
 const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [tableChecked, setTableChecked] = React.useState<boolean>(getInitialStateTableChecked);
-  const [products, setProducts] =
-    React.useState<Array<IProduct>>(getInitialState);
-  const [stocks, setStocks] =
-    React.useState<Array<IStock>>(getInitialStateStock);
+  const [tableChecked, setTableChecked] = React.useState<boolean>(
+    getInitialStateTableChecked
+  );
+  // const [products, setProducts] =
+  //   React.useState<Array<IProduct>>(getInitialState);
+  // const [stocks, setStocks] =
+  //   React.useState<Array<IStock>>(getInitialStateStock);
   const [orders, setOrders] =
     React.useState<Array<IOrder>>(getInitialStateOrder);
-
-  useEffect(() => {
-    localStorage.setItem("products", JSON.stringify(products));
-  }, [products]);
 
   useEffect(() => {
     localStorage.setItem("productTable", JSON.stringify(tableChecked));
   }, [tableChecked]);
 
-  useEffect(() => {
-    localStorage.setItem("stocks", JSON.stringify(stocks));
-  }, [stocks]);
+  // useEffect(() => {
+  //   localStorage.setItem("products", JSON.stringify(products));
+  // }, [products]);
+
+  // useEffect(() => {
+  //   localStorage.setItem("stocks", JSON.stringify(stocks));
+  // }, [stocks]);
 
   useEffect(() => {
     localStorage.setItem("orders", JSON.stringify(orders));
   }, [orders]);
 
-  const saveProduct = (newProduct: IProduct) => {
-    setProducts([...products, newProduct]);
-  };
-  const updateProduct = (codigo: string, newProduct: IProduct) => {
-    const newProducts = products.map((product: IProduct) => {
-      if (product.id === codigo) {
-        return newProduct;
-      }
-      return product;
-    });
+  // const saveProduct = (newProduct: IProduct) => {
+  //   setProducts([...products, newProduct]);
+  // };
+  // const updateProduct = (codigo: string, newProduct: IProduct) => {
+  //   const newProducts = products.map((product: IProduct) => {
+  //     if (product.id === codigo) {
+  //       return newProduct;
+  //     }
+  //     return product;
+  //   });
 
-    setProducts([...newProducts]);
-  };
-  const deleteProduct = (codigo: string) => {
-    setProducts(
-      products.filter((product: IProduct) => product.id !== codigo)
-    );
-  };
+  //   setProducts([...newProducts]);
+  // };
+  // const deleteProduct = (codigo: string) => {
+  //   setProducts(
+  //     products.filter((product: IProduct) => product.id !== codigo)
+  //   );
+  // };
 
-  const saveStock = (newStock: IStock) => {
-    setStocks([...stocks, newStock]);
-  };
-  const updateStock = (id: string, newStock: IStock) => {
-    const newStocks = stocks.map((stock: IStock) => {
-      if (stock.id === id) {
-        return newStock;
-      }
-      return stock;
-    });
+  // const saveStock = (newStock: IStock) => {
+  //   setStocks([...stocks, newStock]);
+  // };
+  // const updateStock = (id: string, newStock: IStock) => {
+  //   const newStocks = stocks.map((stock: IStock) => {
+  //     if (stock.id === id) {
+  //       return newStock;
+  //     }
+  //     return stock;
+  //   });
 
-    setStocks([...newStocks]);
-  };
-  const deleteStock = (id: string) => {
-    setStocks(stocks.filter((stock: IStock) => stock.id !== id));
-  };
+  //   setStocks([...newStocks]);
+  // };
+  // const deleteStock = (id: string) => {
+  //   setStocks(stocks.filter((stock: IStock) => stock.id !== id));
+  // };
 
   const saveOrder = (newOrder: IOrder) => {
     setOrders([...orders, newOrder]);
@@ -232,19 +234,19 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     <TodoContext.Provider
       value={{
         tableChecked,
-        products,
-        stocks,
+        // products,
+        // stocks,
         orders,
-        saveProduct,
-        updateProduct,
-        deleteProduct,
+        // saveProduct,
+        // updateProduct,
+        // deleteProduct,
         saveOrder,
         updateOrder,
         deleteOrder,
         setTableChecked,
-        saveStock,
-        updateStock,
-        deleteStock,
+        // saveStock,
+        // updateStock,
+        // deleteStock,
       }}
     >
       {children}

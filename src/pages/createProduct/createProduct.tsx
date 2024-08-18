@@ -1,26 +1,32 @@
-import { Button } from "@mui/material";
+import { Typography } from "@mui/material";
 import CustomContainer from "components/customContainer/CustomContainer";
+import Loading from "components/Loading";
 import { ProductForm } from "components/product/ProductForm";
-import { useTodo } from "context/TodoContext";
-import { useNavigate } from "react-router-dom";
-import { Bounce, toast, ToastContainer } from "react-toastify";
+import { useCreateProduct } from "services/hooks/useCreateProduct";
 import { IProduct } from "types/product";
 
 const CreateProduct = () => {
-  const { saveProduct } = useTodo();
-  const navigate = useNavigate();
+  const { mutateAsync: saveProduct, isPending, isError } = useCreateProduct();
 
-  return (
-    <CustomContainer breadCrumbs>
+  const createProductContent = () => {
+    if (isError) return <Typography>Hubo un error al cargar el formulario de creación</Typography>
+
+    if (isPending) {
+      return <Loading />;
+    }
+
+    return (
       <ProductForm
         title="Agregar nuevo producto"
         onSubmitProduct={function (product: IProduct): void {
           saveProduct(product);
-          toast.success("Se creo el producto correctamente");
-          navigate("/");
         }}
       />
-    </CustomContainer>
+    );
+  };
+
+  return (
+    <CustomContainer breadCrumbs>{createProductContent()}</CustomContainer>
   );
 };
 

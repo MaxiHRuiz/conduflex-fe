@@ -4,10 +4,11 @@ import {
   FormControlLabel,
   Switch,
   Button,
+  TextField,
 } from "@mui/material";
 import CustomContainer from "../../components/customContainer/CustomContainer";
 import CustomCard from "../../components/customCard/customCard";
-import { SyntheticEvent, useEffect } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTodo } from "context/TodoContext";
 import DataTable from "components/DataTable/DataTable";
@@ -16,21 +17,26 @@ import React from "react";
 import { useGetProducts } from "services/hooks/useGetProducts";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import Loading from "components/Loading";
+import { debounce } from "ts-debounce";
 
 export const Products = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [page, setPage] = React.useState(0);
   const navigate = useNavigate();
   const { tableChecked, setTableChecked } = useTodo();
+  const [id, setId] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
 
   const { data, isFetching, refetch } = useGetProducts({
     offset: page * rowsPerPage,
     limit: rowsPerPage,
+    id,
+    description,
   });
 
-  useEffect(() => {
-    refetch();
-  }, [page, rowsPerPage]);
+  // useEffect(() => {
+  //   refetch();
+  // }, [page, rowsPerPage]);
 
   const onChangePage = (page: number) => {
     setPage(page);
@@ -49,6 +55,14 @@ export const Products = () => {
       setRowsPerPage(pagination.pageSize);
   };
 
+  const onChangeIdSearch = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setId(e.target.value)
+  }
+
+  const onChangeDescriptionSearch = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setDescription(e.target.value)
+  }
+
   const handleChange = (
     event: SyntheticEvent<Element, Event>,
     checked: boolean
@@ -57,10 +71,7 @@ export const Products = () => {
   };
 
   const dataSection = () => {
-    if (isFetching && !tableChecked)
-      return (
-        <Loading />
-      );
+    if (isFetching && !tableChecked) return <Loading />;
 
     if (tableChecked) {
       return (
@@ -103,7 +114,7 @@ export const Products = () => {
             flexDirection: "row",
           }}
         >
-          <Box sx={{ width: "100%" }}>
+          <Box sx={{ width: "100%", display: 'flex', flexDirection: 'row', gap: 1, flexWrap: 'wrap'}}>
             <FormControlLabel
               control={
                 <Switch
@@ -114,6 +125,18 @@ export const Products = () => {
                 />
               }
               label="Cambiar tabla"
+            />
+            <TextField
+              value={id}
+              onChange={onChangeIdSearch}
+              size="small"
+              label="Código"
+            />
+            <TextField
+              value={description}
+              onChange={onChangeDescriptionSearch}
+              size="small"
+              label="Descripcion"
             />
           </Box>
 
@@ -130,7 +153,8 @@ export const Products = () => {
         </Box>
       </Box>
       {dataSection()}
-      {!tableChecked && <Box
+      {!tableChecked && (
+        <Box
           sx={{
             width: "100%",
             py: 1,
@@ -145,7 +169,8 @@ export const Products = () => {
             setPage={onChangePage}
             count={data?.total ?? 0}
           />
-        </Box>}
+        </Box>
+      )}
     </CustomContainer>
   );
 };

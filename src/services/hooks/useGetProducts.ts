@@ -14,6 +14,6 @@ export const useGetProducts = (params?: IProductParams): QueryObserverResult<IBa
             const { data } = await getProducts(params);
             return data;
         },
-        queryKey: ['get-products']
+        queryKey: ['get-products', params]
     });
 };
