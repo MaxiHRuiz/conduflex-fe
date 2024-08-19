@@ -14,6 +14,6 @@ export const useGetStocks = (params?: IStockParams): QueryObserverResult<IBaseCo
             const { data } = await getStocks(params);
             return data;
         },
-        queryKey: [ 'get-stocks' ],
+        queryKey: [ 'get-stocks', params],
     });
 };

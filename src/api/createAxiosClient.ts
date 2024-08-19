@@ -11,17 +11,16 @@ interface IAxiosProps extends AxiosInstance {
 const axiosCore: IAxiosProps = axios.create({
   baseURL: REACT_APP_BASE_URL,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   },
-  // withCredentials: true,
   timeout: TIME_OUT
 })
 
 axiosCore.interceptors.request.use(async config => {
   const _config = config
-  // await supabase.auth.getSession().then(({ data: { session } }) => {
-  //   _config.headers.Authorization = `Bearer ${session?.access_token}`
-  // });
+  await supabase.auth.getSession().then(({ data: { session } }) => {
+    _config.headers.Authorization = `${session?.access_token}`
+  });
 
   return _config
 },

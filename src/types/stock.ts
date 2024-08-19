@@ -15,4 +15,8 @@ export interface IStock extends IBaseStock{
     id: string;
 }
 
-export interface IStockParams extends IBaseParams {}
+export interface IStockParams extends IBaseParams {
+    id: string,
+    estado: string
+    disponible?: boolean
+}

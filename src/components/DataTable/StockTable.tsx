@@ -6,14 +6,12 @@ import {
   GridToolbarDensitySelector,
 } from "@mui/x-data-grid";
 import Delete from "../actions/delete";
-import Add from "../actions/show";
 import Edit from "../actions/edit";
-import { IDataTableProps, IStockTableProps } from "./IDataTableProps";
+import { IDataTableProps,  } from "./IDataTableProps";
 import { esES } from "@mui/x-data-grid/locales";
 import { IStock } from "types/stock";
 import Show from "../actions/show";
 import QR from "components/actions/QR";
-import { REACT_APP_BASE_URL } from "lib/constanst";
 
 const formType = "stock";
 
@@ -56,10 +54,11 @@ const columns: GridColDef[] = [
     width: 170,
   },
   {
-    field: "id",
-    headerName: "código",
+    field: "product_id",
+    headerName: "Código",
     sortable: false,
     disableColumnMenu: true,
+    width: 180,
   },
   {
     field: "descripcion",

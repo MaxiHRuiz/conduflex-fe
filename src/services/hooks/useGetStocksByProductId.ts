@@ -14,6 +14,6 @@ export const useGetStocksByProductId = (productId: string, params?: IStockParams
             const { data } = await getStocksByProductId(productId, params);
             return { response: data } as IBaseCollection<IStock>;
         },
-        queryKey: [ 'get-stocks-by-product-id' ],
+        queryKey: [ 'get-stocks-by-product-id', params],
     });
 };

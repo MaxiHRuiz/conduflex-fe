@@ -1,18 +1,39 @@
-import { Box, Typography } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+  Typography,
+} from "@mui/material";
 import CustomContainer from "../../components/customContainer/CustomContainer";
 import StockTable from "components/DataTable/StockTable";
 import { useGetStocks } from "services/hooks/useGetStocks";
 import { Navigate } from "react-router-dom";
 import { GridPaginationModel } from "@mui/x-data-grid";
-import React, { useEffect } from "react";
-import Loading from "components/Loading";
+import React from "react";
 
 const Stocks = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [page, setPage] = React.useState(0);
-  const { data, isFetching, isError, refetch } = useGetStocks({
+  const [status, setStatus] = React.useState("disponibles");
+  const [id, setId] = React.useState("");
+
+  const handleStatusChange = (event: SelectChangeEvent) => {
+    setStatus(event.target.value as string);
+  };
+
+  const getDisponible = (status: string) =>
+    status === "todos" ? undefined : status === "disponibles" ? true : false;
+
+  const { data, isFetching, isError } = useGetStocks({
     offset: page * rowsPerPage,
-    limit: rowsPerPage
+    limit: rowsPerPage,
+    disponible: getDisponible(status),
+    estado: "",
+    id,
   });
 
   const onChangePagination = (pagination: GridPaginationModel) => {
@@ -24,11 +45,11 @@ const Stocks = () => {
       setRowsPerPage(pagination.pageSize);
   };
 
-  useEffect(() => {
-    refetch();
-  }, [page, rowsPerPage]);
-
-  if (isFetching) return <Loading />;
+  const onChangeIdSearch = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setId(e.target.value);
+  };
 
   if (isError) return <Navigate to={"/notFound"} />;
 
@@ -42,21 +63,57 @@ const Stocks = () => {
         <Typography component="h1" variant="h5" gutterBottom>
           Stocks
         </Typography>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              gap: 1,
+              flexWrap: "wrap",
+            }}
+          >
+            <TextField
+              value={id}
+              onChange={onChangeIdSearch}
+              size="small"
+              label="Código"
+            />
+          </Box>
+
+          <Box sx={{ flexShrink: 0 }}>
+            <FormControl fullWidth size="small">
+              <InputLabel id="status-select-label">Age</InputLabel>
+              <Select
+                labelId="status-select-label"
+                id="status-select"
+                value={status}
+                label="Age"
+                onChange={handleStatusChange}
+              >
+                <MenuItem value="todos">Todos</MenuItem>
+                <MenuItem value="disponibles">Disponibles</MenuItem>
+                <MenuItem value="no_disponibles">No disponibles</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </Box>
       </Box>
-      {data && (
-        <StockTable
-          isLoading={isFetching}
-          data={data.response}
-          pagination={
-            {
-              page,
-              pageSize: rowsPerPage
-            }
-          }
-          count={data.total}
-          onChangePagination={onChangePagination}
-        />
-      )}
+      <StockTable
+        isLoading={isFetching}
+        data={data?.response ?? []}
+        pagination={{
+          page,
+          pageSize: rowsPerPage,
+        }}
+        count={data?.total || 0}
+        onChangePagination={onChangePagination}
+      />
     </CustomContainer>
   );
 };

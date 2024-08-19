@@ -23,7 +23,10 @@ const ShowProduct = () => {
     refetch,
   } = useGetStocksByProductId(productId, {
     offset: page * rowsPerPage,
-    limit: rowsPerPage
+    limit: rowsPerPage,
+    disponible: true,
+    id: "",
+    estado: "",
   });
 
   const onChangePagination = (pagination: GridPaginationModel) => {
@@ -40,23 +43,24 @@ const ShowProduct = () => {
   }, [page, rowsPerPage]);
 
   const getStockDetails = () => {
-    if (isErrorStocks) return <Typography>Error al cargar stocks</Typography>
+    if (isErrorStocks) return <Typography>Error al cargar stocks</Typography>;
 
-    if (stocks && stocks.response.length === 0) return <Typography>El producto no tiene stock</Typography>
+    if (stocks && stocks.response.length === 0)
+      return <Typography>El producto no tiene stock</Typography>;
 
     return (
       <StockTable
-          isLoading={isFetchingStocks}
-          data={stocks?.response ?? []}
-          pagination={{
-            page,
-            pageSize: rowsPerPage,
-          }}
-          count={stocks?.total ?? 0}
-          onChangePagination={onChangePagination}
-        />
-    )
-  }
+        isLoading={isFetchingStocks}
+        data={stocks?.response ?? []}
+        pagination={{
+          page,
+          pageSize: rowsPerPage,
+        }}
+        count={stocks?.total ?? 0}
+        onChangePagination={onChangePagination}
+      />
+    );
+  };
 
   if (isFetching) return <Loading />;
 
