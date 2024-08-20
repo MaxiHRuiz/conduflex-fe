@@ -13,7 +13,7 @@ import logo from "../../assets/images/logo-conduflex-logo.png";
 import { LoginButton } from "./loginButton";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/Auth";
-import OrdenButton from "components/OrdenButton";
+import OrderList from "components/orderList/orderList";
 
 const pages = ["productos", "stocks", "pedidos"];
 
@@ -110,7 +110,7 @@ function ResponsiveAppBar() {
           {userSession?.user && (
             <>
               <Box sx={{ px: 1 }}>
-                <OrdenButton />
+                <OrderList />
               </Box>
 
               <Box

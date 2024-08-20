@@ -1,21 +1,18 @@
 import React from "react";
-import Add from "./show";
+import Show from "./show";
 import Delete from "./delete";
 import Edit from "./edit";
 import { ActionsProps } from "./IActionsProps";
-import { PersonAdd, Settings, Logout } from "@mui/icons-material";
 import {
   Tooltip,
   IconButton,
   Menu,
-  MenuItem,
-  ListItemIcon,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
-const Actions = ({ product_id }: ActionsProps) => {
+const Actions = ({ product_id, hiddenShowAction }: ActionsProps) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
@@ -52,7 +49,7 @@ const Actions = ({ product_id }: ActionsProps) => {
           transformOrigin={{ horizontal: "right", vertical: "top" }}
           anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
         >
-          <Add buttonType="menuItem" productId={product_id} formType="product" />
+          {!hiddenShowAction && <Show buttonType="menuItem" productId={product_id} formType="product" />}
           <Edit buttonType="menuItem" productId={product_id} formType="product" />
           <Delete buttonType="menuItem" productId={product_id} formType="product" />
         </Menu>
@@ -61,7 +58,7 @@ const Actions = ({ product_id }: ActionsProps) => {
   }
   return (
     <div>
-      <Add productId={product_id} formType="product" />
+      {!hiddenShowAction && <Show productId={product_id} formType="product" />}
       <Edit productId={product_id} formType="product" />
       <Delete productId={product_id} formType="product" />
     </div>

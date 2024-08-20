@@ -7,7 +7,7 @@ import {
 } from "@mui/x-data-grid";
 import Delete from "../actions/delete";
 import Edit from "../actions/edit";
-import { IDataTableProps,  } from "./IDataTableProps";
+import { IDataTableProps } from "./IDataTableProps";
 import { esES } from "@mui/x-data-grid/locales";
 import { IStock } from "types/stock";
 import Show from "../actions/show";
@@ -115,6 +115,7 @@ export default function StockTable({
 
   return (
     <DataGrid
+      autoHeight
       rows={stocks}
       columns={columns}
       rowCount={count}

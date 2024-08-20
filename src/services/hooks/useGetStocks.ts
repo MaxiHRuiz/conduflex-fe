@@ -1,4 +1,4 @@
-import { QueryObserverResult, useQuery } from '@tanstack/react-query';
+import { keepPreviousData, QueryObserverResult, useQuery } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import axiosCore from 'api/createAxiosClient';
 import { IStock, IStockParams } from 'types/stock';
@@ -15,5 +15,6 @@ export const useGetStocks = (params?: IStockParams): QueryObserverResult<IBaseCo
             return data;
         },
         queryKey: [ 'get-stocks', params],
+        placeholderData: keepPreviousData
     });
 };

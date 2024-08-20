@@ -2,7 +2,7 @@ import { IProduct } from "types/product";
 
 export interface ICustomCardProps {
     product: IProduct;
-    hiddenActions?: boolean
+    hiddenShowAction?: boolean
 }
 
 export interface ICustomCardTableProps {

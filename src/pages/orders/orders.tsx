@@ -4,13 +4,13 @@ import { useTodo } from "context/TodoContext";
 import { Typography } from "@mui/material";
 
 const Orders = () => {
-  const { orders } = useTodo();
+  // const { orders } = useTodo();
   return (
     <CustomContainer>
       <Typography component="h1" variant="h5" gutterBottom>
         Pedidos
       </Typography>
-      <OrderTable order={orders} />
+      {/* <OrderTable order={orders} /> */}
     </CustomContainer>
   );
 };

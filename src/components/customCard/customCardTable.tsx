@@ -282,6 +282,7 @@ declare module '@mui/x-data-grid' {
 
     return (
         <DataGrid sx={{mt: 1}}
+          autoHeight
           rows={[product]}
           columns={columns}
           hideFooter

@@ -8,12 +8,12 @@ import Status from "components/Status";
 import SubStatus from "components/SubStatus";
 
 const ShowOrders = () => {
-  const { orders } = useTodo();
+  // const { orders } = useTodo();
   const { id } = useParams();
   const [order, setOrder] = useState<IOrder | undefined>();
-  useEffect(() => {
-    setOrder(orders.find((x) => x.id === id));
-  }, [id]);
+  // useEffect(() => {
+  //   setOrder(orders.find((x) => x.id === id));
+  // }, [id]);
 
   if (!order) return <></>;
 

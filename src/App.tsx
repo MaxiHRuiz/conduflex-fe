@@ -3,7 +3,7 @@ import ResponsiveAppBar from "./components/appBar/appBar";
 import AppRoutes from "./routes/routes";
 import { BrowserRouter as Router } from "react-router-dom";
 import { AuthProvider } from "./context/Auth";
-import { amber, grey } from "@mui/material/colors";
+import { amber, grey, yellow } from "@mui/material/colors";
 import { createTheme, ThemeProvider } from "@mui/material";
 import TodoProvider from "./context/TodoContext";
 import { ToastContainer, Bounce } from "react-toastify";
@@ -17,10 +17,10 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: amber[500],
+      main: yellow[700],
     },
     secondary: {
-      main: grey[700],
+      main: grey[600],
     },
   },
 });

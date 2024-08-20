@@ -7,6 +7,7 @@ import {
   useTheme,
   Accordion,
   styled,
+  Grid,
 } from "@mui/material";
 import Actions from "../actions/actions";
 import { capitalizeFirstLetter } from "../../utils/helpers";
@@ -14,8 +15,9 @@ import { ICustomCardProps } from "./ICustomCardProps";
 import CustomCardTable from "./customCardTable";
 import Stock from "components/Stock";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import OrderForm from "./orderForm";
 
-const CustomCard = ({ product, hiddenActions}: ICustomCardProps) => {
+const CustomCard = ({ product, hiddenShowAction }: ICustomCardProps) => {
   const theme = useTheme();
 
   const formatCurrency = (value: number) => {
@@ -53,33 +55,51 @@ const CustomCard = ({ product, hiddenActions}: ICustomCardProps) => {
             px: 2,
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-              pt: 1,
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                gap: 1,
-              }}
-            >
-              <Typography component="h2" variant="h6">{`${
-                product.id
-              } - ${capitalizeFirstLetter(product.descripcion)}`}</Typography>
-              <Stock inStock={product.hay_stock} />
-            </Box>
-            {!hiddenActions && <Actions product_id={product.id} />}
-          </Box>
-          <Typography component="h2" variant="h4" gutterBottom>
-            {formatCurrency(product.precio)}
-          </Typography>
+          <Grid container spacing={1}>
+            <Grid md={8}>
+              <>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    px: 2,
+                    pt: 2,
+                  }}
+                >
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 1,
+                    }}
+                  >
+                    <Typography component="h2" variant="h6">{`${
+                      product.id
+                    } - ${capitalizeFirstLetter(
+                      product.descripcion
+                    )}`}</Typography>
+                    <Stock inStock={product.hay_stock} />
+                  </Box>
+                  <Actions hiddenShowAction={hiddenShowAction} product_id={product.id} />
+                </Box>
+                <Typography
+                  sx={{ px: 2 }}
+                  component="h2"
+                  variant="h4"
+                  gutterBottom
+                >
+                  {formatCurrency(product.precio)}
+                </Typography>
+              </>
+            </Grid>
+            <Grid md={4}>
+              <OrderForm product={product} />
+            </Grid>
+          </Grid>
+
           <AccordionCustom elevation={0}>
             <AccordionSummaryCustom expandIcon={<ExpandMoreIcon />}>
               Detalles

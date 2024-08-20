@@ -1,5 +1,4 @@
-import axios, { Axios, AxiosInstance } from "axios";
-import { useAuth } from "context/Auth";
+import axios, { AxiosInstance } from "axios";
 import { supabase } from "lib/api";
 import { REACT_APP_BASE_URL } from "lib/constanst";
 

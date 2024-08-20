@@ -72,6 +72,7 @@ export default function OrderTable({ order }: IOrderTableProps) {
 
   return (
     <DataGrid
+      autoHeight
       rows={order}
       columns={columns}
       rowCount={order.length}

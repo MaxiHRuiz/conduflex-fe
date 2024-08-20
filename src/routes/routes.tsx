@@ -12,6 +12,7 @@ import EditStock from "pages/editStock/editStock"
 import Stocks from "pages/stocks/stocks"
 import ShowOrders from "pages/showOrders/showOrders"
 import StockDetails from "pages/stockDetails/stockDetails"
+import NewOrder from "pages/newOrder/newOrder"
 
 function AppRoutes() {
   return (
@@ -28,6 +29,7 @@ function AppRoutes() {
         <Route path="/productos/:productId" element={<ShowProduct />} />
         <Route path="/productos" element={<Products />} />
         {/* <Route path="/stocks/:id" element={<Navigate to={'/stocks'} />} /> */}
+        <Route path="/pedidos/nuevo" element={<NewOrder />} />
         <Route path="/pedidos/:id" element={<ShowOrders />} />
         <Route path="/pedidos" element={<Orders />} />
         <Route path='*' element={<NotFound />} />

@@ -34,10 +34,6 @@ export const Products = () => {
     description,
   });
 
-  // useEffect(() => {
-  //   refetch();
-  // }, [page, rowsPerPage]);
-
   const onChangePage = (page: number) => {
     setPage(page);
   };
@@ -131,12 +127,14 @@ export const Products = () => {
               onChange={onChangeIdSearch}
               size="small"
               label="Código"
+              color="secondary"
             />
             <TextField
               value={description}
               onChange={onChangeDescriptionSearch}
               size="small"
               label="Descripcion"
+              color="secondary"
             />
           </Box>
 

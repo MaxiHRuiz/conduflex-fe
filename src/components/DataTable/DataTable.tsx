@@ -56,11 +56,11 @@ const columns: GridColDef[] = [
     sortable: false,
     disableColumnMenu: true,
     renderCell: (props) => {
-      return new Intl.NumberFormat('es-AR', {
-        style: 'currency',
-        currency: 'ARS',
-      }).format(props.row.precio)
-    }
+      return new Intl.NumberFormat("es-AR", {
+        style: "currency",
+        currency: "ARS",
+      }).format(props.row.precio);
+    },
   },
   {
     field: "hay_stock",
@@ -325,7 +325,13 @@ const columns: GridColDef[] = [
   },
 ];
 
-export default function DataTable({ data: product, isLoading, pagination, count, onChangePagination }: IDataTableProps<IProduct>) {
+export default function DataTable({
+  data: product,
+  isLoading,
+  pagination,
+  count,
+  onChangePagination,
+}: IDataTableProps<IProduct>) {
   function CustomToolbar() {
     return (
       <GridToolbarContainer>
@@ -343,10 +349,10 @@ export default function DataTable({ data: product, isLoading, pagination, count,
     );
   }
 
-
   return (
     <div style={{ height: 400, width: "100%" }}>
       <DataGrid
+        autoHeight
         rows={product}
         columns={columns}
         rowCount={count}
@@ -364,7 +370,7 @@ export default function DataTable({ data: product, isLoading, pagination, count,
           toolbar: CustomToolbar,
         }}
         initialState={{
-          density: "compact"
+          density: "compact",
         }}
         pageSizeOptions={[10, 25, 30]}
         paginationMode="server"

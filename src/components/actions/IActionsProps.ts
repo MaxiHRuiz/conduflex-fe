@@ -1,5 +1,6 @@
 export interface ActionsProps {
     product_id: string
+    hiddenShowAction?: boolean
 }
 
 type ButtonType = 'menuItem' | 'icon' | 'gridAction'

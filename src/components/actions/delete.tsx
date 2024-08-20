@@ -17,12 +17,15 @@ function Delete({ buttonType, productId = "", stockId = "", formType }: IActions
   const onHandleClick = () => {
     if (formType === "product") {
       deleteProduct(productId);
+      return
     }
     if (formType === "stock") {
       deleteStock(stockId);
+      return
     }
-    if (formType === "order") deleteOrder(productId);
-    toast.success("Se elimino correctamente");
+    if (formType === "order") {
+      // deleteOrder(productId)
+    };
   };
 
   if (buttonType === "gridAction") {
