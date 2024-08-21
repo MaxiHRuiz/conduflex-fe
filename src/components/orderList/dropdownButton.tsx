@@ -31,9 +31,13 @@ const DropdownButton: React.FC = () => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () => 
     setAnchorEl(null);
-  };
+
+  const handleItemClick = () =>{
+    handleClose()
+    navigate('/pedidos/nuevo')
+  }
 
   return (
     <div>
@@ -64,7 +68,7 @@ const DropdownButton: React.FC = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={() => navigate('/pedidos/nuevo')}>
+        <MenuItem onClick={handleItemClick}>
           <OrderListContent order={order} />
         </MenuItem>
       </Menu>

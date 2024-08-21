@@ -13,6 +13,6 @@ export const useGetOrderById = (orderId: string): QueryObserverResult<IOrder, an
             const { data } = await getOrderById(orderId);
             return data;
         },
-        queryKey: [ 'get-order-by-id' ],
+        queryKey: [ 'get-order-by-id', orderId],
     });
 };

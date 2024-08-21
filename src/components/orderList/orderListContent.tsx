@@ -1,7 +1,8 @@
 import { Box, Typography } from "@mui/material";
 import { useAuth } from "context/Auth";
-import React from "react";
+import React, { useCallback } from "react";
 import { IOrder } from "types/order";
+import { formatCurrency } from "utils/helpers";
 
 interface OrderListProps {
   order: IOrder;
@@ -9,6 +10,9 @@ interface OrderListProps {
 
 const OrderListContent: React.FC<OrderListProps> = ({ order }) => {
   const { userSession } = useAuth();
+
+  const total = useCallback(() => formatCurrency(order.product_stock.map(product => product.precio).reduce((a, b) =>a + b, 0))
+  , [order.product_stock])
 
   const getListContent = () => {
     if (!order.product_stock.length) {
@@ -25,10 +29,13 @@ const OrderListContent: React.FC<OrderListProps> = ({ order }) => {
         </Typography>
         <ul>
           {order.product_stock.map((product) => (
-            <li key={product.id}>
+            <li key={product.idProductStock}>
               <span>{`${product.product_id} - ${product.descripcion}: ${product.cantidad_metros} mts.`}</span>
             </li>
           ))}
+          <Typography noWrap gutterBottom fontWeight="bold">
+          {`Total: ${total()}`}
+        </Typography>
         </ul>
       </>
     );

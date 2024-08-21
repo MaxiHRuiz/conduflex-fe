@@ -10,7 +10,7 @@ import {
   Grid,
 } from "@mui/material";
 import Actions from "../actions/actions";
-import { capitalizeFirstLetter } from "../../utils/helpers";
+import { capitalizeFirstLetter, formatCurrency } from "../../utils/helpers";
 import { ICustomCardProps } from "./ICustomCardProps";
 import CustomCardTable from "./customCardTable";
 import Stock from "components/Stock";
@@ -19,13 +19,6 @@ import OrderForm from "./orderForm";
 
 const CustomCard = ({ product, hiddenShowAction }: ICustomCardProps) => {
   const theme = useTheme();
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("es-AR", {
-      style: "currency",
-      currency: "ARS",
-    }).format(value);
-  };
 
   return (
     <>

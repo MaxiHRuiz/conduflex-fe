@@ -3,6 +3,7 @@ import { AxiosResponse } from 'axios';
 import axiosCore from 'api/createAxiosClient';
 import { IBaseProduct, IProduct } from 'types/product';
 import { toast } from 'react-toastify';
+import { onError } from 'utils/helpers';
 
 const updateProduct = async (productId: string, product: IBaseProduct): Promise<AxiosResponse<IProduct, any>> => {
     return await axiosCore.patch<IProduct>(`/product/${productId}`, product);
@@ -15,6 +16,7 @@ export const useUpdateProduct = (productId: string): UseMutationResult<AxiosResp
         onSuccess: () => {
             toast.success("El producto se actualizo correctamente correctamente");
         },
+        onError
     })
 };
 

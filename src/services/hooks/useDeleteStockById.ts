@@ -3,6 +3,7 @@ import axiosCore from "api/createAxiosClient";
 import { AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 import { IStock } from "types/stock";
+import { onError } from "utils/helpers";
 
 
 const deleteStockById = async (productId: string, stockId: string): Promise<AxiosResponse<IStock, any>> => {
@@ -19,5 +20,6 @@ export const useDeleteStockById = (productId: string): UseMutationResult<AxiosRe
             toast.success("Se elimino correctamente");
             queryClient.invalidateQueries({queryKey: ['get-stocks']})
         },
+        onError
     })
 }

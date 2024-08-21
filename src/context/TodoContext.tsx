@@ -73,7 +73,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateOrderProduct = (updateProduct: IProductStock) => {
     const product_stock = order.product_stock.map((product: IProductStock) => {
-      if (product.id === updateProduct.id) {
+      if (product.idProductStock === updateProduct.idProductStock) {
         return updateProduct;
       }
       return product;
@@ -86,7 +86,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     setOrder({
       ...order,
       product_stock: order.product_stock.filter(
-        (product: IProductStock) => product.id !== id
+        (product: IProductStock) => product.idProductStock !== id
       ),
     });
 

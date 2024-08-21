@@ -1,12 +1,13 @@
 import { IBaseParams } from "./base";
 
 export interface IProductStock {
-    id: number
+    idProductStock: number
     product_id: string;
     descripcion: string;
     cantidad_metros: number;
     es_fraccionable: boolean;
     detalle: string;
+    precio: number
 }
 
 export interface IBaseOrder {

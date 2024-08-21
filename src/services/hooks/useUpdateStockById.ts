@@ -3,6 +3,7 @@ import { AxiosResponse } from 'axios';
 import axiosCore from 'api/createAxiosClient';
 import { IBaseStock, IStock } from 'types/stock';
 import { toast } from 'react-toastify';
+import { onError } from 'utils/helpers';
 
 const updateStockById = async (productId: string, stockId: string, stock: IBaseStock): Promise<AxiosResponse<IStock, any>> => {
     return await axiosCore.patch<IStock>(`/product/${productId}/stock/${stockId}`, stock);
@@ -15,6 +16,7 @@ export const useUpdateStockById = (productId: string, stockId: string): UseMutat
         onSuccess: () => {
             toast.success("El producto se actualizo correctamente correctamente");
         },
+        onError
     })
 };
 

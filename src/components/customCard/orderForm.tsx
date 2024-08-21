@@ -91,12 +91,13 @@ const OrderForm = ({ product }: IOrderFromProps) => {
 
   const generateOrder = () => {
     const newProduct: IProductStock = {
-      id: order.product_stock.length + 1,
+      idProductStock: order.product_stock.length + 1,
       product_id: product.id,
       descripcion: product.descripcion,
       cantidad_metros: Number(values.meters),
       es_fraccionable: values.isFractionate,
       detalle: values.details,
+      precio: product.precio
     };
 
     if (order.vendor) {

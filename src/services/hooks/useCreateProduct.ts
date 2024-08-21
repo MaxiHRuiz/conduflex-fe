@@ -4,6 +4,7 @@ import axiosCore from 'api/createAxiosClient';
 import { IProduct } from 'types/product';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { onError } from 'utils/helpers';
 
 const createProduct = async (product: IProduct): Promise<AxiosResponse<IProduct, any>> => {
     return await axiosCore.post<IProduct>(`/product`, product);
@@ -19,5 +20,6 @@ export const useCreateProduct = (): UseMutationResult<AxiosResponse<IProduct, an
             toast.success("Se creo el producto correctamente");
             navigate("/");
         },
+        onError
     })
 }
