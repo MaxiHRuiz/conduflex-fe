@@ -10,7 +10,7 @@ import EditProduct from "pages/editProduct/editProduct"
 import CreateStock from "pages/createStock/createStock"
 import EditStock from "pages/editStock/editStock"
 import Stocks from "pages/stocks/stocks"
-import ShowOrders from "pages/showOrders/showOrders"
+import ShowOrders from "pages/showOrder/showOrder"
 import StockDetails from "pages/stockDetails/stockDetails"
 import NewOrder from "pages/newOrder/newOrder"
 
@@ -30,7 +30,7 @@ function AppRoutes() {
         <Route path="/productos" element={<Products />} />
         {/* <Route path="/stocks/:id" element={<Navigate to={'/stocks'} />} /> */}
         <Route path="/pedidos/nuevo" element={<NewOrder />} />
-        <Route path="/pedidos/:id" element={<ShowOrders />} />
+        <Route path="/pedidos/:orderId" element={<ShowOrders />} />
         <Route path="/pedidos" element={<Orders />} />
         <Route path='*' element={<NotFound />} />
       </Route>

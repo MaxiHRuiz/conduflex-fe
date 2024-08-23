@@ -52,7 +52,7 @@ const columns: GridColDef[] = [
   },
   {
     field: "precio",
-    headerName: "Precio",
+    headerName: "Precio x m.",
     sortable: false,
     disableColumnMenu: true,
     renderCell: (props) => {

@@ -5,43 +5,14 @@ import {
   Checkbox,
   Button,
 } from "@mui/material";
+import NumericFormatCustom from "components/NumericFormatCustom";
 import { useAuth } from "context/Auth";
 import { useTodo } from "context/TodoContext";
 import React, { SyntheticEvent } from "react";
-import { NumericFormat, NumericFormatProps } from "react-number-format";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { IProductStock } from "types/order";
 import { IProduct } from "types/product";
-
-interface CustomProps {
-  onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string;
-}
-
-const NumericFormatCustom = React.forwardRef<NumericFormatProps, CustomProps>(
-  function NumericFormatCustom(props, ref) {
-    const { onChange, ...other } = props;
-
-    return (
-      <NumericFormat
-        {...other}
-        getInputRef={ref}
-        onValueChange={(values) => {
-          onChange({
-            target: {
-              name: props.name,
-              value: values.value,
-            },
-          });
-        }}
-        thousandSeparator="."
-        decimalSeparator=","
-        valueIsNumericString
-      />
-    );
-  }
-);
 
 interface IOrderFromValues {
   isFractionate: boolean;
@@ -91,24 +62,28 @@ const OrderForm = ({ product }: IOrderFromProps) => {
 
   const generateOrder = () => {
     const newProduct: IProductStock = {
-      idProductStock: order.product_stock.length + 1,
+      id: order.product_stock.length + 1,
       product_id: product.id,
       descripcion: product.descripcion,
       cantidad_metros: Number(values.meters),
       es_fraccionable: values.isFractionate,
       detalle: values.details,
-      precio: product.precio
+      precio: product.precio,
+      estado: ""
     };
 
-    if (order.vendor) {
+    if (order.vendedor) {
       saveOrderProduct(newProduct);
       return;
     }
 
     saveNewOrder({
-      vendor: userSession?.user.email || "",
+      vendedor: userSession?.user.email || "",
       product_stock: [newProduct],
-      id: ""
+      id: 0,
+      estado: "",
+      actualizado_por: "",
+      fecha: ""
     });
   };
 

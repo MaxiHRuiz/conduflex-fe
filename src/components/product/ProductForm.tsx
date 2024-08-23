@@ -445,7 +445,7 @@ export const ProductForm = ({
           <FormInputText
             name="precio"
             control={control}
-            label="Precio"
+            label="Precio x m."
             type="number"
           />
         </FormGrid>

@@ -8,6 +8,7 @@ const Show = ({
   buttonType = "icon",
   productId,
   stockId,
+  orderId,
   formType,
 }: IActionsButtonProps) => {
   const navigate = useNavigate();
@@ -19,8 +20,10 @@ const Show = ({
       return `/productos/${productId}/stocks/${stockId}`;
     }
     if (formType === "product") page = "productos";
-    if (formType === "order") page = "pedidos";
-    return `/${page}/${productId}`;
+    if (formType === "order") {
+      return `/pedidos/${orderId}`;
+    }
+    return ''
   };
 
   const handleClick = () => navigate(getUrl());

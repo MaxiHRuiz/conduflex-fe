@@ -68,7 +68,7 @@ const DropdownButton: React.FC = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleItemClick}>
+        <MenuItem onClick={handleItemClick} disabled={!order.vendedor}>
           <OrderListContent order={order} />
         </MenuItem>
       </Menu>

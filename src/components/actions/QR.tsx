@@ -2,7 +2,6 @@ import React from "react";
 import QRcode from "qrcode.react";
 import { jsPDF } from "jspdf";
 import {
-  Box,
   Button,
   Dialog,
   DialogActions,

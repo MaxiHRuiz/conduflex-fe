@@ -1,7 +1,6 @@
-import OrderTable from "components/DataTable/OrderTable";
 import CustomContainer from "../../components/customContainer/CustomContainer";
-import { useTodo } from "context/TodoContext";
 import { Typography } from "@mui/material";
+import CollapsibleTable from "components/collapsibleTable/collapsibleTable";
 
 const Orders = () => {
   // const { orders } = useTodo();
@@ -10,6 +9,7 @@ const Orders = () => {
       <Typography component="h1" variant="h5" gutterBottom>
         Pedidos
       </Typography>
+      <CollapsibleTable />
       {/* <OrderTable order={orders} /> */}
     </CustomContainer>
   );

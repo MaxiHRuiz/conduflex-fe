@@ -10,12 +10,22 @@ export const generateRandomId = (length = 6) => {
 
 export const generateURL = (productId: string, stockId: string) => `${window.location.origin}/productos/${productId}/stocks/${stockId}`
 
-export const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("es-AR", {
+export const numberFormat = (value: number, isCurrency: boolean | undefined = true) => {
+    return new Intl.NumberFormat("es-AR", isCurrency ? {
         style: "currency",
         currency: "ARS",
-    }).format(value);
+    } : undefined).format(value);
 };
 
-export const onError =  (error: Error): Promise<unknown> | unknown =>
+export const onError = (error: Error): Promise<unknown> | unknown =>
     toast.error(error.message)
+
+export const dateFormatter = (date: string, separator: string | undefined = "-", options: any | undefined = [{ day: 'numeric' }, { month: 'short' }, { year: 'numeric' }]) => {
+    if (!date) return date
+    function format(option: Intl.DateTimeFormatOptions | undefined) {
+        let formatter = new Intl.DateTimeFormat('es-en', option);
+        return formatter.format(new Date(date));
+    }
+    return options.map(format).join(separator);
+}
+

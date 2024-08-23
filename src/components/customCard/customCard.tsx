@@ -10,7 +10,7 @@ import {
   Grid,
 } from "@mui/material";
 import Actions from "../actions/actions";
-import { capitalizeFirstLetter, formatCurrency } from "../../utils/helpers";
+import { capitalizeFirstLetter, numberFormat } from "../../utils/helpers";
 import { ICustomCardProps } from "./ICustomCardProps";
 import CustomCardTable from "./customCardTable";
 import Stock from "components/Stock";
@@ -84,7 +84,7 @@ const CustomCard = ({ product, hiddenShowAction }: ICustomCardProps) => {
                   variant="h4"
                   gutterBottom
                 >
-                  {formatCurrency(product.precio)}
+                  {numberFormat(product.precio)}
                 </Typography>
               </>
             </Grid>

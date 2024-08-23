@@ -1,34 +1,29 @@
-import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import CustomContainer from "../../components/customContainer/CustomContainer";
-import { useTodo } from "../../context/TodoContext";
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { IOrder } from "dtos/order.dto";
-import Status from "components/Status";
-import SubStatus from "components/SubStatus";
+import { useParams } from "react-router-dom";
+import OrderTicket from "components/orderTicket/orderTicket";
+import { useGetOrderById } from "services/hooks/useGetOrderById";
+import Loading from "components/Loading";
 
-const ShowOrders = () => {
+const ShowOrder = () => {
   // const { orders } = useTodo();
-  const { id } = useParams();
-  const [order, setOrder] = useState<IOrder | undefined>();
-  // useEffect(() => {
-  //   setOrder(orders.find((x) => x.id === id));
-  // }, [id]);
+  const { orderId = "" } = useParams();
+  const { data, isLoading, isError } = useGetOrderById(orderId);
 
-  if (!order) return <></>;
+  if (isLoading) return <Loading />;
+
+  if (isError)
+    return <Typography>Hubo un error al obtener la orden.</Typography>;
+
+  if (!data) return <></>;
 
   return (
     <CustomContainer breadCrumbs>
       <Typography component="h1" variant="h5" gutterBottom>
-        Detalle
+        Pedido
       </Typography>
-      <Paper
-        sx={{
-          mb: 1,
-          p: 3,
-        }}
-      >
-        <Grid container spacing={2}>
+      <OrderTicket order={data} />
+      {/* <Grid container spacing={2}>
           <Grid item>
             <Typography>{order.id}</Typography>
           </Grid>
@@ -68,10 +63,9 @@ const ShowOrders = () => {
               );
             })}
           </Grid>
-        </Grid>
-      </Paper>
+        </Grid> */}
     </CustomContainer>
   );
 };
 
-export default ShowOrders;
+export default ShowOrder;

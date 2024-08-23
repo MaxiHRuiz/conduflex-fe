@@ -3,9 +3,12 @@ import { TodoContextType } from "../types/todo";
 import { IOrder, IProductStock } from "types/order";
 
 const defaultOrder: IOrder = {
-  vendor: "",
+  vendedor: "",
   product_stock: [],
-  id: ""
+  id: 0,
+  estado: "",
+  actualizado_por: "",
+  fecha: ""
 };
 
 const defaultValues: TodoContextType = {
@@ -14,9 +17,12 @@ const defaultValues: TodoContextType = {
     throw new Error("Function not implemented.");
   },
   order: {
-    vendor: "",
+    vendedor: "",
     product_stock: [],
-    id: ""
+    id: 0,
+    estado: "",
+    actualizado_por: "",
+    fecha: ""
   },
   saveNewOrder: (order: IOrder) => {
     throw new Error("Function not implemented.");
@@ -73,7 +79,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const updateOrderProduct = (updateProduct: IProductStock) => {
     const product_stock = order.product_stock.map((product: IProductStock) => {
-      if (product.idProductStock === updateProduct.idProductStock) {
+      if (product.id === updateProduct.id) {
         return updateProduct;
       }
       return product;
@@ -86,7 +92,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     setOrder({
       ...order,
       product_stock: order.product_stock.filter(
-        (product: IProductStock) => product.idProductStock !== id
+        (product: IProductStock) => product.id !== id
       ),
     });
 
