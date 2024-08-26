@@ -62,7 +62,7 @@ const OrderForm = ({ product }: IOrderFromProps) => {
 
   const generateOrder = () => {
     const newProduct: IProductStock = {
-      id: order.product_stock.length + 1,
+      id: (order.product_stock.length + 1).toString(),
       product_id: product.id,
       descripcion: product.descripcion,
       cantidad_metros: Number(values.meters),

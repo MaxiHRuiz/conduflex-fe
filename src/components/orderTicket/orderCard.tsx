@@ -11,13 +11,16 @@ import {
   Typography,
 } from "@mui/material";
 import NumericFormatCustom from "components/NumericFormatCustom";
-import OrderState from "components/OrderState";
+import OrderStockState from "components/OrderStockState";
 import { useTodo } from "context/TodoContext";
 import { SyntheticEvent, useState } from "react";
+import { useParams } from "react-router-dom";
 import { IProductStock } from "types/order";
 import { numberFormat } from "utils/helpers";
+import TicketActions from "./TicketActions";
 
 interface IOrderCardProps {
+  orderStatus: string;
   productStock: IProductStock;
   disabledActions: boolean;
   generateOrderDisabled: (value: boolean) => void;
@@ -25,19 +28,42 @@ interface IOrderCardProps {
 }
 
 const OrderCard = ({
+  orderStatus,
   productStock,
   disabledActions,
   generateOrderDisabled,
 }: IOrderCardProps) => {
+  const { orderId = "" } = useParams();
   const { deleteOrderProduct, updateOrderProduct } = useTodo();
   const [updateProduct, setUpdateProduct] = useState<IProductStock>({
     ...productStock,
   });
   const [editActive, setEditActive] = useState(false);
 
+  const status = [
+    { value: "en_stock", label: "En stock" },
+    {
+      value: "listo_para_entregar",
+      label: "Listo para entregar",
+    },
+    { value: "entregado", label: "Entregado" },
+  ];
+
   const handleUpdate = () => {
     updateOrderProduct(updateProduct as unknown as IProductStock);
   };
+
+  const handleCancel = () => {
+    generateOrderDisabled(false);
+    setEditActive(false);
+  };
+
+  const handleActiveUpdate = () => {
+    generateOrderDisabled(true);
+    setEditActive(!editActive);
+  };
+
+  const handleDelete = () => deleteOrderProduct(updateProduct.id);
 
   const handleIsFractionateChange = (
     event: SyntheticEvent<Element, Event>,
@@ -84,7 +110,7 @@ const OrderCard = ({
           <Divider />
         </Grid>
         <Grid item xs={12} md={6}>
-          {editActive ? (
+          {!orderId && editActive ? (
             <FormControlLabel
               name="isFractionate"
               control={<Checkbox />}
@@ -99,7 +125,7 @@ const OrderCard = ({
           )}
         </Grid>
         <Grid item xs={12} md={6}>
-          {editActive ? (
+          {!orderId && editActive ? (
             <TextField
               fullWidth
               label="Metros"
@@ -119,6 +145,38 @@ const OrderCard = ({
           )}
         </Grid>
         <Grid item xs={12} md={6}>
+          <Typography component="span">{`Precio x m.: ${numberFormat(
+            updateProduct.precio
+          )}`}</Typography>
+        </Grid>
+        {!!updateProduct.estado && (
+          <Grid item xs={12} md={6}>
+            {editActive &&
+            status.map((x) => x.value).includes(updateProduct.estado) ? (
+              <TextField
+                id="outlined-select-state"
+                select
+                label="Estado"
+                size="small"
+                fullWidth
+                defaultValue={updateProduct.estado}
+              >
+                {status.map((option) => (
+                  <MenuItem
+                    key={option.value}
+                    value={option.value}
+                    disabled={option.value === "en_stock"}
+                  >
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            ) : (
+              <OrderStockState state={updateProduct.estado} />
+            )}
+          </Grid>
+        )}
+        <Grid item xs={12} md={6}>
           {editActive ? (
             <TextField
               fullWidth
@@ -137,75 +195,16 @@ const OrderCard = ({
             }`}</Typography>
           )}
         </Grid>
-        {!!updateProduct.estado && (
-          <Grid item xs={12} md={6}>
-            {editActive ? (
-              <TextField
-                id="outlined-select-state"
-                select
-                label="Estado"
-                size="small"
-                defaultValue="no_disponible"
-                fullWidth
-              >
-                {[{ value: "no_disponible", label: "No disponible" }].map(
-                  (option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.label}
-                    </MenuItem>
-                  )
-                )}
-              </TextField>
-            ) : (
-              <OrderState state={updateProduct.estado} />
-            )}
-          </Grid>
-        )}
-        <Grid item xs={12} md={6}>
-          <Typography component="span">{`Precio x m.: ${numberFormat(
-            updateProduct.precio
-          )}`}</Typography>
-        </Grid>
         <Grid item xs={12}>
-          <Divider sx={{ mt: 1 }} />
-          <Box sx={{ display: "flex", flexDirection: "row-reverse" }}>
-            {!editActive ? (
-              <>
-                <Button
-                  size="small"
-                  disabled={disabledActions}
-                  onClick={() => deleteOrderProduct(updateProduct.id)}
-                >
-                  Eliminar
-                </Button>
-                <Button
-                  size="small"
-                  disabled={disabledActions}
-                  onClick={() => {
-                    generateOrderDisabled(true);
-                    setEditActive(!editActive);
-                  }}
-                >
-                  Editar
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button size="small" onClick={handleUpdate}>
-                  Modificar
-                </Button>
-                <Button
-                  size="small"
-                  onClick={() => {
-                    generateOrderDisabled(false);
-                    setEditActive(false);
-                  }}
-                >
-                  Cancelar
-                </Button>
-              </>
-            )}
-          </Box>
+          <TicketActions
+            editActive={editActive}
+            disabledActions={disabledActions}
+            onConfirmUpdate={handleUpdate}
+            onCancel={handleCancel}
+            onDelete={handleDelete}
+            onActiveUpdate={handleActiveUpdate}
+            disabledDelete={orderStatus !== 'pendiente'}
+          />
         </Grid>
       </Grid>
     </Paper>

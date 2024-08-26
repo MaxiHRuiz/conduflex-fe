@@ -1,22 +1,24 @@
-import { Chip } from "@mui/material";
+import { Box, Chip, Typography } from "@mui/material";
+import { orderStatusMapper } from "utils/helpers";
 
 interface IOrderStateProps {
   state: string;
 }
 
-type TypeColor = "warning" | undefined;
-
 const OrderState = ({ state }: IOrderStateProps) => {
-  let label = "";
-  let variant: TypeColor = undefined;
-  if (state === "no_disponible") {
-    label = "no disponible";
-    variant = "warning";
-  }
+  let values = orderStatusMapper(state);
+
   return (
-    <>
-      Estado: <Chip size="small" color={variant} label={label} />
-    </>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        gap: 1
+      }}
+    >
+      <Typography fontWeight="bold">Estado:</Typography>
+      <Chip size="small" color={values.variant} label={values.label} />
+    </Box>
   );
 };
 

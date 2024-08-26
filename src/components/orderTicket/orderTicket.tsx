@@ -1,12 +1,13 @@
-import { Paper, Typography, Button } from "@mui/material";
-import CustomContainer from "components/customContainer/CustomContainer";
+import { Paper, Typography } from "@mui/material";
 import Loading from "components/Loading";
 import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateOrder } from "services/hooks/useCreateOrder";
-import { dateFormatter, numberFormat } from "utils/helpers";
+import { numberFormat } from "utils/helpers";
 import OrderCard from "./orderCard";
 import { IOrder } from "types/order";
+import TicketFooter from "./TicketFooter";
+import TicketHeader from "./TicketHeader";
 
 interface OrderTicketProps {
   order: IOrder;
@@ -17,6 +18,7 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
   const navigate = useNavigate();
   const { mutateAsync: createOrder, isPending } = useCreateOrder();
   const [disabled, setDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const total = useCallback(
     () =>
@@ -28,26 +30,11 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
     [order.product_stock]
   );
 
-  if (isPending) return <Loading />;
+  if (isPending || isLoading) return <Loading />;
 
   return (
     <>
-      <Paper
-        sx={{
-          p: 1,
-          mb: 1,
-        }}
-      >
-        <Typography fontWeight="bold">{`Vendedor: ${
-          order.vendedor || "-"
-        }`}</Typography>
-        {order.fecha && <Typography fontWeight="bold">{`Fecha: ${
-          dateFormatter(order.fecha)
-        }`}</Typography>}
-        {order.estado && <Typography fontWeight="bold">{`Estado: ${
-          order.estado
-        }`}</Typography>}
-      </Paper>
+      <TicketHeader order={order} disabledActions={disabled} setIsLoading={setIsLoading} />
       {order.product_stock.length ? (
         order.product_stock.map((product) => {
           return (
@@ -56,6 +43,7 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
               key={product.id}
               productStock={product}
               generateOrderDisabled={setDisabled}
+              orderStatus={order.estado}
             />
           );
         })
@@ -64,31 +52,18 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
           <Typography component="h6">No hay datos</Typography>
         </Paper>
       )}
-      <Paper
-        sx={{
-          p: 1,
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Typography fontWeight="bold">{`Total: ${total()}`}</Typography>
-        <Button
-          variant="contained"
-          disabled={disabled || !order.product_stock.length}
-          onClick={() =>
-            createOrder(order as unknown as IOrder, {
-              onSuccess: () => {
-                onSuccess?.();
-                navigate("/pedidos");
-              },
-            })
-          }
-        >
-          Hacer pedido
-        </Button>
-      </Paper>
+      <TicketFooter
+        disabled={disabled || !order.product_stock.length}
+        total={total()}
+        onCreateOrder={() =>
+          createOrder(order as unknown as IOrder, {
+            onSuccess: () => {
+              onSuccess?.();
+              navigate("/pedidos");
+            },
+          })
+        }
+      />
     </>
   );
 };

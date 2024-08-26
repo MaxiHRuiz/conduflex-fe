@@ -33,7 +33,7 @@ const defaultValues: TodoContextType = {
   updateOrderProduct: (updateProduct: IProductStock) => {
     throw new Error("Function not implemented.");
   },
-  deleteOrderProduct: (productId: number) => {
+  deleteOrderProduct: (productId: string) => {
     throw new Error("Function not implemented.");
   },
   deleteOrder: () => {
@@ -88,7 +88,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     setOrder({ ...order, product_stock });
   };
 
-  const deleteOrderProduct = (id: number) =>
+  const deleteOrderProduct = (id: string) =>
     setOrder({
       ...order,
       product_stock: order.product_stock.filter(

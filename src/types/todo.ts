@@ -16,7 +16,7 @@ import { IOrder, IProductStock } from "./order";
     // deleteStock: (id: string) => void;
     saveNewOrder: (order: IOrder) => void;
     saveOrderProduct: (product: IProductStock) => void;
-    deleteOrderProduct: (productId: number) => void;
+    deleteOrderProduct: (productId: string) => void;
     deleteOrder: () => void;
     updateOrderProduct: (updateProduct: IProductStock) => void;
     // saveOrder: (order: IOrder) => void;

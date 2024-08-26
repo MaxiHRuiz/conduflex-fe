@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import OrderTicket from "components/orderTicket/orderTicket";
 import { useGetOrderById } from "services/hooks/useGetOrderById";
 import Loading from "components/Loading";
+import PDF from "components/actions/PDF";
 
 const ShowOrder = () => {
   // const { orders } = useTodo();
@@ -22,7 +23,8 @@ const ShowOrder = () => {
       <Typography component="h1" variant="h5" gutterBottom>
         Pedido
       </Typography>
-      <OrderTicket order={data} />
+        <OrderTicket order={data} />
+      <PDF order={data} />
       {/* <Grid container spacing={2}>
           <Grid item>
             <Typography>{order.id}</Typography>
