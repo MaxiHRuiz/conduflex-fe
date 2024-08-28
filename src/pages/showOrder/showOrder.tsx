@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import CustomContainer from "../../components/customContainer/CustomContainer";
 import { useParams } from "react-router-dom";
 import OrderTicket from "components/orderTicket/orderTicket";
@@ -20,52 +20,18 @@ const ShowOrder = () => {
 
   return (
     <CustomContainer breadCrumbs>
+      <Box sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+      }}>
       <Typography component="h1" variant="h5" gutterBottom>
         Pedido
       </Typography>
-        <OrderTicket order={data} />
       <PDF order={data} />
-      {/* <Grid container spacing={2}>
-          <Grid item>
-            <Typography>{order.id}</Typography>
-          </Grid>
-          <Grid item>
-            <Typography>{order.vendedor}</Typography>
-          </Grid>
-          <Grid item>
-            <Typography>{<Status status={order.status} />}</Typography>
-          </Grid>
+      </Box>
 
-          <Grid item xs={12}>
-            {order.list.map((x) => {
-              return (
-                <>
-                  <Divider sx={{
-                    my:1
-                  }}/>
-                  <Grid container spacing={2}>
-                    <Grid item>
-                      <Typography>{x.id_producto}</Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography>{x.descripcion_producto}</Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography>{x.id_stock}</Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography>{`${x.contindad_producto} Mts`}</Typography>
-                    </Grid>
-                    <Grid item>
-                      <Typography>{<SubStatus status={x.subStatus} />}</Typography>
-                    </Grid>
-                    <Divider />
-                  </Grid>
-                </>
-              );
-            })}
-          </Grid>
-        </Grid> */}
+      <OrderTicket order={data} />
     </CustomContainer>
   );
 };

@@ -12,6 +12,7 @@ import Edit from "../actions/edit";
 import { IDataTableProps } from "./IDataTableProps";
 import { esES } from "@mui/x-data-grid/locales";
 import { IProduct } from "types/product";
+import Add from "components/actions/add";
 
 const columns: GridColDef[] = [
   {
@@ -35,6 +36,7 @@ const columns: GridColDef[] = [
         productId={props.row.id}
         formType="product"
       />,
+      <Add buttonType="gridAction" productId={props.row.id} />,
     ],
   },
   {

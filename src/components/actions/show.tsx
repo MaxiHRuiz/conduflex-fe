@@ -1,6 +1,6 @@
-import { IconButton, ListItemIcon, MenuItem, Tooltip } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IActionsButtonProps } from "./IActionsProps";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 
@@ -15,15 +15,11 @@ const Show = ({
   const label = "Ver detalle";
 
   const getUrl = () => {
-    let page = "";
-    if (formType === "stock") {
+    if (formType === "stock")
       return `/productos/${productId}/stocks/${stockId}`;
-    }
-    if (formType === "product") page = "productos";
-    if (formType === "order") {
-      return `/pedidos/${orderId}`;
-    }
-    return ''
+    if (formType === "product") return `/productos/${productId}`;
+    if (formType === "order") return `/pedidos/${orderId}`;
+    return "";
   };
 
   const handleClick = () => navigate(getUrl());
@@ -40,18 +36,9 @@ const Show = ({
     );
   }
 
-  if (buttonType === "menuItem") {
-    <MenuItem onClick={handleClick}>
-      <ListItemIcon>
-        <VisibilityIcon />
-      </ListItemIcon>
-      {label}
-    </MenuItem>;
-  }
-
   return (
     <Tooltip title={label}>
-      <IconButton color="secondary" onClick={handleClick}>
+      <IconButton size="small" color="secondary" onClick={handleClick}>
         <VisibilityIcon />
       </IconButton>
     </Tooltip>

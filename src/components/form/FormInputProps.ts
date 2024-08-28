@@ -4,5 +4,6 @@ export interface FormInputProps {
     label: string;
     setValue?: any;
     type?: React.HTMLInputTypeAttribute | undefined;
-    disabled?: boolean
+    disabled?: boolean;
+    required?: boolean | string;
 }

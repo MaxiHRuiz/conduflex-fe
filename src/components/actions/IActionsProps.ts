@@ -3,7 +3,7 @@ export interface ActionsProps {
     hiddenShowAction?: boolean
 }
 
-type ButtonType = 'menuItem' | 'icon' | 'gridAction'
+export type ButtonType = 'menuItem' | 'icon' | 'gridAction'
 type FormType = 'product' | 'stock' | 'order'
 
 export interface IActionsButtonProps {

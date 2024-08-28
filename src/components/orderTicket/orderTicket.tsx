@@ -8,6 +8,7 @@ import OrderCard from "./orderCard";
 import { IOrder } from "types/order";
 import TicketFooter from "./TicketFooter";
 import TicketHeader from "./TicketHeader";
+import { useGetRole } from "services/hooks/useGetRole";
 
 interface OrderTicketProps {
   order: IOrder;
@@ -16,7 +17,8 @@ interface OrderTicketProps {
 
 const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
   const navigate = useNavigate();
-  const { mutateAsync: createOrder, isPending } = useCreateOrder();
+  const { data, isFetching, isError: isErrorRole} = useGetRole()
+  const { mutateAsync: createOrder, isPending, isError} = useCreateOrder();
   const [disabled, setDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,11 +32,13 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
     [order.product_stock]
   );
 
-  if (isPending || isLoading) return <Loading />;
+  if (isErrorRole || isError) return <Typography>Error al cargar los datos</Typography>
+
+  if (isPending || isLoading || isFetching) return <Loading />;
 
   return (
     <>
-      <TicketHeader order={order} disabledActions={disabled} setIsLoading={setIsLoading} />
+      <TicketHeader order={order} disabledActions={disabled} setIsLoading={setIsLoading} role={data?.rol || ''} />
       {order.product_stock.length ? (
         order.product_stock.map((product) => {
           return (

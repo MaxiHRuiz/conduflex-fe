@@ -63,9 +63,57 @@ export const ProductForm = ({
   const navigate = useNavigate();
   const { handleSubmit, reset, control, setValue } = useForm<IProduct>({
     defaultValues: product ?? defaultValues,
-  });
+  })
+
   const onSubmit = (data: IProduct) => {
-    onSubmitProduct(data);
+    onSubmitProduct({
+      descripcion: String(data.descripcion),
+      espesor_aislacion_promedio: Number(data.espesor_aislacion_promedio),
+      espesor_aislacion_minimo: Number(data.espesor_aislacion_minimo),
+      espesor_envoltura_promedio: Number(data.espesor_envoltura_promedio),
+      espesor_envoltura_minimo: Number(data.espesor_envoltura_minimo),
+      diametro_nominal: Number(data.diametro_nominal),
+      diametro_maximo_extremo: Number(data.diametro_maximo_extremo),
+      resist_aislacion_70c: Number(data.resist_aislacion_70c),
+      tension_electrodos: String(data.tension_electrodos),
+      resist_electrica_20c: Number(data.resist_electrica_20c),
+      tension_en_agua: Number(data.tension_en_agua),
+      cantidad_hilos: Number(data.cantidad_hilos),
+      diametros_hilos: Number(data.diametros_hilos),
+      diametro_cuerda: Number(data.diametro_cuerda),
+      pico_cuerda: Number(data.pico_cuerda),
+      diametro_conductor_calculado: Number(data.diametro_conductor_calculado),
+      diametro_conductor_Produccion: Number(data.diametro_conductor_Produccion),
+      matriz: String(data.matriz),
+      cantidad_almas: Number(data.cantidad_almas),
+      diametro_cableado: Number(data.diametro_cableado),
+      pico_relleno: Number(data.pico_relleno),
+      diametro_relleno_calculado: Number(data.diametro_relleno_calculado),
+      diametro_relleno_produccion: Number(data.diametro_relleno_produccion),
+      espesor: Number(data.espesor),
+      diametro_sobre_fleje: Number(data.diametro_sobre_fleje),
+      diametro_envoltura_calculado: Number(data.diametro_envoltura_calculado),
+      diametro_envoltura_produccion: Number(data.diametro_envoltura_produccion),
+      matriz_envoltura: Number(data.matriz_envoltura),
+      kgs_a: Number(data.kgs_a),
+      kgs_r: Number(data.kgs_r),
+      kgs_v: Number(data.kgs_v),
+      kgs_cu: Number(data.kgs_cu),
+      kgs_totales: Number(data.kgs_totales),
+      kgs_terminado: Number(data.kgs_terminado),
+      kgs_produccion: Number(data.kgs_produccion),
+      kgs_armadura_metalica: Number(data.kgs_armadura_metalica),
+      paso: String(data.paso),
+      matriz_relleno: String(data.matriz_relleno),
+      pico: String(data.pico),
+      obs1: String(data.obs1),
+      obs2: String(data.obs2),
+      obs3: String(data.obs3),
+      paso_final: String(data.paso_final),
+      precio: Number(data.precio),
+      hay_stock: Boolean(data.hay_stock),
+      id: data.id
+    });
   };
 
   const FormGrid = styled(Grid)(() => ({
@@ -87,7 +135,7 @@ export const ProductForm = ({
 
       <Grid container spacing={3}>
         <FormGrid item xs={12} md={6}>
-          <FormInputText name="id" control={control} label="Código" type="text" />
+          <FormInputText name="id" control={control} label="Código" type="text" required="El código es requerido" />
         </FormGrid>
         <FormGrid item xs={12} md={6}>
           <FormInputText
@@ -95,6 +143,7 @@ export const ProductForm = ({
             control={control}
             label="Descripción"
             type="text"
+            required="La descripción es requerida"
           />
         </FormGrid>
         <FormGrid item xs={12} md={6}>

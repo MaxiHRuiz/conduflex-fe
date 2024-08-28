@@ -1,3 +1,4 @@
+import { REACT_APP_URL } from "lib/constanst";
 import { toast } from "react-toastify";
 
 type TypeColor = "warning" | "success" | "info" | "error" | undefined;
@@ -10,7 +11,7 @@ export const generateRandomId = (length = 6) => {
     return Math.random().toString(36).substring(2, length + 2).toString();
 }
 
-export const generateURL = (productId: string, stockId: string) => `${window.location.origin}/productos/${productId}/stocks/${stockId}`
+export const generateURL = (productId: string, stockId: string) => `${REACT_APP_URL}/productos/${productId}/stocks/${stockId}`
 
 export const numberFormat = (value: number, isCurrency: boolean | undefined = true) => {
     return new Intl.NumberFormat("es-AR", isCurrency ? {
@@ -19,8 +20,10 @@ export const numberFormat = (value: number, isCurrency: boolean | undefined = tr
     } : undefined).format(value);
 };
 
-export const onError = (error: Error): Promise<unknown> | unknown =>
-    toast.error(error.message)
+export const onError = (error: any): Promise<unknown> | unknown => {
+    console.log(error)
+    return toast.error(error?.response?.data?.message ?? error.message)
+}
 
 export const dateFormatter = (date: string, separator: string | undefined = "-", options: any | undefined = [{ day: 'numeric' }, { month: 'short' }, { year: 'numeric' }]) => {
     if (!date) return date
@@ -73,8 +76,10 @@ export const stockStatusMapper = (state: string): { label: string, variant: Type
         }
     }
     if (state === "entregado") {
-        return {label: "Entregado",
-        variant: "success"}
+        return {
+            label: "Entregado",
+            variant: "success"
+        }
     }
     return {
         label: state,
@@ -88,9 +93,9 @@ export const orderStatusMapper = (state: string): { label: string, variant: Type
             label: "Pendiente",
             variant: "warning"
         }
-    } if (state === "aceptado") {
+    } if (state === "aprobada") {
         return {
-            label: "Aceptado",
+            label: "Aprobado",
             variant: "success"
         }
     } if (state === "cancelado") {
@@ -105,3 +110,18 @@ export const orderStatusMapper = (state: string): { label: string, variant: Type
     }
 }
 
+export const getDisponible = (status: string) =>
+    status === "todos" ? undefined : status === "disponibles" ? true : false;
+
+// export const getStockStatus = (value: string) => {
+//     if ("NoAvailable" === value) return "no_disponible"
+//     if ("ToProducePending" === value) return "solicitud_para_producir"
+//     if ("ToProduce" === value) return "solicitud_para_producir_aprobada"
+//     if ("InProduction" === value) return "en_produccion"
+//     if ("InProductionFinished" === value) return "produccion_finalizada"
+//     if ("InStock" === value) return "en_stock"
+//     if ("ReadyToDeliver" === value) return "listo_para_entregar"
+//     if ("Delivered" === value) return "entregado"
+// }
+
+export const getStockStatus = (value: string) => ["no_disponible", "solicitud_para_producir", "solicitud_para_producir_aprobada", "en_produccion", "produccion_finalizada", "en_stock", "listo_para_entregar", "entregado"].includes(value) ? value : undefined

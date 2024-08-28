@@ -1,32 +1,53 @@
-import { Box, Typography } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TextField,
+  Typography,
+} from "@mui/material";
 import CustomContainer from "../../components/customContainer/CustomContainer";
 import { Navigate, useParams } from "react-router-dom";
 import CustomCard from "../../components/customCard/customCard";
 import StockTable from "components/DataTable/StockTable";
 import { useGetProduct } from "services/hooks/useGetProduct";
 import { GridPaginationModel } from "@mui/x-data-grid";
-import React, { useEffect } from "react";
+import React from "react";
 import Loading from "components/Loading";
 import { useGetStocksByProductId } from "services/hooks/useGetStocksByProductId";
+import { getDisponible, getStockStatus } from "utils/helpers";
 
 const ShowProduct = () => {
   const { productId = "" } = useParams();
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [page, setPage] = React.useState(0);
+  const [status, setStatus] = React.useState("disponibles");
+  const [available, setAvailable] = React.useState("disponibles");
+  const [id, setId] = React.useState("");
+
   const { data, isFetching, isError } = useGetProduct(productId);
 
   const {
     data: stocks,
     isFetching: isFetchingStocks,
     isError: isErrorStocks,
-    refetch,
   } = useGetStocksByProductId(productId, {
     offset: page * rowsPerPage,
     limit: rowsPerPage,
-    disponible: true,
-    id: "",
-    estado: "",
+    disponible: getDisponible(status),
+    estado: getStockStatus(available),
+    id,
   });
+
+  const handleStatusChange = (event: SelectChangeEvent) => {
+    setStatus(event.target.value as string);
+  };
+
+  const handleAvailableChange = (event: SelectChangeEvent) => {
+    setAvailable(event.target.value as string);
+  };
 
   const onChangePagination = (pagination: GridPaginationModel) => {
     if (page !== pagination.page) {
@@ -37,27 +58,90 @@ const ShowProduct = () => {
       setRowsPerPage(pagination.pageSize);
   };
 
-  useEffect(() => {
-    refetch();
-  }, [page, rowsPerPage]);
+  // const onChangeIdSearch = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  // ) => {
+  //   setId(e.target.value);
+  // };
 
   const getStockDetails = () => {
     if (isErrorStocks) return <Typography>Error al cargar stocks</Typography>;
 
-    if (stocks && stocks.response.length === 0)
-      return <Typography>El producto no tiene stock</Typography>;
-
     return (
-      <StockTable
-        isLoading={isFetchingStocks}
-        data={stocks?.response ?? []}
-        pagination={{
-          page,
-          pageSize: rowsPerPage,
-        }}
-        count={stocks?.total ?? 0}
-        onChangePagination={onChangePagination}
-      />
+      <>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            mb: 1,
+          }}
+        >
+          {/* <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              gap: 1,
+              flexWrap: "wrap",
+            }}
+          >
+            <TextField
+              value={id}
+              onChange={onChangeIdSearch}
+              size="small"
+              label="Código"
+            />
+          </Box> */}
+
+          <Box
+            sx={{
+              flexShrink: 0,
+              flexDirection: "row",
+              display: "flex",
+              gap: 1,
+            }}
+          >
+            <FormControl fullWidth size="small">
+              <InputLabel id="status-select-label">Estado</InputLabel>
+              <Select
+                labelId="status-select-label"
+                id="status-select"
+                value={status}
+                label="Estado"
+                onChange={handleAvailableChange}
+              >
+                <MenuItem value="todos">Todos</MenuItem>
+                <MenuItem value="disponibles">Disponibles</MenuItem>
+                <MenuItem value="no_disponibles">No disponibles</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl fullWidth size="small">
+              <InputLabel id="status-select-label">Disponibilidad</InputLabel>
+              <Select
+                labelId="status-select-label"
+                id="status-select"
+                value={status}
+                label="Disponibilidad"
+                onChange={handleStatusChange}
+              >
+                <MenuItem value="todos">Todos</MenuItem>
+                <MenuItem value="disponibles">Disponibles</MenuItem>
+                <MenuItem value="no_disponibles">No disponibles</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+        </Box>
+        <StockTable
+          isLoading={isFetchingStocks}
+          data={stocks?.response ?? []}
+          pagination={{
+            page,
+            pageSize: rowsPerPage,
+          }}
+          count={stocks?.total ?? 0}
+          onChangePagination={onChangePagination}
+        />
+      </>
     );
   };
 

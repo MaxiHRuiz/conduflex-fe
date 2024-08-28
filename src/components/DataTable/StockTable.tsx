@@ -12,6 +12,7 @@ import { esES } from "@mui/x-data-grid/locales";
 import { IStock } from "types/stock";
 import Show from "../actions/show";
 import QR from "components/actions/QR";
+import { REACT_APP_URL } from "lib/constanst";
 
 const formType = "stock";
 
@@ -41,7 +42,7 @@ const columns: GridColDef[] = [
         formType={formType}
       />,
       <QR
-        value={`https://${window.location.origin}/productos/${props.row.product_id}/stocks/${props.row.id}`}
+        value={`${REACT_APP_URL}/productos/${props.row.product_id}/stocks/${props.row.id}`}
         stockId={props.row.id}
       />,
     ],

@@ -16,7 +16,7 @@ export const useAuthorizeOrder = (): UseMutationResult<AxiosResponse<string, any
         mutationFn: (orderId: string) =>
             authorizeOrder(orderId),
         onSuccess: () => {
-            toast.success("Se creo el pedido correctamente");
+            toast.success("Se ha sido aprobado el pedido correctamente");
             navigate("/");
         },
         onError

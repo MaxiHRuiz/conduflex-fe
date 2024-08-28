@@ -6,60 +6,64 @@ import { useTodo } from "context/TodoContext";
 import { toast } from "react-toastify";
 import { useDeleteProduct } from "services/hooks/useDeleteProduct";
 import { useDeleteStockById } from "services/hooks/useDeleteStockById";
+import ConfirmIconButton from "components/ConfirmIconButton";
+import ConfirmGridActionButton from "components/ConfirmGridActionButton";
 
-function Delete({ buttonType, productId = "", stockId = "", formType }: IActionsButtonProps) {
+function Delete({
+  buttonType,
+  productId = "",
+  stockId = "",
+  formType,
+}: IActionsButtonProps) {
   const { deleteOrder } = useTodo();
   const { mutateAsync: deleteProduct, isPending } = useDeleteProduct();
-  const { mutateAsync: deleteStock, isPending: isPendingStock } = useDeleteStockById(productId)
-
+  const { mutateAsync: deleteStock, isPending: isPendingStock } =
+    useDeleteStockById(productId);
+  const dialogTitle = "Confirmar acción";
+  const dialogContent = "¿Estás seguro de que deseas eliminar este producto?";
   const label = "Eliminar";
 
   const onHandleClick = () => {
     if (formType === "product") {
       deleteProduct(productId);
-      return
+      return;
     }
     if (formType === "stock") {
       deleteStock(stockId);
-      return
+      return;
     }
     if (formType === "order") {
       // deleteOrder(productId)
-    };
+    }
   };
 
   if (buttonType === "gridAction") {
     return (
       <Tooltip title={label}>
-        <GridActionsCellItem
-          disabled={isPending || isPendingStock}
+        <ConfirmGridActionButton
           icon={<DeleteIcon />}
           label={label}
-          onClick={onHandleClick}
+          dialogTitle={dialogTitle}
+          dialogContent={dialogContent}
+          disabled={isPending || isPendingStock}
+          buttonColor="secondary"
+          onConfirm={onHandleClick}
         />
       </Tooltip>
     );
   }
 
-  if (buttonType === "menuItem") {
-    <MenuItem disabled={isPending || isPendingStock}>
-      <ListItemIcon onClick={onHandleClick}>
-        <DeleteIcon />
-      </ListItemIcon>
-      {label}
-    </MenuItem>;
-  }
-
   return (
-    <Tooltip title={label}>
-      <IconButton
-        color="secondary"
-        onClick={onHandleClick}
-        disabled={isPending || isPendingStock}
-      >
-        <DeleteIcon />
-      </IconButton>
-    </Tooltip>
+    <ConfirmIconButton
+      ariaLabel={label}
+      dialogTitle={dialogTitle}
+      dialogContent={dialogContent}
+      disabled={isPending || isPendingStock}
+      buttonColor="secondary"
+      onConfirm={onHandleClick}
+    >
+      <DeleteIcon />
+    </ConfirmIconButton>
   );
 }
 

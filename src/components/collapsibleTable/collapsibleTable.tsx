@@ -67,7 +67,7 @@ function Row(props: { row: IOrder }) {
                 </TableHead>
                 <TableBody>
                   {row.product_stock.map((stockRow) => (
-                    <TableRow key={stockRow.id}>
+                    <TableRow key={stockRow.id} sx={{width: '100%'}}>
                       <TableCell component="th" scope="row">
                         {stockRow.id}
                       </TableCell>

@@ -145,7 +145,7 @@ export const Products = () => {
               color="secondary"
               onClick={() => navigate("/productos/crear")}
             >
-              Agregar producto
+              Agregar
             </Button>
           </Box>
         </Box>

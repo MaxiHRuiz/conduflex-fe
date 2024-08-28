@@ -1,4 +1,4 @@
-import { Button, Paper, Typography } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import { IOrder } from "types/order";
 import { dateFormatter } from "utils/helpers";
 import OrderState from "components/OrderState";
@@ -8,11 +8,13 @@ import { useAuthorizeById } from "services/hooks/useAuthorizeById";
 import ConfirmButton from "components/ConfirmButton";
 
 interface TicketHeader {
+  role: string
   order: IOrder;
   disabledActions: boolean;
   setIsLoading: (value: boolean) => void;
 }
 const TicketHeader = ({
+  role,
   order,
   disabledActions,
   setIsLoading,
@@ -54,14 +56,14 @@ const TicketHeader = ({
         )}`}</Typography>
       )}
       {order.estado && <OrderState state={order.estado} />}
-      {order.estado && (
+      {order.estado === "pendiente" && (
         <TicketActionsContainer>
           <ConfirmButton
             buttonText="Aprobar"
             dialogTitle="Confirmar acción"
             dialogContent="¿Estás seguro de que deseas aprobar este pedido?"
             buttonColor="success"
-            disabled={disabledActions}
+            disabled={disabledActions || role !== 'admin'}
             onConfirm={handleAuthorize}
           />
           <ConfirmButton

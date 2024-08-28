@@ -30,23 +30,12 @@ function Edit({ productId, buttonType, formType }: IActionsButtonProps) {
     );
   }
 
-  if (buttonType === "menuItem") {
-    <MenuItem onClick={handleClick}>
-      <ListItemIcon>
-        <EditIcon />
-      </ListItemIcon>
-      {label}
-    </MenuItem>;
-  }
-
   return (
-    <>
       <Tooltip title={label}>
-        <IconButton color="secondary" onClick={handleClick}>
+        <IconButton size="small" color="secondary" onClick={handleClick}>
           <EditIcon />
         </IconButton>
       </Tooltip>
-    </>
   );
 }
 

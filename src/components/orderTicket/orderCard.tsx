@@ -144,11 +144,11 @@ const OrderCard = ({
             )} m.`}</Typography>
           )}
         </Grid>
-        <Grid item xs={12} md={6}>
+        {/* <Grid item xs={12} md={6}>
           <Typography component="span">{`Precio x m.: ${numberFormat(
             updateProduct.precio
           )}`}</Typography>
-        </Grid>
+        </Grid> */}
         {!!updateProduct.estado && (
           <Grid item xs={12} md={6}>
             {editActive &&

@@ -4,6 +4,8 @@ import {
   BadgeProps,
   Button,
   IconButton,
+  ListItemIcon,
+  ListItemText,
   Menu,
   MenuItem,
   styled,
@@ -13,6 +15,8 @@ import OrderListContent from "./orderListContent";
 import { useTodo } from "context/TodoContext";
 import ListAltIcon from "@mui/icons-material/ListAlt";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Delete from "@mui/icons-material/Delete";
 
 const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -22,8 +26,8 @@ const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
 }));
 
 const DropdownButton: React.FC = () => {
-  const {order} = useTodo()
-  const navigate = useNavigate()
+  const { order, deleteOrder } = useTodo();
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -31,17 +35,22 @@ const DropdownButton: React.FC = () => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => 
-    setAnchorEl(null);
+  const handleClose = () => setAnchorEl(null);
 
-  const handleItemClick = () =>{
-    handleClose()
-    navigate('/pedidos/nuevo')
-  }
+  const handleItemClick = () => {
+    handleClose();
+    navigate("/pedidos/nuevo");
+  };
+
+  const handleDeleteOrder = () => {
+    deleteOrder();
+    toast.info("Se elimino el pedido pendiente");
+    handleClose();
+  };
 
   return (
     <div>
-      <Tooltip title="Account settings">
+      <Tooltip title="Pedido pendiente">
         <StyledBadge
           variant="dot"
           invisible={!order.product_stock.length}
@@ -53,7 +62,6 @@ const DropdownButton: React.FC = () => {
             sx={{ ml: 2 }}
             aria-controls="order-menu"
             aria-haspopup="true"
-            // aria-expanded={open ? "true" : undefined}
           >
             <ListAltIcon />
           </IconButton>
@@ -70,6 +78,12 @@ const DropdownButton: React.FC = () => {
       >
         <MenuItem onClick={handleItemClick} disabled={!order.vendedor}>
           <OrderListContent order={order} />
+        </MenuItem>
+        <MenuItem onClick={handleDeleteOrder} disabled={!order.vendedor}>
+          <ListItemIcon>
+            <Delete fontSize="small" />
+          </ListItemIcon>
+          <ListItemText primary="Eliminar pedido" />
         </MenuItem>
       </Menu>
     </div>
