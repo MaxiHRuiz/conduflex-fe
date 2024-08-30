@@ -8,7 +8,8 @@ const defaultOrder: IOrder = {
   id: 0,
   estado: "",
   actualizado_por: "",
-  fecha: ""
+  fecha: "",
+  precio: 0
 };
 
 const defaultValues: TodoContextType = {
@@ -22,7 +23,8 @@ const defaultValues: TodoContextType = {
     id: 0,
     estado: "",
     actualizado_por: "",
-    fecha: ""
+    fecha: "",
+    precio: 0
   },
   saveNewOrder: (order: IOrder) => {
     throw new Error("Function not implemented.");

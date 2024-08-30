@@ -19,7 +19,7 @@ const columns: GridColDef[] = [
     field: "actions",
     type: "actions",
     headerName: "Acciones",
-    width: 120,
+    width: 200,
     getActions: (props) => [
       <Show
         buttonType="gridAction"

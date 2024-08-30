@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   FormControl,
   InputLabel,
   MenuItem,
@@ -12,7 +11,6 @@ import {
 import CustomContainer from "../../components/customContainer/CustomContainer";
 import StockTable from "components/DataTable/StockTable";
 import { useGetStocks } from "services/hooks/useGetStocks";
-import { Navigate, useNavigate } from "react-router-dom";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import React from "react";
 
@@ -21,7 +19,6 @@ const Stocks = () => {
   const [page, setPage] = React.useState(0);
   const [status, setStatus] = React.useState("disponibles");
   const [id, setId] = React.useState("");
-  const navigate = useNavigate();
 
   const handleStatusChange = (event: SelectChangeEvent) => {
     setStatus(event.target.value as string);

@@ -16,8 +16,8 @@ export const useDeleteOrderById = (): UseMutationResult<AxiosResponse<number, an
         mutationFn: (orderId: number) =>
             deleteOrderById(orderId),
         onSuccess: () => {
-            toast.success("Se creo el pedido correctamente");
-            navigate("/");
+            toast.success("Se elimino el pedido correctamente");
+            navigate("/pedidos");
         },
         onError
     })

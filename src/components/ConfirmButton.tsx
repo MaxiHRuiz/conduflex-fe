@@ -5,24 +5,27 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import LoadingButton from "./LoadingButton";
 
 interface IConfirmButtonProps {
+  isLoading?: boolean
   buttonText: string;
   dialogTitle: string;
   dialogContent: string;
   disabled: boolean;
   buttonColor:
-    | "inherit"
-    | "primary"
-    | "secondary"
-    | "success"
-    | "error"
-    | "info"
-    | "warning";
+  | "inherit"
+  | "primary"
+  | "secondary"
+  | "success"
+  | "error"
+  | "info"
+  | "warning";
   onConfirm: () => void;
 }
 
 const ConfirmButton: FC<IConfirmButtonProps> = ({
+  isLoading,
   buttonText,
   dialogTitle,
   dialogContent,
@@ -46,16 +49,9 @@ const ConfirmButton: FC<IConfirmButtonProps> = ({
   };
 
   return (
-    <div>
-      <Button
-        variant="contained"
-        size="small"
-        disabled={disabled}
-        color={buttonColor}
-        onClick={handleClickOpen}
-      >
-        {buttonText}
-      </Button>
+    <>
+      <LoadingButton isLoading={isLoading} text={buttonText} color={buttonColor} onClick={handleClickOpen} disabled={disabled} variant="contained"
+        size="small" />
       <Dialog
         open={open}
         onClose={handleClose}
@@ -77,7 +73,7 @@ const ConfirmButton: FC<IConfirmButtonProps> = ({
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 };
 

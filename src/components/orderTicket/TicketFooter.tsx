@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 
 interface TicketFooter {
   disabled: boolean;
-  total: string;
+  total: number;
   onCreateOrder: () => void;
 }
 

@@ -58,7 +58,7 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
       )}
       <TicketFooter
         disabled={disabled || !order.product_stock.length}
-        total={total()}
+        total={order.precio}
         onCreateOrder={() =>
           createOrder(order as unknown as IOrder, {
             onSuccess: () => {

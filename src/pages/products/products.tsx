@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import CustomContainer from "../../components/customContainer/CustomContainer";
 import CustomCard from "../../components/customCard/customCard";
-import { SyntheticEvent, useEffect, useState } from "react";
+import { SyntheticEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTodo } from "context/TodoContext";
 import DataTable from "components/DataTable/DataTable";
@@ -17,7 +17,6 @@ import React from "react";
 import { useGetProducts } from "services/hooks/useGetProducts";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import Loading from "components/Loading";
-import { debounce } from "ts-debounce";
 
 export const Products = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);

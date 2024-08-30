@@ -2,7 +2,7 @@ import { Button, Grid, Paper, styled, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { FormInputText } from "../form/FormInputText";
 import { IStockFormProps } from "./IStockFormProps";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { IStock } from "types/stock";
 
 const defaultValues: IStock = {

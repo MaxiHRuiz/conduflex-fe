@@ -4,11 +4,10 @@ import Container from '@mui/material/Container';
 import { Paper, useTheme } from '@mui/material';
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
-import { Footer } from '../../components/footer/footer';
 import { supabase } from '../../lib/api';
 import { useEffect } from 'react';
 import { useAuth } from '../../context/Auth';
-import {  useNavigate, useNavigation } from 'react-router-dom';
+import {  useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const {palette} = useTheme()

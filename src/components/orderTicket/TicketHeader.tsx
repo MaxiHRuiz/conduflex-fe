@@ -47,17 +47,8 @@ const TicketHeader = ({
         mb: 1,
       }}
     >
-      <Typography fontWeight="bold">{`Vendedor: ${
-        order.vendedor || "-"
-      }`}</Typography>
-      {order.fecha && (
-        <Typography fontWeight="bold">{`Fecha: ${dateFormatter(
-          order.fecha
-        )}`}</Typography>
-      )}
-      {order.estado && <OrderState state={order.estado} />}
       {order.estado === "pendiente" && (
-        <TicketActionsContainer>
+        <TicketActionsContainer buttonDivider>
           <ConfirmButton
             buttonText="Aprobar"
             dialogTitle="Confirmar acción"
@@ -76,6 +67,15 @@ const TicketHeader = ({
           />
         </TicketActionsContainer>
       )}
+      <Typography fontWeight="bold">{`Vendedor: ${order.vendedor || "-"
+        }`}</Typography>
+      {order.fecha && (
+        <Typography fontWeight="bold">{`Fecha: ${dateFormatter(
+          order.fecha
+        )}`}</Typography>
+      )}
+      {order.estado && <OrderState state={order.estado} />}
+
     </Paper>
   );
 };

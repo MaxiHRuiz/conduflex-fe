@@ -39,7 +39,7 @@ export const stockStatusMapper = (state: string): { label: string, variant: Type
     if (state === "no_disponible") {
         return {
             label: "no disponible",
-            variant: "warning"
+            variant: "error"
         }
     } if (state === "solicitud_para_producir") {
         return {
@@ -91,7 +91,7 @@ export const orderStatusMapper = (state: string): { label: string, variant: Type
     if (state === "pendiente") {
         return {
             label: "Pendiente",
-            variant: "warning"
+            variant: "info"
         }
     } if (state === "aprobada") {
         return {

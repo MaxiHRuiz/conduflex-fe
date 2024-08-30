@@ -22,7 +22,7 @@ const TicketActions = ({
 }: TicketActionsProps) => {
   if (editActive) {
     return (
-      <TicketActionsContainer>
+      <TicketActionsContainer topDivider>
         <Button size="small" variant="contained" onClick={onConfirmUpdate}>
           Modificar
         </Button>
@@ -33,7 +33,7 @@ const TicketActions = ({
     );
   }
   return (
-    <TicketActionsContainer>
+    <TicketActionsContainer topDivider>
       {!disabledDelete && <Button size="small" disabled={disabledActions} onClick={onDelete}>
         Eliminar
       </Button>}

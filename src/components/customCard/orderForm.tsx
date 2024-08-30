@@ -83,7 +83,8 @@ const OrderForm = ({ product }: IOrderFromProps) => {
       id: 0,
       estado: "",
       actualizado_por: "",
-      fecha: ""
+      fecha: "",
+      precio: 0
     });
   };
 

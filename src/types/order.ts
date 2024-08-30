@@ -5,7 +5,8 @@ export interface IBaseOrder {
     vendedor: string,
     actualizado_por: string,
     fecha: string,
-    product_stock: IProductStock[];
+    product_stock: IProductStock[],
+    precio: number
 }
 
 export interface IOrder extends IBaseOrder {

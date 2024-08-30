@@ -9,6 +9,8 @@ import {
   Paper,
   TextField,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from "@mui/material";
 import NumericFormatCustom from "components/NumericFormatCustom";
 import OrderStockState from "components/OrderStockState";
@@ -18,6 +20,7 @@ import { useParams } from "react-router-dom";
 import { IProductStock } from "types/order";
 import { numberFormat } from "utils/helpers";
 import TicketActions from "./TicketActions";
+import DeliveryAction from "./DeliveryAction";
 
 interface IOrderCardProps {
   orderStatus: string;
@@ -39,6 +42,8 @@ const OrderCard = ({
     ...productStock,
   });
   const [editActive, setEditActive] = useState(false);
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const status = [
     { value: "en_stock", label: "En stock" },
@@ -89,24 +94,51 @@ const OrderCard = ({
     });
   };
 
+
   return (
     <Paper sx={{ p: 2, mb: 1 }}>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          <Box
+          {fullScreen ? (<Box
             sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
+              mb: 1
             }}
           >
+            <Box sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "end",
+              alignItems: "center",
+              width: '100%',
+              mb: 1
+            }}>
+              <DeliveryAction status={productStock.estado} />
+            </Box>
+            <Divider />
             <Typography
               component="h3"
               fontWeight="bold"
-              gutterBottom
+              sx={{ mt: 1 }}
             >{`${updateProduct.product_id} - ${updateProduct.descripcion}`}</Typography>
-          </Box>
+          </Box>) : (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexWrap: "wrap-reverse",
+                mb: 1
+              }}
+            >
+              <Typography
+                component="h3"
+                fontWeight="bold"
+              >{`${updateProduct.product_id} - ${updateProduct.descripcion}`}</Typography>
+              <DeliveryAction status={productStock.estado} />
+            </Box>
+          )}
+
           <Divider />
         </Grid>
         <Grid item xs={12} md={6}>
@@ -119,9 +151,8 @@ const OrderCard = ({
               onChange={handleIsFractionateChange}
             />
           ) : (
-            <Typography component="span">{`Es fraccionable: ${
-              updateProduct.es_fraccionable ? "si" : "no"
-            }`}</Typography>
+            <Typography component="span">{`Es fraccionable: ${updateProduct.es_fraccionable ? "si" : "no"
+              }`}</Typography>
           )}
         </Grid>
         <Grid item xs={12} md={6}>
@@ -152,7 +183,7 @@ const OrderCard = ({
         {!!updateProduct.estado && (
           <Grid item xs={12} md={6}>
             {editActive &&
-            status.map((x) => x.value).includes(updateProduct.estado) ? (
+              status.map((x) => x.value).includes(updateProduct.estado) ? (
               <TextField
                 id="outlined-select-state"
                 select
@@ -190,9 +221,8 @@ const OrderCard = ({
               onChange={handleDetailsChange}
             />
           ) : (
-            <Typography component="span">{`Detalle: ${
-              updateProduct.detalle || "No hay detalles"
-            }`}</Typography>
+            <Typography component="span">{`Detalle: ${updateProduct.detalle || "No hay detalles"
+              }`}</Typography>
           )}
         </Grid>
         <Grid item xs={12}>

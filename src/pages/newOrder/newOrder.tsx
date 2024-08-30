@@ -11,7 +11,7 @@ const NewOrder = () => {
       <Typography component="h1" variant="h5" gutterBottom>
         Pedido
       </Typography>
-      <OrderTicket order={order} />
+      <OrderTicket order={order} onSuccess={() => deleteOrder()}/>
     </CustomContainer>
   );
 };

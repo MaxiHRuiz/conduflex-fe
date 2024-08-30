@@ -36,23 +36,20 @@ function Row(props: { row: IOrder }) {
           </IconButton>
         </TableCell>
         <TableCell>
-          <Show formType="order" orderId={row.id}/>
+          <Show formType="order" orderId={row.id} />
         </TableCell>
         <TableCell component="th" scope="row">
           {row.id}
         </TableCell>
         <TableCell>{row.vendedor}</TableCell>
         <TableCell>{dateFormatter(row.fecha)}</TableCell>
-        <TableCell>{<Chip label={row.estado} color="info" variant="outlined" size="small"/>}</TableCell>
+        <TableCell>{<Chip label={row.estado} color={row.estado === "aprobada" ? 'success' : row.estado === "pendiente" ? 'warning' : row.estado === "cancelado" ? 'error' : 'default'} variant="filled" size="small" />}</TableCell>
         <TableCell>{row.actualizado_por}</TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant="subtitle1" gutterBottom component="div">
-                Lista
-              </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
@@ -67,7 +64,7 @@ function Row(props: { row: IOrder }) {
                 </TableHead>
                 <TableBody>
                   {row.product_stock.map((stockRow) => (
-                    <TableRow key={stockRow.id} sx={{width: '100%'}}>
+                    <TableRow key={stockRow.id} sx={{ width: '100%' }}>
                       <TableCell component="th" scope="row">
                         {stockRow.id}
                       </TableCell>
@@ -124,8 +121,8 @@ export default function CollapsibleTable() {
           count={data.total}
           rowsPerPage={1}
           page={1}
-          onPageChange={() => {}}
-          onRowsPerPageChange={() => {}}
+          onPageChange={() => { }}
+          onRowsPerPageChange={() => { }}
         />
       </Paper>
     </>
