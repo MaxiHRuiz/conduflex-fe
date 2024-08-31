@@ -1,31 +1,27 @@
-import { Box, Button, Divider, Grid, Paper, styled, Typography } from "@mui/material";
+import { Grid, styled, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useGetStockById } from "services/hooks/useGetStockById";
-import QR from "./actions/QR";
-import { generateURL } from "utils/helpers";
 import Loading from "./Loading";
-import { useGetRole } from "services/hooks/useGetRole";
-import OrderStockState from "./OrderStockState";
-import FractionateForm from "./FractionateForm";
 import StockDetailCard from "./StockDetailCard";
 import FractionateCard from "./FractionateCard";
+import { useAppContext } from "context/RoleContext";
 
 export const StockDetails = () => {
   const { productId = "", stockId = "" } = useParams();
 
   const { data, isFetching, isError } = useGetStockById(productId, stockId);
-  const { data: roleData, isFetching: roleIsFetching, isError: isErrorRole } = useGetRole()
+  const { role } = useAppContext();
 
   const FormGrid = styled(Grid)(() => ({
     display: "flex",
     flexDirection: "column",
   }));
 
-  if (isFetching || roleIsFetching) return <Loading />;
+  if (isFetching) return <Loading />;
 
-  if (isError || isErrorRole) return <Typography>Error al obtener los detalles de stocks</Typography>
+  if (isError) return <Typography>Error al obtener los detalles de stocks</Typography>
 
-  if (roleData?.rol === 'admin') {
+  if (role !== 'admin') {
     <>
       <Typography component="h1" variant="h5" gutterBottom>
         Detalle de Stock

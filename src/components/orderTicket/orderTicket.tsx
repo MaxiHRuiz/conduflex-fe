@@ -9,6 +9,7 @@ import { IOrder } from "types/order";
 import TicketFooter from "./TicketFooter";
 import TicketHeader from "./TicketHeader";
 import { useGetRole } from "services/hooks/useGetRole";
+import { useAppContext } from "context/RoleContext";
 
 interface OrderTicketProps {
   order: IOrder;
@@ -17,8 +18,8 @@ interface OrderTicketProps {
 
 const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
   const navigate = useNavigate();
-  const { data, isFetching, isError: isErrorRole} = useGetRole()
-  const { mutateAsync: createOrder, isPending, isError} = useCreateOrder();
+  const { role } = useAppContext();
+  const { mutateAsync: createOrder, isPending, isError } = useCreateOrder();
   const [disabled, setDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,13 +33,13 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
     [order.product_stock]
   );
 
-  if (isErrorRole || isError) return <Typography>Error al cargar los datos</Typography>
+  if (isError) return <Typography>Error al cargar los datos</Typography>
 
-  if (isPending || isLoading || isFetching) return <Loading />;
+  if (isPending || isLoading) return <Loading />;
 
   return (
     <>
-      <TicketHeader order={order} disabledActions={disabled} setIsLoading={setIsLoading} role={data?.rol || ''} />
+      <TicketHeader order={order} disabledActions={disabled} setIsLoading={setIsLoading} role={role || ''} />
       {order.product_stock.length ? (
         order.product_stock.map((product) => {
           return (

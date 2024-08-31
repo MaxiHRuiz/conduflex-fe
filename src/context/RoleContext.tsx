@@ -1,12 +1,9 @@
 import axiosCore from 'api/createAxiosClient';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useGetRole } from 'services/hooks/useGetRole';
 import { IRole } from 'types/role';
 
 // Define el tipo para el contexto
 interface AppContextType {
-  name: string;
-  setName: (name: string) => void;
   role: string | null;
   setRole: (role: string) => void;
 }
@@ -16,8 +13,6 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 // Proveedor del contexto
 const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const { data: roleData, isFetching: roleIsFetching, isError: isErrorRole } = useGetRole()
-  const [name, setName] = useState<string>('John Doe');
   const [role, setRole] = useState<string | null>(null);
 
   // Efecto para obtener el rol del usuario al cargar la app
@@ -35,7 +30,7 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, []);
 
   return (
-    <AppContext.Provider value={{ name, setName, role, setRole }}>
+    <AppContext.Provider value={{ role, setRole }}>
       {children}
     </AppContext.Provider>
   );

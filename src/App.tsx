@@ -10,6 +10,7 @@ import { ToastContainer, Bounce } from "react-toastify";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import "react-toastify/dist/ReactToastify.css";
+import { AppProvider } from "context/RoleContext";
 
 const theme = createTheme({
   typography: {
@@ -30,27 +31,29 @@ const queryClient = new QueryClient();
 export default function App() {
   return (
     <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <TodoProvider>
-          <Router>
-            <ThemeProvider theme={theme}>
-              <ResponsiveAppBar />
-              <AppRoutes />
-              <Footer />
-              <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                closeOnClick
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
-                transition={Bounce}
-              />
-            </ThemeProvider>
-          </Router>
-        </TodoProvider>
-      </QueryClientProvider>
+      <AppProvider>
+        <QueryClientProvider client={queryClient}>
+          <TodoProvider>
+            <Router>
+              <ThemeProvider theme={theme}>
+                <ResponsiveAppBar />
+                <AppRoutes />
+                <Footer />
+                <ToastContainer
+                  position="top-right"
+                  autoClose={5000}
+                  closeOnClick
+                  pauseOnFocusLoss
+                  draggable
+                  pauseOnHover
+                  theme="light"
+                  transition={Bounce}
+                />
+              </ThemeProvider>
+            </Router>
+          </TodoProvider>
+        </QueryClientProvider>
+      </AppProvider>
     </AuthProvider>
   );
 }
