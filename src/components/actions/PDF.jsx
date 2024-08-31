@@ -2,8 +2,11 @@ import { Button } from "@mui/material";
 import jsPDF from "jspdf";
 import * as autoTable from "jspdf-autotable";
 import logo from "../../assets/images/logo-conduflex-logo.png";
+import { statusLabels, ISOdateFormatter } from "utils/helpers";
 
 const PDF = ({ order }) => {
+  const getLabel = (value) =>
+    statusLabels.find((x) => value === x.value)?.label || value;
   const generarPDF = () => {
     const doc = new jsPDF("p", "mm", "a4");
 
@@ -14,22 +17,41 @@ const PDF = ({ order }) => {
       doc.addImage(img, "JPEG", 150, 10, 50, 20);
     };
 
+    doc.setFontSize(12);
     // Agregar encabezado
+
     doc.text("Reporte de Stock de Productos", 10, 10);
-    doc.text(`Fecha: ${new Date(order.fecha).toLocaleDateString()}`, 10, 20);
-    doc.text(`Vendedor: ${order.vendedor}`, 10, 30);
+    doc.text(`Fecha: ${ISOdateFormatter(order.fecha)}`, 10, 15);
+    doc.text(`Vendedor: ${order.vendedor}`, 10, 20);
+    doc.text(`cod. orden: ${order.id}`, 10, 25);
+    doc.text(`Cliente: ${order.comprador.nombre}`, 10, 30);
+    doc.text(`Dirección: ${order.comprador.direccion}`, 10, 35);
+    doc.text(`CUIT: ${order.comprador.cuit}`, 10, 40);
+    doc.text(`C.P.: ${order.comprador.cp}`, 10, 45);
+    doc.text(`Estado: ${order.estado}`, 10, 50);
 
     // Agregar la tabla
     doc.autoTable({
-      startY: 40,
+      startY: 55,
       head: [
-        ["ID Producto", "Descripción", "Estado", "Cantidad"],
+        [
+          "id",
+          "Código",
+          "Descripción",
+          "Fraccionable",
+          "Metros de cable",
+          "Detalle",
+          "Estado",
+        ],
       ],
-      body: order.product_stock.map((item) => [
+      body: order.productos.map((item) => [
+        item.id,
         item.product_id,
         item.descripcion,
-        item.estado,
+        item.es_fraccionable ? "Si" : "No",
         item.cantidad_metros?.toString(),
+        item.detalle,
+        getLabel(item.estado),
       ]),
     });
 
@@ -60,7 +82,7 @@ const PDF = ({ order }) => {
         doc.internal.pageSize.height - 10
       );
     }
-    doc.save("reporte_stock.pdf");
+    doc.save(`reporte_stock_${fechaActual}.pdf`);
   };
 
   return <Button onClick={generarPDF}>Descargar</Button>;

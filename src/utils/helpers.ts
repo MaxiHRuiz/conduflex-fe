@@ -34,11 +34,20 @@ export const dateFormatter = (date: string, separator: string | undefined = "-",
     return options.map(format).join(separator);
 }
 
+export const ISOdateFormatter = (date: string) => {
+    const fecha = new Date(date);
+    const dia = fecha.getUTCDate().toString().padStart(2, '0');
+    const mes = (fecha.getUTCMonth() + 1).toString().padStart(2, '0');
+    const año = fecha.getUTCFullYear();
+
+    return `${dia}-${mes}-${año}`
+}
+
 
 export const stockStatusMapper = (state: string): { label: string, variant: TypeColor } => {
     if (state === "no_disponible") {
         return {
-            label: "no disponible",
+            label: "No disponible",
             variant: "error"
         }
     } if (state === "solicitud_para_producir") {
@@ -93,7 +102,7 @@ export const orderStatusMapper = (state: string): { label: string, variant: Type
             label: "Pendiente",
             variant: "info"
         }
-    } if (state === "aprobada") {
+    } if (state === "aprobado") {
         return {
             label: "Aprobado",
             variant: "success"
@@ -102,6 +111,11 @@ export const orderStatusMapper = (state: string): { label: string, variant: Type
         return {
             label: "Cancelado",
             variant: "error"
+        }
+    }    if (state === "finalizado") {
+        return {
+            label: "Finalizado",
+            variant: "success"
         }
     }
     return {
@@ -113,15 +127,26 @@ export const orderStatusMapper = (state: string): { label: string, variant: Type
 export const getDisponible = (status: string) =>
     status === "todos" ? undefined : status === "disponibles" ? true : false;
 
-// export const getStockStatus = (value: string) => {
-//     if ("NoAvailable" === value) return "no_disponible"
-//     if ("ToProducePending" === value) return "solicitud_para_producir"
-//     if ("ToProduce" === value) return "solicitud_para_producir_aprobada"
-//     if ("InProduction" === value) return "en_produccion"
-//     if ("InProductionFinished" === value) return "produccion_finalizada"
-//     if ("InStock" === value) return "en_stock"
-//     if ("ReadyToDeliver" === value) return "listo_para_entregar"
-//     if ("Delivered" === value) return "entregado"
-// }
+export const statuses = [
+    "no_disponible",
+    "solicitud_para_producir",
+    "solicitud_para_producir_aprobada",
+    "en_produccion",
+    "produccion_finalizada",
+    "en_stock",
+    "listo_para_entregar",
+    "entregado"
+];
 
-export const getStockStatus = (value: string) => ["no_disponible", "solicitud_para_producir", "solicitud_para_producir_aprobada", "en_produccion", "produccion_finalizada", "en_stock", "listo_para_entregar", "entregado"].includes(value) ? value : undefined
+export const statusLabels = [
+    { value: "no_disponible", label: "No Disponible" },
+    { value: "solicitud_para_producir", label: "Solicitud para Producir" },
+    { value: "solicitud_para_producir_aprobada", label: "Solicitud para Producir Aprobada" },
+    { value: "en_produccion", label: "En Producción" },
+    { value: "produccion_finalizada", label: "Producción Finalizada" },
+    { value: "en_stock", label: "En Stock" },
+    { value: "listo_para_entregar", label: "Listo para Entregar" },
+    { value: "entregado", label: "Entregado" }
+];
+
+export const getStockStatus = (value: string) => statuses.includes(value) ? value : undefined

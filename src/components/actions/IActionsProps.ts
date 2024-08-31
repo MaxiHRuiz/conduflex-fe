@@ -11,5 +11,5 @@ export interface IActionsButtonProps {
     formType: FormType
     productId?: string
     stockId?: string
-    orderId?: number
+    orderId?: string
 }

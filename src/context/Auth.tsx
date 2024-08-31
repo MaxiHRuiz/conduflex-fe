@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { supabase } from "../lib/api";
 import { AuthError, Session } from "@supabase/supabase-js";
 import Loading from "components/Loading";
+import SessionDialog from "../components/SessionDialog";
 
 const defaultValues = {
   signOut: function (): Promise<{
@@ -21,6 +22,7 @@ export const AuthContext = React.createContext<{
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [userSession, setUserSession] = useState<Session | null>();
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,6 +45,36 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
+  useEffect(() => {
+    if (userSession) {
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (userSession.expires_at && userSession.expires_at < currentTime) {
+        console.log('Token has expired');
+        setDialogOpen(true);
+      } else {
+        console.log('Token is valid');
+      }
+    }
+  }, [userSession]);
+
+  const handleClose = () => {
+    setDialogOpen(false);
+    // Redirigir al usuario a la página de inicio de sesión
+    window.location.href = '/login';
+  };
+
+  const handleRefresh = async () => {
+    setDialogOpen(true);
+    supabase.auth.refreshSession().then(({ data: { session } }) =>{
+      setUserSession(session ?? null);
+    }).catch((error) => {
+      console.error('Error refreshing token:', error);
+      window.location.href = '/login';
+    }).finally(() => {
+      setDialogOpen(false);
+    })
+  };
+
   // Will be passed down to Signup, Login and Dashboard components
   const value = {
     signOut: () => supabase.auth.signOut(),
@@ -56,6 +88,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       ) : (
         children
       )}
+      <SessionDialog open={dialogOpen} onClose={handleClose} onRefresh={handleRefresh} />
     </AuthContext.Provider>
   );
 };

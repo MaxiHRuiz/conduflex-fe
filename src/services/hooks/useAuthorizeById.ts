@@ -4,14 +4,18 @@ import axiosCore from 'api/createAxiosClient';
 import { toast } from 'react-toastify';
 import { onError } from 'utils/helpers';
 
-const authorizeById = async (orderId: number): Promise<AxiosResponse<number, any>> => {
-    return await axiosCore.post(`/order/${orderId}/authorize`);
+interface IAuthorizeBody {
+    productStock: string[]
+}
+
+const authorizeById = async (orderId: string, body: IAuthorizeBody): Promise<AxiosResponse<IAuthorizeBody, any>> => {
+    return await axiosCore.post(`/order/${orderId}/authorize`, body);
 };
 
-export const useAuthorizeById = (): UseMutationResult<AxiosResponse<number, any>, Error, number, unknown> => {
+export const useAuthorizeById = (orderId: string): UseMutationResult<AxiosResponse<IAuthorizeBody, any>, Error, IAuthorizeBody, unknown> => {
     return useMutation({
-        mutationFn: (orderId: number) =>
-            authorizeById(orderId),
+        mutationFn: (body: IAuthorizeBody) =>
+            authorizeById(orderId, body),
         onSuccess: () => {
             toast.success("Se autorizo la orden correctamente");
         },

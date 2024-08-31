@@ -4,7 +4,11 @@ import Link from "@mui/material/Link";
 import { Box, Typography } from "@mui/material";
 import { capitalizeFirstLetter } from "utils/helpers";
 
-const BreadCrumbs = () => {
+interface IBreadCrumbsProps {
+  excludeLink?: string[]
+}
+
+const BreadCrumbs = ({excludeLink = []}: IBreadCrumbsProps) => {
   const location = useLocation();
   const paths = location.pathname.split('/').slice(1)
   console.log("location", paths);
@@ -20,8 +24,8 @@ const BreadCrumbs = () => {
     <>
       <Breadcrumbs aria-label="breadcrumb" sx={{pb: 1}}>
         {breadcrumbs &&
-          breadcrumbs.map((b, index) =>
-            index !== breadcrumbs.length - 1 ? (
+          breadcrumbs.filter(x => !excludeLink.includes(x.title)).map((b, index) =>
+            index !== breadcrumbs.length - excludeLink.length - 1 ? (
               <Box key={b.title}>
                 <Link underline="hover" color="inherit" href={b.link}>
                   {capitalizeFirstLetter(b.title)}

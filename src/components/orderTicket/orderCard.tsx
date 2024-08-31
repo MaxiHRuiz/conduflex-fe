@@ -94,33 +94,36 @@ const OrderCard = ({
     });
   };
 
-
   return (
     <Paper sx={{ p: 2, mb: 1 }}>
       <Grid container spacing={1}>
         <Grid item xs={12}>
-          {fullScreen ? (<Box
-            sx={{
-              mb: 1
-            }}
-          >
-            <Box sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "end",
-              alignItems: "center",
-              width: '100%',
-              mb: 1
-            }}>
-              <DeliveryAction status={productStock.estado} />
+          {fullScreen ? (
+            <Box
+              sx={{
+                mb: 1,
+              }}
+            >
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "end",
+                  alignItems: "center",
+                  width: "100%",
+                  mb: 1,
+                }}
+              >
+                <DeliveryAction status={productStock.estado} />
+              </Box>
+              <Divider />
+              <Typography
+                component="h3"
+                fontWeight="bold"
+                sx={{ mt: 1 }}
+              >{`${updateProduct.product_id} - ${updateProduct.descripcion}`}</Typography>
             </Box>
-            <Divider />
-            <Typography
-              component="h3"
-              fontWeight="bold"
-              sx={{ mt: 1 }}
-            >{`${updateProduct.product_id} - ${updateProduct.descripcion}`}</Typography>
-          </Box>) : (
+          ) : (
             <Box
               sx={{
                 display: "flex",
@@ -128,7 +131,7 @@ const OrderCard = ({
                 justifyContent: "space-between",
                 alignItems: "center",
                 flexWrap: "wrap-reverse",
-                mb: 1
+                mb: 1,
               }}
             >
               <Typography
@@ -142,6 +145,11 @@ const OrderCard = ({
           <Divider />
         </Grid>
         <Grid item xs={12} md={6}>
+          <Typography component="h4" gutterBottom>
+            Cod: {updateProduct.id}
+          </Typography>
+        </Grid>
+        <Grid item xs={12} md={6}>
           {!orderId && editActive ? (
             <FormControlLabel
               name="isFractionate"
@@ -151,8 +159,9 @@ const OrderCard = ({
               onChange={handleIsFractionateChange}
             />
           ) : (
-            <Typography component="span">{`Es fraccionable: ${updateProduct.es_fraccionable ? "si" : "no"
-              }`}</Typography>
+            <Typography component="span">{`Es fraccionable: ${
+              updateProduct.es_fraccionable ? "si" : "no"
+            }`}</Typography>
           )}
         </Grid>
         <Grid item xs={12} md={6}>
@@ -182,29 +191,7 @@ const OrderCard = ({
         </Grid> */}
         {!!updateProduct.estado && (
           <Grid item xs={12} md={6}>
-            {editActive &&
-              status.map((x) => x.value).includes(updateProduct.estado) ? (
-              <TextField
-                id="outlined-select-state"
-                select
-                label="Estado"
-                size="small"
-                fullWidth
-                defaultValue={updateProduct.estado}
-              >
-                {status.map((option) => (
-                  <MenuItem
-                    key={option.value}
-                    value={option.value}
-                    disabled={option.value === "en_stock"}
-                  >
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            ) : (
-              <OrderStockState state={updateProduct.estado} />
-            )}
+            <OrderStockState state={updateProduct.estado} />
           </Grid>
         )}
         <Grid item xs={12} md={6}>
@@ -221,8 +208,9 @@ const OrderCard = ({
               onChange={handleDetailsChange}
             />
           ) : (
-            <Typography component="span">{`Detalle: ${updateProduct.detalle || "No hay detalles"
-              }`}</Typography>
+            <Typography component="span">{`Detalle: ${
+              updateProduct.detalle || "No hay detalles"
+            }`}</Typography>
           )}
         </Grid>
         <Grid item xs={12}>
@@ -233,7 +221,7 @@ const OrderCard = ({
             onCancel={handleCancel}
             onDelete={handleDelete}
             onActiveUpdate={handleActiveUpdate}
-            disabledDelete={orderStatus !== 'pendiente'}
+            disabledDelete={orderStatus !== "pendiente"}
           />
         </Grid>
       </Grid>

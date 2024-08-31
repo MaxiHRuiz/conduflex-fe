@@ -1,13 +1,15 @@
-import { Paper, Typography, Button } from "@mui/material";
+import { Paper, Typography, Button, Box } from "@mui/material";
+import { useTodo } from "context/TodoContext";
 import { useParams } from "react-router-dom";
 
 interface TicketFooter {
   disabled: boolean;
-  total: number;
+  total: string;
   onCreateOrder: () => void;
 }
 
 const TicketFooter = ({ disabled, total, onCreateOrder }: TicketFooter) => {
+  const {deleteOrder} = useTodo()
   const { orderId } = useParams();
   return (
     <>
@@ -22,13 +24,26 @@ const TicketFooter = ({ disabled, total, onCreateOrder }: TicketFooter) => {
       >
         <Typography fontWeight="bold">{`Total: ${total}`}</Typography>
         {!orderId && (
-          <Button
-            variant="contained"
-            disabled={disabled}
-            onClick={onCreateOrder}
-          >
-            Hacer pedido
-          </Button>
+          <Box sx={{
+            display: 'flex',
+            gap: 1
+          }}>
+            <Button
+              variant="contained"
+              color="error"
+              disabled={disabled}
+              onClick={() => deleteOrder()}
+            >
+              Eliminar
+            </Button>
+            <Button
+              variant="contained"
+              disabled={disabled}
+              onClick={onCreateOrder}
+            >
+              Hacer pedido
+            </Button>
+          </Box>
         )}
       </Paper>
     </>

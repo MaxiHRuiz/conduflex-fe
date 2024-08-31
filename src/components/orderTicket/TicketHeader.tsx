@@ -6,9 +6,10 @@ import TicketActionsContainer from "./TicketActionsContainer";
 import { useDeleteOrderById } from "services/hooks/useDeleteOrderById";
 import { useAuthorizeById } from "services/hooks/useAuthorizeById";
 import ConfirmButton from "components/ConfirmButton";
+import { useParams } from "react-router-dom";
 
 interface TicketHeader {
-  role: string
+  role: string;
   order: IOrder;
   disabledActions: boolean;
   setIsLoading: (value: boolean) => void;
@@ -19,8 +20,9 @@ const TicketHeader = ({
   disabledActions,
   setIsLoading,
 }: TicketHeader) => {
+  const { orderId = "" } = useParams();
   const { mutateAsync: deleteOrder } = useDeleteOrderById();
-  const { mutateAsync: authorize } = useAuthorizeById();
+  const { mutateAsync: authorize } = useAuthorizeById(orderId);
 
   const handleDelete = () => {
     setIsLoading(true);
@@ -33,49 +35,62 @@ const TicketHeader = ({
 
   const handleAuthorize = () => {
     setIsLoading(true);
-    authorize(order.id, {
-      onSettled() {
-        setIsLoading(false);
-      },
-    });
+    authorize(
+      { productStock: [order.id] },
+      {
+        onSettled() {
+          setIsLoading(false);
+        },
+      }
+    );
   };
 
   return (
     <Paper
       sx={{
-        p: 1,
+        p: 2,
         mb: 1,
       }}
     >
       {order.estado === "pendiente" && (
         <TicketActionsContainer buttonDivider>
-          <ConfirmButton
-            buttonText="Aprobar"
-            dialogTitle="Confirmar acción"
-            dialogContent="¿Estás seguro de que deseas aprobar este pedido?"
-            buttonColor="success"
-            disabled={disabledActions || role !== 'admin'}
-            onConfirm={handleAuthorize}
-          />
-          <ConfirmButton
-            buttonText="Eliminar"
-            dialogTitle="Confirmar acción"
-            dialogContent="¿Estás seguro de que deseas eliminar este pedido?"
-            buttonColor="error"
-            disabled={disabledActions}
-            onConfirm={handleDelete}
-          />
+          <div>
+            <ConfirmButton
+              buttonText="Aprobar"
+              dialogTitle="Confirmar acción"
+              dialogContent="¿Estás seguro de que deseas aprobar este pedido?"
+              buttonColor="success"
+              disabled={disabledActions || role !== "admin"}
+              onConfirm={handleAuthorize}
+            />
+          </div>
+          <div>
+            <ConfirmButton
+              buttonText="Eliminar"
+              dialogTitle="Confirmar acción"
+              dialogContent="¿Estás seguro de que deseas eliminar este pedido?"
+              buttonColor="error"
+              disabled={disabledActions}
+              onConfirm={handleDelete}
+            />
+          </div>
         </TicketActionsContainer>
       )}
-      <Typography fontWeight="bold">{`Vendedor: ${order.vendedor || "-"
-        }`}</Typography>
+      <Typography fontWeight="bold">{`Vendedor: ${
+        order.vendedor || "-"
+      }`}</Typography>
       {order.fecha && (
         <Typography fontWeight="bold">{`Fecha: ${dateFormatter(
           order.fecha
         )}`}</Typography>
       )}
-      {order.estado && <OrderState state={order.estado} />}
-
+      <Typography fontWeight="bold">{`Cliente: ${
+        order.comprador.nombre || "-"
+      }`}</Typography>
+      <Typography fontWeight="bold">{`CUIT: ${order.comprador.cuit  || "-"}`}</Typography>
+      <Typography fontWeight="bold">{`Dirección: ${order.comprador.direccion  || "-"}`}</Typography>
+      <Typography fontWeight="bold">{`C.P.: ${order.comprador.cp || "-"}`}</Typography>
+      <OrderState label bold state={order.estado} />
     </Paper>
   );
 };

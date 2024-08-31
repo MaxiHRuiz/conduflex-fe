@@ -16,14 +16,18 @@ import { GridPaginationModel } from "@mui/x-data-grid";
 import React from "react";
 import Loading from "components/Loading";
 import { useGetStocksByProductId } from "services/hooks/useGetStocksByProductId";
-import { getDisponible, getStockStatus } from "utils/helpers";
+import {
+  getDisponible,
+  getStockStatus,
+  statusLabels,
+} from "utils/helpers";
 
 const ShowProduct = () => {
   const { productId = "" } = useParams();
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [page, setPage] = React.useState(0);
   const [status, setStatus] = React.useState("disponibles");
-  const [available, setAvailable] = React.useState("disponibles");
+  const [available, setAvailable] = React.useState("todos");
   const [id, setId] = React.useState("");
 
   const { data, isFetching, isError } = useGetProduct(productId);
@@ -100,21 +104,24 @@ const ShowProduct = () => {
               gap: 1,
             }}
           >
-            <FormControl fullWidth size="small">
-              <InputLabel id="status-select-label">Estado</InputLabel>
+            <FormControl fullWidth size="small" sx={{width: 200}}>
+              <InputLabel id="available-select-label">Estado</InputLabel>
               <Select
-                labelId="status-select-label"
-                id="status-select"
-                value={status}
+                labelId="available-select-label"
+                id="available-select"
+                value={available}
                 label="Estado"
                 onChange={handleAvailableChange}
               >
                 <MenuItem value="todos">Todos</MenuItem>
-                <MenuItem value="disponibles">Disponibles</MenuItem>
-                <MenuItem value="no_disponibles">No disponibles</MenuItem>
+                {statusLabels.map((status: any) => (
+                  <MenuItem key={status.value} value={status.value}>
+                    {status.label}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
-            <FormControl fullWidth size="small">
+            <FormControl fullWidth size="small" sx={{width: 200}}>
               <InputLabel id="status-select-label">Disponibilidad</InputLabel>
               <Select
                 labelId="status-select-label"

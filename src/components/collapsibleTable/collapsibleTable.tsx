@@ -8,7 +8,6 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
@@ -18,6 +17,7 @@ import Loading from "components/Loading";
 import { Chip, TablePagination } from "@mui/material";
 import Show from "components/actions/show";
 import { dateFormatter } from "utils/helpers";
+import OrderState from "components/OrderState";
 
 function Row(props: { row: IOrder }) {
   const { row } = props;
@@ -43,7 +43,7 @@ function Row(props: { row: IOrder }) {
         </TableCell>
         <TableCell>{row.vendedor}</TableCell>
         <TableCell>{dateFormatter(row.fecha)}</TableCell>
-        <TableCell>{<Chip label={row.estado} color={row.estado === "aprobada" ? 'success' : row.estado === "pendiente" ? 'warning' : row.estado === "cancelado" ? 'error' : 'default'} variant="filled" size="small" />}</TableCell>
+        <TableCell>{<OrderState state={row.estado} />}</TableCell>
         <TableCell>{row.actualizado_por}</TableCell>
       </TableRow>
       <TableRow>
@@ -58,13 +58,13 @@ function Row(props: { row: IOrder }) {
                     <TableCell>Descripcion</TableCell>
                     <TableCell>Fraccionable</TableCell>
                     <TableCell>Metros</TableCell>
-                    <TableCell>Precio por m.</TableCell>
+                    {/* <TableCell>Precio por m.</TableCell> */}
                     <TableCell>Detalle</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.product_stock.map((stockRow) => (
-                    <TableRow key={stockRow.id} sx={{ width: '100%' }}>
+                  {row.productos.map((stockRow) => (
+                    <TableRow key={stockRow.id}>
                       <TableCell component="th" scope="row">
                         {stockRow.id}
                       </TableCell>
@@ -74,7 +74,7 @@ function Row(props: { row: IOrder }) {
                         {stockRow.es_fraccionable ? "SI" : "NO"}
                       </TableCell>
                       <TableCell>{stockRow.cantidad_metros}</TableCell>
-                      <TableCell>{stockRow.precio}</TableCell>
+                      {/* <TableCell>{stockRow.precio}</TableCell> */}
                       <TableCell>{stockRow.detalle}</TableCell>
                     </TableRow>
                   ))}

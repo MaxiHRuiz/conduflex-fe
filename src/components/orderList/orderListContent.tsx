@@ -11,11 +11,11 @@ interface OrderListProps {
 const OrderListContent: React.FC<OrderListProps> = ({ order }) => {
   const { userSession } = useAuth();
 
-  const total = useCallback(() => numberFormat(order.product_stock.map(product => product.precio).reduce((a, b) =>a + b, 0))
-  , [order.product_stock])
+  const total = useCallback(() => numberFormat(order.productos.map(product => product.precio).reduce((a, b) =>a + b, 0))
+  , [order.productos])
 
   const getListContent = () => {
-    if (!order.product_stock.length) {
+    if (!order?.productos?.length) {
       return <Typography>No hay pedidos pendientes</Typography>;
     }
 
@@ -28,7 +28,7 @@ const OrderListContent: React.FC<OrderListProps> = ({ order }) => {
           Si queres modificarlo o confirmarlo hace clic en la lista.
         </Typography>
         <ul>
-          {order.product_stock.map((product) => (
+          {order.productos.map((product) => (
             <li key={product.id}>
               <span>{`${product.product_id} - ${product.descripcion}: ${numberFormat(product.cantidad_metros, false)} m.`}</span>
             </li>

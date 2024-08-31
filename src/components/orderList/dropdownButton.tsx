@@ -53,7 +53,7 @@ const DropdownButton: React.FC = () => {
       <Tooltip title="Pedido pendiente">
         <StyledBadge
           variant="dot"
-          invisible={!order.product_stock.length}
+          invisible={!order?.productos?.length}
           color="info"
         >
           <IconButton

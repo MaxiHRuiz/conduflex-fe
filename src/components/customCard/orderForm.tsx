@@ -62,7 +62,7 @@ const OrderForm = ({ product }: IOrderFromProps) => {
 
   const generateOrder = () => {
     const newProduct: IProductStock = {
-      id: (order.product_stock.length + 1).toString(),
+      id: (order?.productos?.length + 1).toString(),
       product_id: product.id,
       descripcion: product.descripcion,
       cantidad_metros: Number(values.meters),
@@ -79,12 +79,18 @@ const OrderForm = ({ product }: IOrderFromProps) => {
 
     saveNewOrder({
       vendedor: userSession?.user.email || "",
-      product_stock: [newProduct],
-      id: 0,
+      productos: [newProduct],
+      id: "",
       estado: "",
       actualizado_por: "",
       fecha: "",
-      precio: 0
+      precio: 0,
+      comprador: {
+        nombre: "",
+        cuit: "",
+        cp: 0,
+        direccion: ""
+      }
     });
   };
 

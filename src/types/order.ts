@@ -1,16 +1,24 @@
 import { IBaseParams } from "./base";
 
+export interface IComprador {
+    nombre: string,
+    cuit: string,
+    cp: number,
+    direccion: string
+}
+
 export interface IBaseOrder {
     estado: string,
     vendedor: string,
     actualizado_por: string,
     fecha: string,
-    product_stock: IProductStock[],
-    precio: number
+    productos: IProductStock[],
+    precio: number,
+    comprador: IComprador,
 }
 
 export interface IOrder extends IBaseOrder {
-    id: number
+    id: string
 }
 
 export interface IOrderParams extends IBaseParams {

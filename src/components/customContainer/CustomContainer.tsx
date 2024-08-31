@@ -2,7 +2,7 @@ import { Box, Container, useTheme } from "@mui/material";
 import BreadCrumbs from "../BreadCrumbs";
 import { ICustomContainerProps } from "./ICustomContainerProps";
 
-const CustomContainer = ({ breadCrumbs, children }: ICustomContainerProps) => {
+const CustomContainer = ({ breadCrumbs, children, excludeLink }: ICustomContainerProps) => {
     const theme = useTheme();
 
     return (
@@ -20,7 +20,7 @@ const CustomContainer = ({ breadCrumbs, children }: ICustomContainerProps) => {
             <Container maxWidth='md' sx={{
                 padding: 2
             }}>
-                {breadCrumbs && <BreadCrumbs />}
+                {breadCrumbs && <BreadCrumbs excludeLink={excludeLink} />}
                 {children}
             </Container>
         </Box>);

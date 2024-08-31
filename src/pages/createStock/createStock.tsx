@@ -50,7 +50,7 @@ const CreateStock = () => {
 
   return (
     <>
-      <CustomContainer breadCrumbs>{createStockContent()}</CustomContainer>
+      <CustomContainer breadCrumbs excludeLink={['stocks']}>{createStockContent()}</CustomContainer>
     </>
   );
 };

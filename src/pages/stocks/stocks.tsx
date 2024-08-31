@@ -13,25 +13,25 @@ import StockTable from "components/DataTable/StockTable";
 import { useGetStocks } from "services/hooks/useGetStocks";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import React from "react";
+import { getDisponible, getStockStatus, statusLabels } from "utils/helpers";
 
 const Stocks = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [page, setPage] = React.useState(0);
-  const [status, setStatus] = React.useState("disponibles");
+  const [status, setStatus] = React.useState("todos");
   const [id, setId] = React.useState("");
+  const [available, setAvailable] = React.useState("todos");
+
 
   const handleStatusChange = (event: SelectChangeEvent) => {
     setStatus(event.target.value as string);
   };
 
-  const getDisponible = (status: string) =>
-    status === "todos" ? undefined : status === "disponibles" ? true : false;
-
   const { data, isFetching, isError } = useGetStocks({
     offset: page * rowsPerPage,
     limit: rowsPerPage,
     disponible: getDisponible(status),
-    estado: "",
+    estado: getStockStatus(available),
     id,
   });
 
@@ -48,6 +48,10 @@ const Stocks = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     setId(e.target.value);
+  };
+
+  const handleAvailableChange = (event: SelectChangeEvent) => {
+    setAvailable(event.target.value as string);
   };
 
   if (isError) return <Typography>Error al cargar los stocks</Typography>;
@@ -86,7 +90,24 @@ const Stocks = () => {
           </Box>
 
           <Box sx={{ flexShrink: 0, flexDirection: "row", display: "flex", gap: 1 }}>
-            <FormControl fullWidth size="small">
+          <FormControl fullWidth size="small" sx={{width: 200}}>
+              <InputLabel id="available-select-label">Estado</InputLabel>
+              <Select
+                labelId="available-select-label"
+                id="available-select"
+                value={available}
+                label="Estado"
+                onChange={handleAvailableChange}
+              >
+                <MenuItem value="todos">Todos</MenuItem>
+                {statusLabels.map((status: any) => (
+                  <MenuItem key={status.value} value={status.value}>
+                    {status.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl fullWidth size="small" sx={{width: 200}}>
               <InputLabel id="status-select-label">Estado</InputLabel>
               <Select
                 labelId="status-select-label"

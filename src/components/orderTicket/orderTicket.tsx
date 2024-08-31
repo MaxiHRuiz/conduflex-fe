@@ -10,6 +10,7 @@ import TicketFooter from "./TicketFooter";
 import TicketHeader from "./TicketHeader";
 import { useGetRole } from "services/hooks/useGetRole";
 import { useAppContext } from "context/RoleContext";
+import StockStatusChart from "components/orderTicket/StockStatusPieChart";
 
 interface OrderTicketProps {
   order: IOrder;
@@ -26,22 +27,27 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
   const total = useCallback(
     () =>
       numberFormat(
-        order.product_stock
+        order.productos
           .map((product) => product.precio)
           .reduce((a, b) => a + b, 0)
       ),
-    [order.product_stock]
+    [order.productos]
   );
 
-  if (isError) return <Typography>Error al cargar los datos</Typography>
+  if (isError) return <Typography>Error al cargar los datos</Typography>;
 
   if (isPending || isLoading) return <Loading />;
 
   return (
     <>
-      <TicketHeader order={order} disabledActions={disabled} setIsLoading={setIsLoading} role={role || ''} />
-      {order.product_stock.length ? (
-        order.product_stock.map((product) => {
+      <TicketHeader
+        order={order}
+        disabledActions={disabled}
+        setIsLoading={setIsLoading}
+        role={role || ""}
+      />
+      {order?.productos?.length ? (
+        order.productos.map((product) => {
           return (
             <OrderCard
               disabledActions={disabled}
@@ -58,8 +64,8 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
         </Paper>
       )}
       <TicketFooter
-        disabled={disabled || !order.product_stock.length}
-        total={order.precio}
+        disabled={disabled || !order?.productos?.length}
+        total={numberFormat(order.precio)}
         onCreateOrder={() =>
           createOrder(order as unknown as IOrder, {
             onSuccess: () => {
@@ -69,6 +75,9 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
           })
         }
       />
+      {!!order.id && !!order?.productos?.length && (
+        <StockStatusChart productStock={order.productos} />
+      )}
     </>
   );
 };

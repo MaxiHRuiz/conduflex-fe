@@ -4,12 +4,18 @@ import { IOrder, IProductStock } from "types/order";
 
 const defaultOrder: IOrder = {
   vendedor: "",
-  product_stock: [],
-  id: 0,
+  productos: [],
+  id: "",
   estado: "",
   actualizado_por: "",
   fecha: "",
-  precio: 0
+  precio: 0,
+  comprador: {
+    nombre: "",
+    cuit: "",
+    cp: 0,
+    direccion: ""
+  }
 };
 
 const defaultValues: TodoContextType = {
@@ -19,12 +25,18 @@ const defaultValues: TodoContextType = {
   },
   order: {
     vendedor: "",
-    product_stock: [],
-    id: 0,
+    productos: [],
+    id: "",
     estado: "",
     actualizado_por: "",
     fecha: "",
-    precio: 0
+    precio: 0,
+    comprador: {
+      nombre: "",
+      cuit: "",
+      cp: 0,
+      direccion: ""
+    }
   },
   saveNewOrder: (order: IOrder) => {
     throw new Error("Function not implemented.");
@@ -76,24 +88,24 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
   const saveOrderProduct = (product: IProductStock) =>
     setOrder({
       ...order,
-      product_stock: [...order.product_stock, product],
+      productos: [...order.productos, product],
     });
 
   const updateOrderProduct = (updateProduct: IProductStock) => {
-    const product_stock = order.product_stock.map((product: IProductStock) => {
+    const productos = order.productos.map((product: IProductStock) => {
       if (product.id === updateProduct.id) {
         return updateProduct;
       }
       return product;
     });
 
-    setOrder({ ...order, product_stock });
+    setOrder({ ...order, productos });
   };
 
   const deleteOrderProduct = (id: string) =>
     setOrder({
       ...order,
-      product_stock: order.product_stock.filter(
+      productos: order.productos.filter(
         (product: IProductStock) => product.id !== id
       ),
     });

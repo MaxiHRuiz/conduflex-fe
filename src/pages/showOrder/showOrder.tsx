@@ -20,15 +20,17 @@ const ShowOrder = () => {
 
   return (
     <CustomContainer breadCrumbs>
-      <Box sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-      }}>
-      <Typography component="h1" variant="h5" gutterBottom>
-        Pedido
-      </Typography>
-      <PDF order={data} />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography component="h1" variant="h5" gutterBottom>
+          Pedido
+        </Typography>
+        {data.id && !isLoading && <PDF order={data} />}
       </Box>
 
       <OrderTicket order={data} />
