@@ -5,6 +5,7 @@ import { IProduct } from "types/product";
 import ConfirmButton from "./ConfirmButton";
 import { useUpdateFractionate } from "services/hooks/useUpdateFractionate";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 interface IOrderFromValues {
   isFractionate: boolean;
@@ -23,23 +24,27 @@ interface FractionateForm {
 }
 
 const FractionateForm = ({ disabled = false }: FractionateForm) => {
-    const {productId = "", stockId = ""} = useParams()
+  const { productId = "", stockId = "" } = useParams();
   const { mutateAsync: update, isPending } = useUpdateFractionate();
-  const [value, setValue] = React.useState<string>('');
+  const [value, setValue] = React.useState<string>("");
   const dialogTitle = "Confirmar acción";
   const dialogContent = "¿Estás seguro de que deseas fraccionar este producto?";
   const label = "Fraccionar";
 
   const handleMetersChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value)
+    setValue(event.target.value);
   };
 
   const onHandleClick = () => {
+    if (!value) {
+      toast.warning("No ingresaste la cantidad de mentros para fraccionar");
+      return
+    }
     update({
-        fraccion: Number(value),
-        productId,
-        stockId
-    })
+      fraccion: Number(value),
+      productId,
+      stockId,
+    });
   };
 
   return (
@@ -49,8 +54,6 @@ const FractionateForm = ({ disabled = false }: FractionateForm) => {
         flexDirection: "row",
         gap: 1,
         py: 1,
-        // justifyContent: "center",
-        // alignItems: "center",
       }}
     >
       <TextField
