@@ -10,14 +10,11 @@ const authorizeOrder = async (orderId: string): Promise<AxiosResponse<string, an
 };
 
 export const useAuthorizeOrder = (): UseMutationResult<AxiosResponse<string, any>, Error, string, unknown> => {
-    const navigate = useNavigate()
-
     return useMutation({
         mutationFn: (orderId: string) =>
             authorizeOrder(orderId),
         onSuccess: () => {
             toast.success("Se ha sido aprobado el pedido correctamente");
-            navigate("/");
         },
         onError
     })
