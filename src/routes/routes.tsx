@@ -21,7 +21,7 @@ function AppRoutes() {
       <Route element={<PrivateRoute />}>
         <Route path="/" element={<Navigate to={'/productos'} />} />
         <Route path="/productos/:productId/stocks/crear" element={<CreateStock />} />
-        <Route path="/productos/:productId/stocks/:stockId/editar" element={<EditStock />} />
+        {/* <Route path="/productos/:productId/stocks/:stockId/editar" element={<EditStock />} /> */}
         <Route path="/productos/:productId/stocks/:stockId" element={<StockDetails />} />
         <Route path="/productos/stocks" element={<Stocks />} />
         <Route path="/productos/crear" element={<CreateProduct />} />

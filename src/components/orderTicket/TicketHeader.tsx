@@ -1,12 +1,10 @@
-import { Grid, Paper, styled, Typography } from "@mui/material";
+import { Paper, Typography } from "@mui/material";
 import { IComprador, IOrder } from "types/order";
-import { dateFormatter, ISOdateFormatter } from "utils/helpers";
+import { ISOdateFormatter } from "utils/helpers";
 import OrderState from "components/OrderState";
 import TicketActionsContainer from "./TicketActionsContainer";
-import { useDeleteOrderById } from "services/hooks/useDeleteOrderById";
 import ConfirmButton from "components/ConfirmButton";
 import { useParams } from "react-router-dom";
-import { useAuthorizeOrder } from "services/hooks/useAuthorizeOrder";
 import { useState } from "react";
 import { ClientForm } from "components/client/ClientForm";
 
@@ -17,6 +15,8 @@ interface TicketHeader {
   setIsLoading: (value: boolean) => void;
   generateOrderDisabled: (value: boolean) => void;
   onSubmitComprador: (comprador: IComprador) => void;
+  onDelete: () => void
+  onAuthorize: () => void
 }
 const TicketHeader = ({
   role,
@@ -25,29 +25,10 @@ const TicketHeader = ({
   setIsLoading,
   generateOrderDisabled,
   onSubmitComprador,
+  onDelete,
+  onAuthorize
 }: TicketHeader) => {
-  const { orderId = "" } = useParams();
-  const { mutateAsync: deleteOrder } = useDeleteOrderById();
-  const { mutateAsync: authorize } = useAuthorizeOrder();
   const [editActive, setEditActive] = useState(false);
-
-  const handleDelete = () => {
-    setIsLoading(true);
-    deleteOrder(order.id, {
-      onSettled() {
-        setIsLoading(false);
-      },
-    });
-  };
-
-  const handleAuthorize = () => {
-    setIsLoading(true);
-    authorize(orderId, {
-      onSettled() {
-        setIsLoading(false);
-      },
-    });
-  };
 
   const handleUpdate = (comprador: IComprador) => {
     onSubmitComprador(comprador)
@@ -81,7 +62,7 @@ const TicketHeader = ({
               dialogContent="¿Estás seguro de que deseas aprobar este pedido?"
               buttonColor="success"
               disabled={disabledActions || role !== "admin"}
-              onConfirm={handleAuthorize}
+              onConfirm={onAuthorize}
             />
           </div>
           <div>
@@ -91,7 +72,7 @@ const TicketHeader = ({
               dialogContent="¿Estás seguro de que deseas eliminar este pedido?"
               buttonColor="error"
               disabled={disabledActions}
-              onConfirm={handleDelete}
+              onConfirm={onDelete}
             />
           </div>
         </TicketActionsContainer>

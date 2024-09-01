@@ -12,6 +12,8 @@ import { useAppContext } from "context/RoleContext";
 import StockStatusChart from "components/orderTicket/StockStatusPieChart";
 import { useUpdateOrder } from "services/hooks/useUpdateOrder";
 import { useTodo } from "context/TodoContext";
+import { useAuthorizeOrder } from "services/hooks/useAuthorizeOrder";
+import { useDeleteOrderById } from "services/hooks/useDeleteOrderById";
 
 interface OrderTicketProps {
   order: IOrder;
@@ -33,6 +35,10 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
   const { mutateAsync: createOrder, isPending } = useCreateOrder();
   const { mutateAsync: updateOrder, isPending: isPendingOrder } =
     useUpdateOrder();
+  const { mutateAsync: deleteOrder, isPending: deleteIsPending } =
+    useDeleteOrderById();
+  const { mutateAsync: authorizeOrder, isPending: authorizeIsPending } =
+    useAuthorizeOrder();
   const [disabled, setDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -86,7 +92,22 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
     deleteOrderProduct(productId);
   };
 
-  if (isPending || isLoading || isPendingOrder) return <Loading />;
+  const onDeleteOrder = () => {
+    deleteOrder(order.id)
+  }
+
+  const onAuthorize = () => {
+    authorizeOrder(order.id)
+  }
+
+  if (
+    isPending ||
+    isLoading ||
+    isPendingOrder ||
+    authorizeIsPending ||
+    deleteIsPending
+  )
+    return <Loading />;
 
   return (
     <>
@@ -97,6 +118,8 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
         role={role || ""}
         generateOrderDisabled={setDisabled}
         onSubmitComprador={onSubmitComprador}
+        onDelete={onDeleteOrder}
+        onAuthorize={onAuthorize}
       />
       {order?.estado === "pendiente" && role !== "admin" && (
         <Typography m={1}>
