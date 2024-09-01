@@ -1,4 +1,5 @@
 import axiosCore from 'api/createAxiosClient';
+import Loading from 'components/Loading';
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { IRole } from 'types/role';
 
@@ -14,6 +15,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 // Proveedor del contexto
 const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [role, setRole] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true)
 
   // Efecto para obtener el rol del usuario al cargar la app
   useEffect(() => {
@@ -23,6 +25,8 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         setRole(data.rol);
       } catch (error) {
         console.error('Error al obtener el rol del usuario:', error);
+      } finally {
+        setLoading(false)
       }
     };
 
@@ -31,7 +35,7 @@ const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   return (
     <AppContext.Provider value={{ role, setRole }}>
-      {children}
+      {loading ? <Loading linearProgress /> : children}
     </AppContext.Provider>
   );
 };

@@ -1,4 +1,4 @@
-import { useMutation, UseMutationResult } from '@tanstack/react-query';
+import { useMutation, UseMutationResult, useQueryClient } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import axiosCore from 'api/createAxiosClient';
 import { IBaseStock, IStock } from 'types/stock';
@@ -9,12 +9,14 @@ const updateStockById = async (productId: string, stockId: string, stock: IBaseS
     return await axiosCore.patch<IStock>(`/product/${productId}/stock/${stockId}`, stock);
 };
 
-export const useUpdateStockById = (productId: string, stockId: string): UseMutationResult<AxiosResponse<IStock, any>, Error, IBaseStock, unknown> => {
+export const useUpdateStockById = (productId: string, stockId: string): UseMutationResult<AxiosResponse<IStock, any>, Error, IStock, unknown> => {
+    const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: (stock: IBaseStock) =>
+        mutationFn: (stock: IStock) =>
             updateStockById(productId, stockId, stock),
         onSuccess: () => {
             toast.success("El producto se actualizo correctamente correctamente");
+            queryClient.invalidateQueries({queryKey: ['get-stock-by-id', productId, stockId]})
         },
         onError
     })

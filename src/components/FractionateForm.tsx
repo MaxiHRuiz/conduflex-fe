@@ -1,80 +1,81 @@
-import {
-    Box,
-    TextField,
-} from "@mui/material";
+import { Box, TextField } from "@mui/material";
 import NumericFormatCustom from "components/NumericFormatCustom";
 import React from "react";
 import { IProduct } from "types/product";
 import ConfirmButton from "./ConfirmButton";
+import { useUpdateFractionate } from "services/hooks/useUpdateFractionate";
+import { useParams } from "react-router-dom";
 
 interface IOrderFromValues {
-    isFractionate: boolean;
-    meters: string;
-    details: string;
+  isFractionate: boolean;
+  meters: string;
+  details: string;
 }
 
 const defaultValues: IOrderFromValues = {
-    isFractionate: false,
-    meters: "",
-    details: "",
+  isFractionate: false,
+  meters: "",
+  details: "",
 };
 
-interface IOrderFromProps {
-    product: IProduct;
+interface FractionateForm {
+  disabled?: boolean;
 }
 
-const FractionateForm = () => {
-    const isPending = true
-    const [values, setValues] = React.useState<IOrderFromValues>(defaultValues);
-    const dialogTitle = "Confirmar acción";
-    const dialogContent = "¿Estás seguro de que deseas fraccionar este producto?";
-    const label = "Fraccionar";
+const FractionateForm = ({ disabled = false }: FractionateForm) => {
+    const {productId = "", stockId = ""} = useParams()
+  const { mutateAsync: update, isPending } = useUpdateFractionate();
+  const [value, setValue] = React.useState<string>('');
+  const dialogTitle = "Confirmar acción";
+  const dialogContent = "¿Estás seguro de que deseas fraccionar este producto?";
+  const label = "Fraccionar";
 
-    const handleMetersChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setValues({
-            ...values,
-            meters: event.target.value,
-        });
-    };
+  const handleMetersChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value)
+  };
 
-    const onHandleClick = () => {
+  const onHandleClick = () => {
+    update({
+        fraccion: Number(value),
+        productId,
+        stockId
+    })
+  };
 
-    };
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        gap: 1,
+        py: 1,
+        // justifyContent: "center",
+        // alignItems: "center",
+      }}
+    >
+      <TextField
+        fullWidth
+        label="Metros"
+        size="small"
+        color="secondary"
+        value={value}
+        onChange={handleMetersChange}
+        InputProps={{
+          inputComponent: NumericFormatCustom as any,
+        }}
+      />
 
-    return (
-        <Box
-            sx={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 1,
-                py: 3,
-                px: 2,
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-        >
-            <TextField
-                fullWidth
-                label="Metros"
-                size="small"
-                color="secondary"
-                value={values.meters}
-                onChange={handleMetersChange}
-                InputProps={{
-                    inputComponent: NumericFormatCustom as any,
-                }}
-            />
-
-            <ConfirmButton
-                isLoading={false}
-                dialogTitle={dialogTitle}
-                dialogContent={dialogContent}
-                disabled={false}
-                buttonColor="primary"
-                onConfirm={onHandleClick}
-                buttonText={label} />
-        </Box>
-    );
+      <ConfirmButton
+        isLoading={isPending}
+        dialogTitle={dialogTitle}
+        dialogContent={dialogContent}
+        disabled={disabled}
+        buttonColor="primary"
+        onConfirm={onHandleClick}
+        buttonText={label}
+      />
+    </Box>
+  );
 };
 
 export default FractionateForm;

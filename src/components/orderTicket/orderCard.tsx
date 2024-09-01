@@ -14,21 +14,20 @@ import {
 } from "@mui/material";
 import NumericFormatCustom from "components/NumericFormatCustom";
 import OrderStockState from "components/OrderStockState";
-import { useTodo } from "context/TodoContext";
 import { SyntheticEvent, useState } from "react";
 import { useParams } from "react-router-dom";
 import { IProductStock } from "types/order";
 import { numberFormat } from "utils/helpers";
 import TicketActions from "./TicketActions";
 import DeliveryAction from "./DeliveryAction";
-import { useAppContext } from "context/RoleContext";
 
 interface IOrderCardProps {
   orderStatus: string;
   productStock: IProductStock;
   disabledActions: boolean;
   generateOrderDisabled: (value: boolean) => void;
-  onDelete?: (productId: number) => void;
+  onDelete: (productId: string) => void;
+  onUpdate: (updateProduct: IProductStock) => void;
 }
 
 const OrderCard = ({
@@ -36,10 +35,10 @@ const OrderCard = ({
   productStock,
   disabledActions,
   generateOrderDisabled,
+  onDelete,
+  onUpdate,
 }: IOrderCardProps) => {
-  const { role } = useAppContext();
   const { orderId = "" } = useParams();
-  const { deleteOrderProduct, updateOrderProduct } = useTodo();
   const [updateProduct, setUpdateProduct] = useState<IProductStock>({
     ...productStock,
   });
@@ -57,7 +56,10 @@ const OrderCard = ({
   ];
 
   const handleUpdate = () => {
-    updateOrderProduct(updateProduct as unknown as IProductStock);
+    onUpdate(updateProduct);
+    // updateOrderProduct(updateProduct as unknown as IProductStock);
+    generateOrderDisabled(false);
+    setEditActive(false);
   };
 
   const handleCancel = () => {
@@ -70,7 +72,12 @@ const OrderCard = ({
     setEditActive(!editActive);
   };
 
-  const handleDelete = () => deleteOrderProduct(updateProduct.id);
+  const handleDelete = () => {
+    onDelete(updateProduct.id);
+    // deleteOrderProduct(updateProduct.id)
+    generateOrderDisabled(false);
+    setEditActive(false);
+  };
 
   const handleIsFractionateChange = (
     event: SyntheticEvent<Element, Event>,
@@ -99,68 +106,68 @@ const OrderCard = ({
   return (
     <Paper sx={{ p: 2, mb: 1 }}>
       <Grid container spacing={1}>
-        {role === "admin" && (
-          <Grid item xs={12}>
-            {fullScreen ? (
-              <Box
-                sx={{
-                  mb: 1,
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "end",
-                    alignItems: "center",
-                    width: "100%",
-                    mb: 1,
-                  }}
-                >
-                  <DeliveryAction
-                    status={productStock.estado}
-                    stockId={""}
-                    orderId={""}
-                  />
-                </Box>
-                <Divider />
-                <Typography
-                  component="h3"
-                  fontWeight="bold"
-                  sx={{ mt: 1 }}
-                >{`${updateProduct.product_id} - ${updateProduct.descripcion}`}</Typography>
-              </Box>
-            ) : (
+        <Grid item xs={12}>
+          {fullScreen ? (
+            <Box
+              sx={{
+                mb: 1,
+              }}
+            >
               <Box
                 sx={{
                   display: "flex",
                   flexDirection: "row",
-                  justifyContent: "space-between",
+                  justifyContent: "end",
                   alignItems: "center",
-                  flexWrap: "wrap-reverse",
+                  width: "100%",
                   mb: 1,
                 }}
               >
-                <Typography
-                  component="h3"
-                  fontWeight="bold"
-                >{`${updateProduct.product_id} - ${updateProduct.descripcion}`}</Typography>
                 <DeliveryAction
                   status={productStock.estado}
-                  stockId={productStock.id}
-                  orderId={orderId}
+                  stockId={""}
+                  orderId={""}
                 />
               </Box>
-            )}
+              <Divider />
+              <Typography
+                component="h3"
+                fontWeight="bold"
+                sx={{ mt: 1 }}
+              >{`${updateProduct.product_id} - ${updateProduct.descripcion}`}</Typography>
+            </Box>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                flexWrap: "wrap-reverse",
+                mb: 1,
+              }}
+            >
+              <Typography
+                component="h3"
+                fontWeight="bold"
+              >{`${updateProduct.product_id} - ${updateProduct.descripcion}`}</Typography>
+              <DeliveryAction
+                status={productStock.estado}
+                stockId={productStock.id}
+                orderId={orderId}
+              />
+            </Box>
+          )}
 
-            <Divider />
+          <Divider />
+        </Grid>
+        {updateProduct.id && (
+          <Grid item xs={12} md={6}>
+            <Typography component="h4" gutterBottom>
+              Cod: {updateProduct.id}
+            </Typography>
           </Grid>
         )}
-        <Grid item xs={12} md={6}>
-          <Typography component="h4" gutterBottom>
-            Cod: {updateProduct.id}
-          </Typography>
-        </Grid>
         <Grid item xs={12} md={6}>
           {!orderId && editActive ? (
             <FormControlLabel
@@ -225,17 +232,19 @@ const OrderCard = ({
             }`}</Typography>
           )}
         </Grid>
-        {!(orderStatus === 'finalizado') && <Grid item xs={12}>
-          <TicketActions
-            editActive={editActive}
-            disabledActions={disabledActions}
-            onConfirmUpdate={handleUpdate}
-            onCancel={handleCancel}
-            onDelete={handleDelete}
-            onActiveUpdate={handleActiveUpdate}
-            disabledDelete={orderStatus !== "pendiente"}
-          />
-        </Grid>}
+        {!orderStatus && (
+          <Grid item xs={12}>
+            <TicketActions
+              editActive={editActive}
+              disabledActions={disabledActions}
+              onConfirmUpdate={handleUpdate}
+              onCancel={handleCancel}
+              onDelete={handleDelete}
+              onActiveUpdate={handleActiveUpdate}
+              disabledDelete={!!orderStatus}
+            />
+          </Grid>
+        )}
       </Grid>
     </Paper>
   );

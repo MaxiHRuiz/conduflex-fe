@@ -13,6 +13,6 @@ export const useGetStockById = (productId: string, stockId: string): QueryObserv
             const { data } = await getStockById(productId, stockId);
             return data;
         },
-        queryKey: [ 'get-stock-by-id' ],
+        queryKey: [ 'get-stock-by-id', productId, stockId ],
     });
 };

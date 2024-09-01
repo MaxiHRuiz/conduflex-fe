@@ -3,7 +3,7 @@ import { StockDetails } from "components/StockDetails";
 
 const ShowProduct = () => {
   return (
-    <CustomContainer breadCrumbs>
+    <CustomContainer breadCrumbs excludeLink={["stock"]}>
       <StockDetails />
     </CustomContainer>
   );

@@ -150,3 +150,24 @@ export const statusLabels = [
 ];
 
 export const getStockStatus = (value: string) => statuses.includes(value) ? value : undefined
+
+export function validarCUIT(cuit: string) {
+    if (typeof cuit !== 'string') return false;
+    cuit = cuit.replace(/-/g, '');
+  
+    if (cuit.length !== 11) return false;
+  
+    const base = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
+    const verificador = parseInt(cuit[10], 10);
+    let suma = 0;
+  
+    for (let i = 0; i < 10; i++) {
+      suma += parseInt(cuit[i], 10) * base[i];
+    }
+  
+    let resto = 11 - (suma % 11);
+    if (resto === 11) resto = 0;
+    if (resto === 10) resto = 9;
+  
+    return resto === verificador;
+  }

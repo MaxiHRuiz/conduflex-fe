@@ -6,12 +6,11 @@ import { useGetOrderById } from "services/hooks/useGetOrderById";
 import Loading from "components/Loading";
 import PDF from "components/actions/PDF";
 
-const ShowOrder = () => {
-  // const { orders } = useTodo();
+const Content = () => {
   const { orderId = "" } = useParams();
-  const { data, isLoading, isError } = useGetOrderById(orderId);
+  const { data, isFetching, isError } = useGetOrderById(orderId);
 
-  if (isLoading) return <Loading />;
+  if (isFetching) return <Loading />;
 
   if (isError)
     return <Typography>Hubo un error al obtener la orden.</Typography>;
@@ -19,22 +18,29 @@ const ShowOrder = () => {
   if (!data) return <></>;
 
   return (
-    <CustomContainer breadCrumbs>
+    <>
       <Box
         sx={{
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
-          pb: 1
+          pb: 1,
         }}
       >
         <Typography component="h1" variant="h5" gutterBottom>
           Pedido
         </Typography>
-        {data.id && !isLoading && <PDF order={data} />}
+        {data.id && !isFetching && <PDF order={data} />}
       </Box>
-
       <OrderTicket order={data} />
+    </>
+  );
+};
+
+const ShowOrder = () => {
+  return (
+    <CustomContainer breadCrumbs>
+      <Content />
     </CustomContainer>
   );
 };

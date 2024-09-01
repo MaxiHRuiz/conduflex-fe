@@ -1,15 +1,24 @@
-import React from 'react';
-import Paper from '@mui/material/Paper';
-import FractionateForm from './FractionateForm';
+import React from "react";
+import Paper from "@mui/material/Paper";
+import FractionateForm from "./FractionateForm";
+import { Typography } from "@mui/material";
 
-const FractionateCard: React.FC = () => {
+interface FractionateCardProps {
+  disabled?: boolean;
+}
+
+const FractionateCard: React.FC<FractionateCardProps> = ({ disabled }) => {
   return (
     <Paper
       sx={{
-        p: 1,
+        p: 2,
+        mt: 1,
       }}
     >
-      <FractionateForm />
+      <Typography component="h2" variant="h6">
+        Fraccionar producto
+      </Typography>
+      <FractionateForm disabled={disabled} />
     </Paper>
   );
 };

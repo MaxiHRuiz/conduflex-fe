@@ -21,7 +21,7 @@ const columns: GridColDef[] = [
     field: "actions",
     type: "actions",
     headerName: "Acciones",
-    width: 200,
+    width: 150,
     getActions: (props) => [
       <Show
         buttonType="gridAction"
@@ -29,12 +29,12 @@ const columns: GridColDef[] = [
         productId={props.row.product_id}
         formType={formType}
       />,
-      <Edit
-        buttonType="gridAction"
-        stockId={props.row.id}
-        productId={props.row.product_id}
-        formType={formType}
-      />,
+      // <Edit
+      //   buttonType="gridAction"
+      //   stockId={props.row.id}
+      //   productId={props.row.product_id}
+      //   formType={formType}
+      // />,
       <Delete
         buttonType="gridAction"
         stockId={props.row.id}

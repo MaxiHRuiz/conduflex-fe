@@ -10,6 +10,7 @@ import {
   DialogTitle,
   IconButton,
   Tooltip,
+  Typography,
   useMediaQuery,
   useTheme,
 } from "@mui/material";
@@ -68,7 +69,8 @@ const QR = ({ stockId, value }: IQRProps) => {
           aria-labelledby="responsive-dialog-title"
         >
           <DialogTitle id="responsive-dialog-title">
-            QR de Stock: {stockId}
+            <Typography>QR de Stock: {stockId}</Typography>
+            <Typography>URL: {value}</Typography>
           </DialogTitle>
           <DialogContent>
             <DialogContentText

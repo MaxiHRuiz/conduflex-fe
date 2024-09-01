@@ -96,7 +96,7 @@ const OrderForm = ({ product }: IOrderFromProps) => {
 
   const handleGenerateOrder = () => {
     if (!values.meters) {
-      toast.info("La cantidad de metros es obligatoria para generar un pedido");
+      toast.warning("La cantidad de metros es obligatoria para generar un pedido");
       return;
     }
 
@@ -106,7 +106,7 @@ const OrderForm = ({ product }: IOrderFromProps) => {
 
   const handleAddOrder = () => {
     if (!values.meters) {
-      toast.info("La cantidad de metros es obligatoria para generar un pedido");
+      toast.warning("La cantidad de metros es obligatoria para generar un pedido");
       return;
     }
 

@@ -5,22 +5,34 @@ import { useNavigate } from "react-router-dom";
 import { useCreateOrder } from "services/hooks/useCreateOrder";
 import { numberFormat } from "utils/helpers";
 import OrderCard from "./orderCard";
-import { IOrder } from "types/order";
+import { IComprador, IOrder, IProductStock } from "types/order";
 import TicketFooter from "./TicketFooter";
 import TicketHeader from "./TicketHeader";
-import { useGetRole } from "services/hooks/useGetRole";
 import { useAppContext } from "context/RoleContext";
 import StockStatusChart from "components/orderTicket/StockStatusPieChart";
+import { useUpdateOrder } from "services/hooks/useUpdateOrder";
+import { useTodo } from "context/TodoContext";
 
 interface OrderTicketProps {
   order: IOrder;
   onSuccess?: () => void;
 }
 
+const defaultValue: IComprador = {
+  nombre: "",
+  cuit: "",
+  cp: 0,
+  direccion: "",
+};
+
 const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
   const navigate = useNavigate();
   const { role } = useAppContext();
-  const { mutateAsync: createOrder, isPending, isError } = useCreateOrder();
+  const { deleteOrderProduct, updateOrderProduct, updateOrderComprador } =
+    useTodo();
+  const { mutateAsync: createOrder, isPending } = useCreateOrder();
+  const { mutateAsync: updateOrder, isPending: isPendingOrder } =
+    useUpdateOrder();
   const [disabled, setDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -34,9 +46,47 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
     [order.productos]
   );
 
-  if (isError) return <Typography>Error al cargar los datos</Typography>;
+  const onSubmitComprador = (comprador: IComprador) => {
+    if (order.id) {
+      updateOrder({
+        ...order,
+        comprador,
+      });
+      return;
+    }
+    updateOrderComprador(comprador);
+  };
 
-  if (isPending || isLoading) return <Loading />;
+  const onSubmitUpdate = (productStock: IProductStock) => {
+    if (order.id) {
+      updateOrder({
+        ...order,
+        productos: order.productos.map((product: IProductStock) => {
+          if (product.id === productStock.id) {
+            return productStock;
+          }
+          return product;
+        }),
+      });
+      return;
+    }
+    updateOrderProduct(productStock);
+  };
+
+  const onSubmitDelete = (productId: string) => {
+    if (order.id) {
+      updateOrder({
+        ...order,
+        productos: order.productos.filter(
+          (product: IProductStock) => product.id !== productId
+        ),
+      });
+      return;
+    }
+    deleteOrderProduct(productId);
+  };
+
+  if (isPending || isLoading || isPendingOrder) return <Loading />;
 
   return (
     <>
@@ -45,7 +95,14 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
         disabledActions={disabled}
         setIsLoading={setIsLoading}
         role={role || ""}
+        generateOrderDisabled={setDisabled}
+        onSubmitComprador={onSubmitComprador}
       />
+      {order?.estado === "pendiente" && role !== "admin" && (
+        <Typography m={1}>
+          Solo un administrador puede aprobar este pedido.
+        </Typography>
+      )}
       {order?.productos?.length ? (
         order.productos.map((product) => {
           return (
@@ -55,6 +112,8 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
               productStock={product}
               generateOrderDisabled={setDisabled}
               orderStatus={order.estado}
+              onDelete={onSubmitDelete}
+              onUpdate={onSubmitUpdate}
             />
           );
         })

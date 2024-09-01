@@ -30,7 +30,7 @@ const DeliveryAction: React.FC<IDeliveryActionProps> = ({
             <CircularProgress color="secondary" size={20} />
           ) : undefined
         }
-        disabled={isPending}
+        disabled={isPending || role !== 'admin'}
         size="small"
         color="success"
         variant="contained"

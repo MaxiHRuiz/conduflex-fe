@@ -1,5 +1,5 @@
 import { IOrder as OldOrder } from "dtos/order.dto";
-import { IOrder, IProductStock } from "./order";
+import { IComprador, IOrder, IProductStock } from "./order";
 
 
   export type TodoContextType = {
@@ -19,6 +19,7 @@ import { IOrder, IProductStock } from "./order";
     deleteOrderProduct: (productId: string) => void;
     deleteOrder: () => void;
     updateOrderProduct: (updateProduct: IProductStock) => void;
+    updateOrderComprador: (comprador: IComprador) => void;
     // saveOrder: (order: IOrder) => void;
     // updateOrder: (id: string, order: IOrder) => void;
     // deleteOrder: (id: string) => void;s

@@ -27,10 +27,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     // Check active sessions and sets the user
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setUserSession(session ?? null);
-      setLoading(false);
-    });
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        setUserSession(session ?? null);
+      })
+      .finally(() => setLoading(false));
 
     // Listen for changes on auth state (logged in, signed out, etc.)
     const {
@@ -49,10 +51,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (userSession) {
       const currentTime = Math.floor(Date.now() / 1000);
       if (userSession.expires_at && userSession.expires_at < currentTime) {
-        console.log('Token has expired');
+        console.log("Token has expired");
         setDialogOpen(true);
       } else {
-        console.log('Token is valid');
+        console.log("Token is valid");
       }
     }
   }, [userSession]);
@@ -60,19 +62,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const handleClose = () => {
     setDialogOpen(false);
     // Redirigir al usuario a la página de inicio de sesión
-    window.location.href = '/login';
+    window.location.href = "/login";
   };
 
   const handleRefresh = async () => {
     setDialogOpen(true);
-    supabase.auth.refreshSession().then(({ data: { session } }) =>{
-      setUserSession(session ?? null);
-    }).catch((error) => {
-      console.error('Error refreshing token:', error);
-      window.location.href = '/login';
-    }).finally(() => {
-      setDialogOpen(false);
-    })
+    supabase.auth
+      .refreshSession()
+      .then(({ data: { session } }) => {
+        setUserSession(session ?? null);
+      })
+      .catch((error) => {
+        console.error("Error refreshing token:", error);
+        window.location.href = "/login";
+      })
+      .finally(() => {
+        setDialogOpen(false);
+      });
   };
 
   // Will be passed down to Signup, Login and Dashboard components
@@ -83,12 +89,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AuthContext.Provider value={value}>
-      {loading ? (
-        <Loading linearProgress />
-      ) : (
-        children
-      )}
-      <SessionDialog open={dialogOpen} onClose={handleClose} onRefresh={handleRefresh} />
+      {loading ? <Loading linearProgress /> : children}
+      <SessionDialog
+        open={dialogOpen}
+        onClose={handleClose}
+        onRefresh={handleRefresh}
+      />
     </AuthContext.Provider>
   );
 };

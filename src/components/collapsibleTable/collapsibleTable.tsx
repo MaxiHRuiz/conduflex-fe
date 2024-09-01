@@ -25,7 +25,7 @@ import {
   Typography,
 } from "@mui/material";
 import Show from "components/actions/show";
-import { dateFormatter } from "utils/helpers";
+import { dateFormatter, ISOdateFormatter } from "utils/helpers";
 import OrderState from "components/OrderState";
 import { useState } from "react";
 import CustomDateField from "components/CustomDateField";
@@ -53,7 +53,7 @@ function Row(props: { row: IOrder }) {
           {row.id}
         </TableCell>
         <TableCell>{row.vendedor}</TableCell>
-        <TableCell>{dateFormatter(row.fecha)}</TableCell>
+        <TableCell>{ISOdateFormatter(row.fecha)}</TableCell>
         <TableCell>{<OrderState state={row.estado} />}</TableCell>
         <TableCell>{row.comprador.nombre}</TableCell>
         <TableCell>{row.actualizado_por}</TableCell>

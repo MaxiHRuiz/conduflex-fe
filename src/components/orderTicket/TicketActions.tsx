@@ -7,7 +7,7 @@ interface TicketActionsProps {
   disabledActions: boolean;
   onConfirmUpdate: () => void;
   onCancel: () => void;
-  onDelete: () => void;
+  onDelete?: () => void;
   onActiveUpdate: () => void;
 }
 
