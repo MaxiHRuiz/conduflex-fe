@@ -85,7 +85,16 @@ const PDF = ({ order }) => {
     doc.save(`reporte_stock_${fechaActual}.pdf`);
   };
 
-  return <Button onClick={generarPDF}>Descargar</Button>;
+  return (
+    <Button
+      color="secondary"
+      variant="contained"
+      size="small"
+      onClick={generarPDF}
+    >
+      Descargar
+    </Button>
+  );
 };
 
 export default PDF;

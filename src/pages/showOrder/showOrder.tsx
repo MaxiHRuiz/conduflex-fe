@@ -25,6 +25,7 @@ const ShowOrder = () => {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-between",
+          pb: 1
         }}
       >
         <Typography component="h1" variant="h5" gutterBottom>

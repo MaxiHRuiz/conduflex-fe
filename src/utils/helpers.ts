@@ -102,7 +102,7 @@ export const orderStatusMapper = (state: string): { label: string, variant: Type
             label: "Pendiente",
             variant: "info"
         }
-    } if (state === "aprobado") {
+    } if (state === "aprobado" || state === 'aprobada') {
         return {
             label: "Aprobado",
             variant: "success"

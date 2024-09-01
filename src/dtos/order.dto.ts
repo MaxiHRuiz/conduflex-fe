@@ -1,4 +1,4 @@
-export type StatusType = 'aprobado' | 'pendiente' | 'finalizado' | 'cancelado'
+export type StatusType = 'aprobado' | 'pendiente' | 'finalizado' | 'cancelado' | 'aprobada' 
 export type SubStatusType = 'en_produccion' | 'despachado' | 'listo_para_despachar' |'fraccionado'
 
 export interface IOrderList {

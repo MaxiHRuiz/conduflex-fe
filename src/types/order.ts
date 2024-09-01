@@ -22,8 +22,9 @@ export interface IOrder extends IBaseOrder {
 }
 
 export interface IOrderParams extends IBaseParams {
-    id: string,
-    estado: string
+    estado: string,
+    comprador: string
+    fecha: string
 }
 
 export interface IProductStock {

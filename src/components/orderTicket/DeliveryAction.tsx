@@ -1,22 +1,46 @@
-import React from 'react';
-import Button from '@mui/material/Button';
+import React from "react";
+import Button from "@mui/material/Button";
+import { useDeliverProducts } from "services/hooks/useDeliverProducts";
+import { CircularProgress } from "@mui/material";
+import { useAppContext } from "context/RoleContext";
 
 interface IDeliveryActionProps {
   status: string;
+  stockId: string;
+  orderId: string;
 }
 
-const DeliveryAction: React.FC<IDeliveryActionProps> = ({ status }) => {
-  const handleDeliveredClick = () => {
+const DeliveryAction: React.FC<IDeliveryActionProps> = ({
+  status,
+  stockId,
+  orderId,
+}) => {
+  const { mutateAsync: deliver, isPending } = useDeliverProducts(orderId);
+  const {role} = useAppContext()
 
+  const handleDeliveredClick = () => {
+    deliver({ stocks: [stockId] });
   };
 
-  if (status === 'listo_para_entregar') return (
-    <Button size="small" color="success" variant="contained" onClick={handleDeliveredClick}>
-      Entregado
-    </Button>
-  )
+  if (status === "listo_para_entregar")
+    return (
+      <Button
+        endIcon={
+          isPending ? (
+            <CircularProgress color="secondary" size={20} />
+          ) : undefined
+        }
+        disabled={isPending}
+        size="small"
+        color="success"
+        variant="contained"
+        onClick={handleDeliveredClick}
+      >
+        Entregado
+      </Button>
+    );
 
-  return (<></>)
+  return <></>;
 };
 
 export default DeliveryAction;

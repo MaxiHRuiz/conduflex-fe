@@ -32,7 +32,7 @@ const StockStatusPieChart: React.FC<IProductStockProps> = ({productStock}) => {
   const theme = useTheme();
 
   const getStateColor = (state: string) => {
-    if (state === 'finalizado') return theme.palette.success.main
+    if (state === 'finalizado' || state === 'finalizada') return theme.palette.success.main
     if (state === 'entregado') return theme.palette.success.main
     if (state === 'en_stock') return theme.palette.info.main
     if (state === 'listo_para_entregar') return blue[600]

@@ -4,9 +4,9 @@ import { dateFormatter } from "utils/helpers";
 import OrderState from "components/OrderState";
 import TicketActionsContainer from "./TicketActionsContainer";
 import { useDeleteOrderById } from "services/hooks/useDeleteOrderById";
-import { useAuthorizeById } from "services/hooks/useAuthorizeById";
 import ConfirmButton from "components/ConfirmButton";
 import { useParams } from "react-router-dom";
+import { useAuthorizeOrder } from "services/hooks/useAuthorizeOrder";
 
 interface TicketHeader {
   role: string;
@@ -22,7 +22,7 @@ const TicketHeader = ({
 }: TicketHeader) => {
   const { orderId = "" } = useParams();
   const { mutateAsync: deleteOrder } = useDeleteOrderById();
-  const { mutateAsync: authorize } = useAuthorizeById(orderId);
+  const { mutateAsync: authorize } = useAuthorizeOrder();
 
   const handleDelete = () => {
     setIsLoading(true);
@@ -35,8 +35,7 @@ const TicketHeader = ({
 
   const handleAuthorize = () => {
     setIsLoading(true);
-    authorize(
-      { productStock: [order.id] },
+    authorize(orderId,
       {
         onSettled() {
           setIsLoading(false);

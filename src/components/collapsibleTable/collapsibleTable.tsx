@@ -14,10 +14,21 @@ import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { IOrder } from "types/order";
 import { useGetOrders } from "services/hooks/useGetOrders";
 import Loading from "components/Loading";
-import { Chip, TablePagination } from "@mui/material";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  TablePagination,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Show from "components/actions/show";
 import { dateFormatter } from "utils/helpers";
 import OrderState from "components/OrderState";
+import { useState } from "react";
+import CustomDateField from "components/CustomDateField";
 
 function Row(props: { row: IOrder }) {
   const { row } = props;
@@ -44,10 +55,11 @@ function Row(props: { row: IOrder }) {
         <TableCell>{row.vendedor}</TableCell>
         <TableCell>{dateFormatter(row.fecha)}</TableCell>
         <TableCell>{<OrderState state={row.estado} />}</TableCell>
+        <TableCell>{row.comprador.nombre}</TableCell>
         <TableCell>{row.actualizado_por}</TableCell>
       </TableRow>
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               <Table size="small" aria-label="purchases">
@@ -89,40 +101,150 @@ function Row(props: { row: IOrder }) {
 }
 
 export default function CollapsibleTable() {
-  const { data, isFetching } = useGetOrders();
-  if (isFetching) return <Loading />;
-  if (!data) return <></>;
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [page, setPage] = React.useState(0);
+  const [comprador, setComprador] = useState<string>("");
+  const [fecha, setFecha] = useState<string>("");
+  const [estado, setEstado] = useState<string>("todos");
+  
+  const { data, isFetching, isError } = useGetOrders({
+    offset: page * rowsPerPage,
+    limit: rowsPerPage,
+    comprador,
+    fecha,
+    estado: estado === "todos" ? "" : estado,
+  });
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const onChangeIdSearch = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setComprador(e.target.value);
+  };
+
+  const handleStatusChange = (event: SelectChangeEvent) => {
+    setEstado(event.target.value as string);
+  };
+
+  //implementacion de debounce
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSearchTerm(event.target.value);
+  // };
+
+  // useEffect(() => {
+  //   if (debouncedSearchTerm) {
+  //     // Perform the API call or any other action with the debounced value
+  //     console.log('API call with:', debouncedSearchTerm);
+  //   }
+  // }, [debouncedSearchTerm]);
+
+  if (isError) return <Typography>Hubo un error al cargar los pedidos</Typography>;
+
   return (
     <>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          mb: 1,
+        }}
+      >
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            gap: 1,
+            flexWrap: "wrap",
+          }}
+        >
+          <TextField
+            value={comprador}
+            onChange={onChangeIdSearch}
+            size="small"
+            label="Cliente"
+          />
+        </Box>
+
+        <Box
+          sx={{
+            flexShrink: 0,
+            flexDirection: "row",
+            display: "flex",
+            gap: 1,
+          }}
+        >
+          <CustomDateField onSetValue={setFecha} />
+          <FormControl fullWidth size="small" sx={{ width: 200 }}>
+            <InputLabel id="available-select-label">Estado</InputLabel>
+            <Select
+              labelId="available-select-label"
+              id="available-select"
+              value={estado}
+              label="Estado"
+              onChange={handleStatusChange}
+            >
+              <MenuItem value="todos">Todos</MenuItem>
+              <MenuItem value="finalizado">Finalizado</MenuItem>
+              <MenuItem value="pendiente">Pendiente</MenuItem>
+              <MenuItem value="aprobado">Aprobado</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </Box>
       <Paper sx={{ width: "100%", mb: 2 }}>
-        <TableContainer>
-          <Table aria-label="collapsible table" size="small">
-            <TableHead>
-              <TableRow>
-                <TableCell />
-                <TableCell />
-                <TableCell>ID</TableCell>
-                <TableCell>Vendedor</TableCell>
-                <TableCell>Fecha</TableCell>
-                <TableCell>Estado</TableCell>
-                <TableCell>Actualizado por</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data.response.map((row) => (
-                <Row key={row.id} row={row} />
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+        {isFetching ? (
+          <Loading />
+        ) : (
+          <TableContainer>
+            <Table aria-label="collapsible table" size="small">
+              <TableHead>
+                <TableRow>
+                  <TableCell />
+                  <TableCell />
+                  <TableCell>ID</TableCell>
+                  <TableCell>Vendedor</TableCell>
+                  <TableCell sx={{minWidth: 100}}>Fecha</TableCell>
+                  <TableCell>Estado</TableCell>
+                  <TableCell sx={{minWidth: 100}}>Cliente</TableCell>
+                  <TableCell sx={{minWidth: 100}}>Actualizado por</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data?.response.length === 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={8} align="center" height={40}>
+                      <Typography variant="body1">Sin filas</Typography>
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  data?.response.map((row) => <Row key={row.id} row={row} />)
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25, 30]}
+          rowsPerPageOptions={[10, 25, 30]}
           component="div"
-          count={data.total}
-          rowsPerPage={1}
-          page={1}
-          onPageChange={() => { }}
-          onRowsPerPageChange={() => { }}
+          count={data?.total || 0}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </Paper>
     </>
