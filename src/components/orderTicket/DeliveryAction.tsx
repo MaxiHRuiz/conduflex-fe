@@ -22,7 +22,7 @@ const DeliveryAction: React.FC<IDeliveryActionProps> = ({
     deliver({ stocks: [stockId] });
   };
 
-  if (status === "listo_para_entregar")
+  if (status === "listo_para_entregar" || status === "en_stock")
     return (
       <Button
         endIcon={
