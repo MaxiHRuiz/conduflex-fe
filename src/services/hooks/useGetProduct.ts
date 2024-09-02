@@ -13,6 +13,7 @@ export const useGetProduct = (productId: string): QueryObserverResult<IProduct, 
             const { data } = await getProduct(productId);
             return data;
         },
-        queryKey: [ 'get-product' ]
+        queryKey: [ 'get-product' ],
+        retry: false
     });
 };

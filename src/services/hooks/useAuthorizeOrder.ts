@@ -17,7 +17,7 @@ export const useAuthorizeOrder = (): UseMutationResult<AxiosResponse<string, any
             authorizeOrder(orderId),
         onSuccess: () => {
             queryClient.invalidateQueries({queryKey: [ 'get-order-by-id', orderId]})
-            toast.success("Se ha sido aprobado el pedido correctamente");
+            toast.success("Se ha aprobado el pedido correctamente");
         },
         onError
     })

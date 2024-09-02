@@ -14,5 +14,6 @@ export const useGetOrderById = (orderId: string): QueryObserverResult<IOrder, an
             return data;
         },
         queryKey: [ 'get-order-by-id', orderId],
+        retry: false
     });
 };

@@ -15,6 +15,7 @@ export const useGetProducts = (params?: IProductParams): QueryObserverResult<IBa
             return data;
         },
         queryKey: ['get-products', params],
-        placeholderData: keepPreviousData
+        placeholderData: keepPreviousData,
+        retry: false
     });
 };

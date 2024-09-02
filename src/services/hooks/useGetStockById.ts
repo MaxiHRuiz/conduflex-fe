@@ -14,5 +14,6 @@ export const useGetStockById = (productId: string, stockId: string): QueryObserv
             return data;
         },
         queryKey: [ 'get-stock-by-id', productId, stockId ],
+        retry: false
     });
 };

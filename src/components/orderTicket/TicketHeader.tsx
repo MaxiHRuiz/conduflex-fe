@@ -15,8 +15,8 @@ interface TicketHeader {
   setIsLoading: (value: boolean) => void;
   generateOrderDisabled: (value: boolean) => void;
   onSubmitComprador: (comprador: IComprador) => void;
-  onDelete: () => void
-  onAuthorize: () => void
+  onDelete: () => void;
+  onAuthorize: () => void;
 }
 const TicketHeader = ({
   role,
@@ -26,12 +26,12 @@ const TicketHeader = ({
   generateOrderDisabled,
   onSubmitComprador,
   onDelete,
-  onAuthorize
+  onAuthorize,
 }: TicketHeader) => {
   const [editActive, setEditActive] = useState(false);
 
   const handleUpdate = (comprador: IComprador) => {
-    onSubmitComprador(comprador)
+    onSubmitComprador(comprador);
     generateOrderDisabled(false);
     setEditActive(false);
   };
@@ -93,6 +93,7 @@ const TicketHeader = ({
         actionIsDisabled={disabledActions}
         onActiveUpdate={handleActiveUpdate}
         onCancel={handleCancel}
+        estado={order.estado}
       />
     </Paper>
   );

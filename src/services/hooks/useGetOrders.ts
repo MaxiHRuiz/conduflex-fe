@@ -15,6 +15,7 @@ export const useGetOrders = (params?: IOrderParams): QueryObserverResult<IBaseCo
             return data;
         },
         queryKey: ['get-orders', params],
-        placeholderData: keepPreviousData
+        placeholderData: keepPreviousData,
+        retry: false
     });
 };

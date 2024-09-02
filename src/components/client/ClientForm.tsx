@@ -21,6 +21,7 @@ export const ClientForm = ({
   onSubmitComprador,
   onCancel,
   onActiveUpdate,
+  estado
 }: IClientFormProps) => {
   const { handleSubmit, reset, control, setValue } = useForm<IComprador>({
     defaultValues: comprador ?? defaultValues,
@@ -95,7 +96,7 @@ export const ClientForm = ({
           </FormGrid>
         </Grid>
       )}
-      {
+      {estado !== 'finalizado' &&
         <div>
           <TicketActions
             disabledDelete

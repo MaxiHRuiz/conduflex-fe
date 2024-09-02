@@ -2,6 +2,7 @@ import { QueryObserverResult, useQuery } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import axiosCore from 'api/createAxiosClient';
 import { IRole } from 'types/role';
+import { toast } from 'react-toastify';
 
 const getRole = async (): Promise<AxiosResponse<IRole, any>> => {
     return await axiosCore.get<IRole>(`/user/rol`);
@@ -14,5 +15,6 @@ export const useGetRole = (): QueryObserverResult<IRole, any> => {
             return data;
         },
         queryKey: ['get-role'],
+        retry: false
     });
 };

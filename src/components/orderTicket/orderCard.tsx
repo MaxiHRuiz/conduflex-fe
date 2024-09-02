@@ -123,11 +123,19 @@ const OrderCard = ({
                   mb: 1,
                 }}
               >
-                <DeliveryAction
-                  status={productStock.estado}
-                  stockId={""}
-                  orderId={""}
-                />
+                {orderStatus === "aprobado" && (
+                  <DeliveryAction
+                    status={productStock.estado}
+                    stockId={productStock.id}
+                    orderId={orderId}
+                    onUpdateOrder={() =>
+                      onUpdate({
+                        ...updateProduct,
+                        estado: "listo_para_entregar",
+                      })
+                    }
+                  />
+                )}
               </Box>
               <Divider />
               <Typography
@@ -151,11 +159,19 @@ const OrderCard = ({
                 component="h3"
                 fontWeight="bold"
               >{`${updateProduct.product_id} - ${updateProduct.descripcion}`}</Typography>
-              <DeliveryAction
-                status={productStock.estado}
-                stockId={productStock.id}
-                orderId={orderId}
-              />
+              {orderStatus === "aprobado" && (
+                <DeliveryAction
+                  status={productStock.estado}
+                  stockId={productStock.id}
+                  orderId={orderId}
+                  onUpdateOrder={() =>
+                    onUpdate({
+                      ...updateProduct,
+                      estado: "listo_para_entregar",
+                    })
+                  }
+                />
+              )}
             </Box>
           )}
 

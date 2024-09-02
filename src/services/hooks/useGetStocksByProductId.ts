@@ -15,5 +15,6 @@ export const useGetStocksByProductId = (productId: string, params?: IStockParams
             return data;
         },
         queryKey: ['get-stocks-by-product-id', params],
+        retry: false
     });
 };
