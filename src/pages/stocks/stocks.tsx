@@ -113,7 +113,7 @@ const Stocks = () => {
                 labelId="status-select-label"
                 id="status-select"
                 value={status}
-                label="Estado"
+                label="Disponibilidad"
                 onChange={handleStatusChange}
               >
                 <MenuItem value="todos">Todos</MenuItem>

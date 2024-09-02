@@ -26,7 +26,7 @@ const ShowProduct = () => {
   const { productId = "" } = useParams();
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [page, setPage] = React.useState(0);
-  const [status, setStatus] = React.useState("disponibles");
+  const [status, setStatus] = React.useState("todos");
   const [available, setAvailable] = React.useState("todos");
   const [id, setId] = React.useState("");
 

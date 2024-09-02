@@ -70,13 +70,21 @@ const columns: GridColDef[] = [
   },
   {
     field: "cantidad_metros",
-    headerName: "metros",
+    headerName: "Metros iniciales",
     sortable: false,
     disableColumnMenu: true,
+    width: 130,
   },
   {
     field: "cantidad_metros_vendidos",
     headerName: "Metros vendidos",
+    sortable: false,
+    disableColumnMenu: true,
+    width: 130,
+  },
+  {
+    field: "cantidad_metros_restantes",
+    headerName: "Metros restantes",
     sortable: false,
     disableColumnMenu: true,
     width: 130,
