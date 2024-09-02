@@ -18,12 +18,13 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const {userSession} = useAuth()
   const [role, setRole] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(false)
 
   // Efecto para obtener el rol del usuario al cargar la app
   useEffect(() => {
     const fetchUserRole = async () => {
       try {
+        setLoading(true)
         const {data} = await axiosCore.get<IRole>(`/user/rol`) // URL del API para obtener el rol
         setRole(data.rol);
       } catch (error) {
