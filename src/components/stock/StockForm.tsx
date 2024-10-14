@@ -94,7 +94,7 @@ export const StockForm = ({
               size="small"
               onChange={e => setProductCount(Number(e.target.value))}
               error={productCount < 1}
-              helperText={productCount < 1 && 'Ingresar un valor mayor que 1'}
+              helperText={productCount < 1 && 'Ingresar un valor mayor a 0'}
               value={productCount}
               fullWidth
               label="Cantidad de productos"
