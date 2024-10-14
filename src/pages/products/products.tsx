@@ -27,7 +27,7 @@ export const Products = () => {
   const [id, setId] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
-  const { data, isFetching, refetch } = useGetProducts({
+  const { data, isFetching } = useGetProducts({
     offset: page * rowsPerPage,
     limit: rowsPerPage,
     id,
