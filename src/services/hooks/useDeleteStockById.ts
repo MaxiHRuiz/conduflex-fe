@@ -19,6 +19,7 @@ export const useDeleteStockById = (productId: string): UseMutationResult<AxiosRe
         onSuccess: () => {
             toast.success("Se elimino correctamente");
             queryClient.invalidateQueries({queryKey: ['get-stocks']})
+            queryClient.invalidateQueries({queryKey: ['get-stocks-by-product-id']})
         },
         onError
     })

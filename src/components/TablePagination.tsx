@@ -5,11 +5,12 @@ export interface ITablePagination {
   rowsPerPage: number
   page: number
   count: number
+  rowsPerPageOptions?: number[]
   setRowsPerPage: (rowsPerpage: number) => void
   setPage: (page: number) => void
 }
 
-export default function TablePaginationDemo({rowsPerPage, setRowsPerPage, page, setPage, count}: ITablePagination) {
+export default function TablePaginationDemo({rowsPerPageOptions, rowsPerPage, setRowsPerPage, page, setPage, count}: ITablePagination) {
   const handleChangePage = (
     event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
@@ -32,7 +33,7 @@ export default function TablePaginationDemo({rowsPerPage, setRowsPerPage, page, 
         onPageChange={handleChangePage}
         rowsPerPage={rowsPerPage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-        rowsPerPageOptions={[10, 25, 30]}
+        rowsPerPageOptions={rowsPerPageOptions ?? [10, 25, 30]}
       />
   );
 }

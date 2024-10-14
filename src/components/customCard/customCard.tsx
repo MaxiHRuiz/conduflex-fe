@@ -86,6 +86,14 @@ const CustomCard = ({ product, hiddenShowAction }: ICustomCardProps) => {
                 >
                   {numberFormat(product.precio)}
                 </Typography>
+                <Typography
+                  sx={{ px: 2 }}
+                  component="h3"
+                  variant="h5"
+                  gutterBottom
+                >
+                  {numberFormat(product.metros_disponibles, false)} mts. disponibles
+                </Typography>
               </>
             </Grid>
             <Grid md={4}>

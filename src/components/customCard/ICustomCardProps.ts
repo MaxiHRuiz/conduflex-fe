@@ -1,7 +1,7 @@
 import { IProduct } from "types/product";
 
 export interface ICustomCardProps {
-    product: IProduct;
+    product: IProduct & { metros_disponibles: number };
     hiddenShowAction?: boolean
 }
 

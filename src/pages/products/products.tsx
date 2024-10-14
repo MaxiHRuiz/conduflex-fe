@@ -17,9 +17,10 @@ import React from "react";
 import { useGetProducts } from "services/hooks/useGetProducts";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import Loading from "components/Loading";
+import { IProduct } from "types/product";
 
 export const Products = () => {
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(3);
   const [page, setPage] = React.useState(0);
   const navigate = useNavigate();
   const { tableChecked, setTableChecked } = useTodo();
@@ -87,7 +88,7 @@ export const Products = () => {
       <>
         {data &&
           data.response.map((x, index) => (
-            <CustomCard key={x.id} product={x} />
+            <CustomCard key={x.id} product={x as IProduct & {metros_disponibles: number}} />
           ))}
       </>
     );
@@ -165,6 +166,7 @@ export const Products = () => {
             setRowsPerPage={onChangeRowsPerPage}
             setPage={onChangePage}
             count={data?.total ?? 0}
+            rowsPerPageOptions={[3, 5, 10]}
           />
         </Box>
       )}

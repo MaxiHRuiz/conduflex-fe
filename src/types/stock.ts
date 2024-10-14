@@ -11,8 +11,12 @@ export interface IBaseStock {
     estado: string;
 }
 
-export interface IStock extends IBaseStock{
+export interface IStock extends IBaseStock {
     id: string;
+}
+
+export interface IStockBulk extends IStock {
+    cantidad: number;
 }
 
 export interface IStockParams extends IBaseParams {

@@ -21,13 +21,14 @@ import {
   getStockStatus,
   statusLabels,
 } from "utils/helpers";
+import { IProduct } from "types/product";
 
 const ShowProduct = () => {
   const { productId = "" } = useParams();
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [page, setPage] = React.useState(0);
-  const [status, setStatus] = React.useState("todos");
-  const [available, setAvailable] = React.useState("todos");
+  const [status, setStatus] = React.useState("disponibles");
+  const [available, setAvailable] = React.useState("en_stock");
   const [id, setId] = React.useState("");
 
   const { data, isFetching, isError } = useGetProduct(productId);
@@ -165,7 +166,7 @@ const ShowProduct = () => {
           mb: 1,
         }}
       >
-        {data && <CustomCard product={data} hiddenShowAction />}
+        {data && <CustomCard product={data as IProduct & {metros_disponibles: number}} hiddenShowAction />}
       </Box>
       {getStockDetails()}
     </CustomContainer>

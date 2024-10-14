@@ -1,9 +1,10 @@
-import { Button, Grid, Paper, styled, Typography } from "@mui/material";
+import { Button, FormControlLabel, Grid, Paper, styled, Switch, TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { FormInputText } from "../form/FormInputText";
 import { IStockFormProps } from "./IStockFormProps";
 import { useParams } from "react-router-dom";
 import { IStock } from "types/stock";
+import { useState } from "react";
 
 const defaultValues: IStock = {
   id: "",
@@ -24,13 +25,17 @@ export const StockForm = ({
   isEdit,
   onSubmitStock,
 }: IStockFormProps) => {
-  const { productId } = useParams();
-  const { handleSubmit, reset, control, setValue } = useForm<IStock>({
+  const { handleSubmit, reset, control, setValue, watch } = useForm<IStock>({
     defaultValues: stock ?? defaultValues,
   });
+  const [checked, setChecked] = useState(false)
+  const [productCount, setProductCount] = useState<number>(1)
+
+  const id = watch("id")
+
   const onSubmit = (data: IStock) => {
     onSubmitStock({
-      product_id: String(data.product_id),
+      product_id: checked ? String(data.product_id) : '',
       descripcion: String(data.descripcion),
       cantidad_metros: Number(data.cantidad_metros),
       cantidad_metros_vendidos: Number(data.cantidad_metros_vendidos),
@@ -39,7 +44,7 @@ export const StockForm = ({
       disponible: Boolean(data.disponible),
       estado: String(data.estado),
       id: String(data.id),
-    });
+    }, checked ? 1 : productCount);
   };
 
   const FormGrid = styled(Grid)(() => ({
@@ -63,11 +68,42 @@ export const StockForm = ({
       </Typography>
 
       <Grid container spacing={3}>
-        {stock?.id && (
+        <FormGrid item xs={12} md={6}>
+          <FormControlLabel
+            control={
+              <Switch
+                color="secondary"
+                name="Interruptor para cambiar tabla"
+                defaultChecked={checked}
+                onChange={e => {
+                  setChecked(e.target.checked)
+                }}
+              />}
+            label={`Ingresar codigo manualmente: ${checked ? 'Si' : 'No'}`}
+          />
+        </FormGrid>
+
+        {checked && (
           <FormGrid item xs={12} md={6}>
-            <FormInputText name="id" control={control} label="ID" type="text" />
+            <FormInputText name="id" control={control} label="Codigo" type="text"/>
           </FormGrid>
         )}
+        {!checked && (
+          <FormGrid item xs={12} md={6}>
+            <TextField
+              size="small"
+              onChange={e => setProductCount(Number(e.target.value))}
+              error={productCount < 1}
+              helperText={productCount < 1 && 'Ingresar un valor mayor que 1'}
+              value={productCount}
+              fullWidth
+              label="Cantidad de productos"
+              variant="outlined"
+              type="number"
+            />
+          </FormGrid>
+        )}
+        <Grid xs={12} />
         {stock?.product_id && (
           <FormGrid item xs={12} md={6}>
             <FormInputText
@@ -143,7 +179,7 @@ export const StockForm = ({
         )}
       </Grid>
 
-      <Button onClick={handleSubmit(onSubmit)} variant={"contained"}>
+      <Button onClick={handleSubmit(onSubmit)} variant={"contained"} disabled={productCount < 1 || (checked && !id)}>
         {isEdit ? "Editar" : "Crear"}
       </Button>
       <Button onClick={() => reset()} variant={"outlined"}>

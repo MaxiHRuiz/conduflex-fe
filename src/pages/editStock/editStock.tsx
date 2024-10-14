@@ -31,7 +31,7 @@ const EditProduct = () => {
         <StockForm
           title="Editar stock"
           stock={data}
-          onSubmitStock={updateStock}
+          onSubmitStock={(v, n) => updateStock(v)}
           isEdit
           subTitle={`Producto: ${data?.id} - ${data?.descripcion}`}
         />

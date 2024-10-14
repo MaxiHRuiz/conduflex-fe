@@ -5,5 +5,5 @@ export interface IStockFormProps {
     title: string
     subTitle: string
     stock?: IStock
-    onSubmitStock: (stock: IStock) => void
+    onSubmitStock: (stock: IStock, productCount: number) => void
 }
