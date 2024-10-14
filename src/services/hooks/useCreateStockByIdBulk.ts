@@ -1,7 +1,7 @@
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { AxiosResponse } from 'axios';
 import axiosCore from 'api/createAxiosClient';
-import { IBaseStock, IStock, IStockBulk } from 'types/stock';
+import { IBaseStock, IStockBulk } from 'types/stock';
 import { toast } from 'react-toastify';
 import { onError } from 'utils/helpers';
 
