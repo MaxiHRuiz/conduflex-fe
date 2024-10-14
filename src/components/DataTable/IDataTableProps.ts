@@ -8,6 +8,7 @@ export interface IDataTableProps<T> {
     data: Array<T>
     pagination: GridPaginationModel
     count: number
+    rowsPerPageOptions?: number[]
     onChangePagination: (pagination: GridPaginationModel) => void
 }
 

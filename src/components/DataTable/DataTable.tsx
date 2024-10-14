@@ -333,6 +333,7 @@ export default function DataTable({
   pagination,
   count,
   onChangePagination,
+  rowsPerPageOptions,
 }: IDataTableProps<IProduct>) {
   function CustomToolbar() {
     return (
@@ -374,7 +375,7 @@ export default function DataTable({
         initialState={{
           density: "compact",
         }}
-        pageSizeOptions={[10, 25, 30]}
+        pageSizeOptions={rowsPerPageOptions ?? [10, 25, 30]}
         paginationMode="server"
       />
     </div>

@@ -80,6 +80,7 @@ export const Products = () => {
             pageSize: rowsPerPage,
           }}
           onChangePagination={onChangePagination}
+          rowsPerPageOptions={[3, 5, 10]}
         />
       );
     }
