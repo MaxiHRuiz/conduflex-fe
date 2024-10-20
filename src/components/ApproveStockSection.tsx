@@ -71,7 +71,7 @@ const ApproveStockSection = ({
               : "¿Estás seguro de que deseas aprobar estos stocks?"
           }
           buttonColor="success"
-          disabled={role !== "admin" || rowSelectionModel.length === 0}
+          disabled={subStatus !== "no_disponible" || status !== "no_disponibles" || role !== "admin" || rowSelectionModel.length === 0}
           onConfirm={onApprove}
         />
       </div>
