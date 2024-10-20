@@ -6,7 +6,7 @@ import { onError } from 'utils/helpers';
 import { IStock, IStockParams } from 'types/stock';
 
 const updateStockByIdMultiple = async (stocks: IStock[]): Promise<AxiosResponse<IStock, any>[]> => {
-    const fetchURL = (stock: IStock) => axiosCore.patch<IStock>(`/product/${stock.product_id}/stock/${stock.id}`, stock);
+    const fetchURL = (stock: IStock) => axiosCore.patch<IStock>(`/product/${stock.product_id}/stock/${stock.id}`, {...stock, estado: 'en_stock' });
     const postRequest = stocks.map(stock => {
         return fetchURL(stock)
     })
