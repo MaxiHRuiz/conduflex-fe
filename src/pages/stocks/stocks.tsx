@@ -1,5 +1,6 @@
 import {
   Box,
+  Divider,
   FormControl,
   InputLabel,
   MenuItem,
@@ -11,9 +12,12 @@ import {
 import CustomContainer from "../../components/customContainer/CustomContainer";
 import StockTable from "components/DataTable/StockTable";
 import { useGetStocks } from "services/hooks/useGetStocks";
-import { GridPaginationModel } from "@mui/x-data-grid";
+import { GridPaginationModel, GridRowSelectionModel } from "@mui/x-data-grid";
 import React from "react";
 import { getDisponible, getStockStatus, statusLabels } from "utils/helpers";
+import ApproveStockSection from "components/ApproveStockSection";
+import { useUpdateStockByIdMultiple } from "services/hooks/useUpdateStockByIdMultiple";
+import Loading from "components/Loading";
 
 const Stocks = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
@@ -21,7 +25,16 @@ const Stocks = () => {
   const [status, setStatus] = React.useState("todos");
   const [id, setId] = React.useState("");
   const [available, setAvailable] = React.useState("todos");
+  const [rowSelectionModel, setRowSelectionModel] =
+    React.useState<GridRowSelectionModel>([]);
 
+  const { mutateAsync: updateStock, isPending } = useUpdateStockByIdMultiple({
+    offset: page * rowsPerPage,
+    limit: rowsPerPage,
+    disponible: getDisponible(status),
+    estado: getStockStatus(available),
+    id,
+  });
 
   const handleStatusChange = (event: SelectChangeEvent) => {
     setStatus(event.target.value as string);
@@ -34,6 +47,16 @@ const Stocks = () => {
     estado: getStockStatus(available),
     id,
   });
+
+  const onApprove = () => {
+    const items = data?.response.filter(
+      (item) => rowSelectionModel.includes(item.id)
+    );
+
+    if (items?.length) {
+      updateStock(items);
+    }
+  };
 
   const onChangePagination = (pagination: GridPaginationModel) => {
     if (page !== pagination.page) {
@@ -55,6 +78,8 @@ const Stocks = () => {
   };
 
   if (isError) return <Typography>Error al cargar los stocks</Typography>;
+
+  if (isPending) return <Loading />;
 
   return (
     <CustomContainer>
@@ -89,8 +114,15 @@ const Stocks = () => {
             />
           </Box>
 
-          <Box sx={{ flexShrink: 0, flexDirection: "row", display: "flex", gap: 1 }}>
-          <FormControl fullWidth size="small" sx={{width: 200}}>
+          <Box
+            sx={{
+              flexShrink: 0,
+              flexDirection: "row",
+              display: "flex",
+              gap: 1,
+            }}
+          >
+            <FormControl fullWidth size="small" sx={{ width: 200 }}>
               <InputLabel id="available-select-label">Estado</InputLabel>
               <Select
                 labelId="available-select-label"
@@ -107,7 +139,7 @@ const Stocks = () => {
                 ))}
               </Select>
             </FormControl>
-            <FormControl fullWidth size="small" sx={{width: 200}}>
+            <FormControl fullWidth size="small" sx={{ width: 200 }}>
               <InputLabel id="status-select-label">Estado</InputLabel>
               <Select
                 labelId="status-select-label"
@@ -124,6 +156,15 @@ const Stocks = () => {
           </Box>
         </Box>
       </Box>
+      <Divider />
+      <ApproveStockSection
+        rowSelectionModel={rowSelectionModel}
+        status={status}
+        setStatus={setStatus}
+        subStatus={available}
+        setSubStatus={setAvailable}
+        onApprove={onApprove}
+      />
       <StockTable
         isLoading={isFetching}
         data={data?.response ?? []}
@@ -133,6 +174,8 @@ const Stocks = () => {
         }}
         count={data?.total || 0}
         onChangePagination={onChangePagination}
+        rowSelectionModel={rowSelectionModel}
+        setRowSelectionModel={setRowSelectionModel}
       />
     </CustomContainer>
   );

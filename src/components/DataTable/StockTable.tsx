@@ -1,6 +1,7 @@
 import {
   DataGrid,
   GridColDef,
+  GridRowSelectionModel,
   GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
@@ -13,6 +14,7 @@ import { IStock } from "types/stock";
 import Show from "../actions/show";
 import QR from "components/actions/QR";
 import { REACT_APP_URL } from "lib/constanst";
+import { useState } from "react";
 
 const formType = "stock";
 
@@ -104,6 +106,8 @@ export default function StockTable({
   pagination,
   count,
   onChangePagination,
+  rowSelectionModel,
+  setRowSelectionModel
 }: IDataTableProps<IStock>) {
   function CustomToolbar() {
     return (
@@ -144,8 +148,13 @@ export default function StockTable({
       initialState={{
         density: "compact",
       }}
-      pageSizeOptions={[10, 25, 30]}
+      pageSizeOptions={[10, 25, 30, 50, 100]}
       paginationMode="server"
+      checkboxSelection
+      onRowSelectionModelChange={(newRowSelectionModel) => {
+        setRowSelectionModel && setRowSelectionModel(newRowSelectionModel);
+      }}
+      rowSelectionModel={rowSelectionModel}
     />
   );
 }

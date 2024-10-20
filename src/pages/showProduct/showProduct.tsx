@@ -1,5 +1,6 @@
 import {
   Box,
+  Divider,
   FormControl,
   InputLabel,
   MenuItem,
@@ -12,16 +13,14 @@ import { Navigate, useParams } from "react-router-dom";
 import CustomCard from "../../components/customCard/customCard";
 import StockTable from "components/DataTable/StockTable";
 import { useGetProduct } from "services/hooks/useGetProduct";
-import { GridPaginationModel } from "@mui/x-data-grid";
+import { GridPaginationModel, GridRowSelectionModel } from "@mui/x-data-grid";
 import React from "react";
 import Loading from "components/Loading";
 import { useGetStocksByProductId } from "services/hooks/useGetStocksByProductId";
-import {
-  getDisponible,
-  getStockStatus,
-  statusLabels,
-} from "utils/helpers";
+import { getDisponible, getStockStatus, statusLabels } from "utils/helpers";
 import { IProduct } from "types/product";
+import ApproveStockSection from "components/ApproveStockSection";
+import { useUpdateStockByIdMultiple } from "services/hooks/useUpdateStockByIdMultiple";
 
 const ShowProduct = () => {
   const { productId = "" } = useParams();
@@ -30,8 +29,17 @@ const ShowProduct = () => {
   const [status, setStatus] = React.useState("disponibles");
   const [available, setAvailable] = React.useState("en_stock");
   const [id, setId] = React.useState("");
+  const [rowSelectionModel, setRowSelectionModel] =
+    React.useState<GridRowSelectionModel>([]);
 
   const { data, isFetching, isError } = useGetProduct(productId);
+  const { mutateAsync: updateStock, isPending } = useUpdateStockByIdMultiple({
+    offset: page * rowsPerPage,
+    limit: rowsPerPage,
+    disponible: getDisponible(status),
+    estado: getStockStatus(available),
+    id,
+  });
 
   const {
     data: stocks,
@@ -60,6 +68,16 @@ const ShowProduct = () => {
     }
     if (rowsPerPage !== pagination.pageSize)
       setRowsPerPage(pagination.pageSize);
+  };
+
+  const onApprove = () => {
+    const items = stocks?.response.filter(
+      (item) => rowSelectionModel.includes(item.id)
+    );
+
+    if (items?.length) {
+      updateStock(items);
+    }
   };
 
   // const onChangeIdSearch = (
@@ -105,7 +123,7 @@ const ShowProduct = () => {
               gap: 1,
             }}
           >
-            <FormControl fullWidth size="small" sx={{width: 200}}>
+            <FormControl fullWidth size="small" sx={{ width: 200 }}>
               <InputLabel id="available-select-label">Estado</InputLabel>
               <Select
                 labelId="available-select-label"
@@ -122,7 +140,7 @@ const ShowProduct = () => {
                 ))}
               </Select>
             </FormControl>
-            <FormControl fullWidth size="small" sx={{width: 200}}>
+            <FormControl fullWidth size="small" sx={{ width: 200 }}>
               <InputLabel id="status-select-label">Disponibilidad</InputLabel>
               <Select
                 labelId="status-select-label"
@@ -138,6 +156,15 @@ const ShowProduct = () => {
             </FormControl>
           </Box>
         </Box>
+        <Divider />
+        <ApproveStockSection
+          rowSelectionModel={rowSelectionModel}
+          status={status}
+          setStatus={setStatus}
+          subStatus={available}
+          setSubStatus={setAvailable}
+          onApprove={onApprove}
+        />
         <StockTable
           isLoading={isFetchingStocks}
           data={stocks?.response ?? []}
@@ -147,12 +174,14 @@ const ShowProduct = () => {
           }}
           count={stocks?.total ?? 0}
           onChangePagination={onChangePagination}
+          rowSelectionModel={rowSelectionModel}
+          setRowSelectionModel={setRowSelectionModel}
         />
       </>
     );
   };
 
-  if (isFetching) return <Loading />;
+  if (isFetching || isPending) return <Loading />;
 
   if (isError) return <Navigate to="/notFound" />;
 
@@ -166,7 +195,12 @@ const ShowProduct = () => {
           mb: 1,
         }}
       >
-        {data && <CustomCard product={data as IProduct & {metros_disponibles: number}} hiddenShowAction />}
+        {data && (
+          <CustomCard
+            product={data as IProduct & { metros_disponibles: number }}
+            hiddenShowAction
+          />
+        )}
       </Box>
       {getStockDetails()}
     </CustomContainer>
