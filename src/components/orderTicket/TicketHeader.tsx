@@ -9,6 +9,7 @@ import { ClientForm } from "components/client/ClientForm";
 import ClientModal from "components/clientModal/ClientModal";
 import ClientCard from "components/ClientCard";
 import { IClient } from "types/client";
+import { useParams } from "react-router-dom";
 
 interface TicketHeader {
   role: string;
@@ -99,7 +100,7 @@ const TicketHeader = ({
           <ClientModal onHandleClient={handleUpdate}/>
         </Box>}
       </Divider>
-      {order.comprador.id && <ClientForm
+      <ClientForm
         client={order.comprador}
         isEdit={editActive}
         onSubmitClient={handleUpdate}
@@ -107,7 +108,7 @@ const TicketHeader = ({
         onActiveUpdate={handleActiveUpdate}
         onCancel={handleCancel}
         estado={order.estado}
-      />}
+      />
     </Paper>
   );
 };

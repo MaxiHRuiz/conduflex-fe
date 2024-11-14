@@ -112,7 +112,7 @@ export const ClientForm = ({
           </FormGrid>
         </Grid>
       )}
-      {estado !== "finalizado" && (
+      {client?.id && estado !== "finalizado" && (
         <div>
           <TicketActions
             disabledDelete
