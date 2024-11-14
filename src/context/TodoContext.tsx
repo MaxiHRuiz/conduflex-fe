@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { TodoContextType } from "../types/todo";
 import { IComprador, IOrder, IProductStock } from "types/order";
+import { IClient } from "types/client";
 
 const defaultOrder: IOrder = {
   vendedor: "",
@@ -13,8 +14,17 @@ const defaultOrder: IOrder = {
   comprador: {
     nombre: "",
     cuit: "",
-    cp: 0,
-    direccion: "",
+    telefono: "",
+    email: "",
+    notas: "",
+    direccion: {
+      cp: 0,
+      provincia: "",
+      ciudad: "",
+      calle: "",
+      numero: 0,
+      departamento: ""
+    }
   },
 };
 
@@ -34,8 +44,17 @@ const defaultValues: TodoContextType = {
     comprador: {
       nombre: "",
       cuit: "",
-      cp: 0,
-      direccion: "",
+      telefono: "",
+      email: "",
+      notas: "",
+      direccion: {
+        cp: 0,
+        provincia: "",
+        ciudad: "",
+        calle: "",
+        numero: 0,
+        departamento: ""
+      }
     },
   },
   saveNewOrder: (order: IOrder) => {
@@ -53,7 +72,7 @@ const defaultValues: TodoContextType = {
   deleteOrder: () => {
     throw new Error("Function not implemented.");
   },
-  updateOrderComprador: function (comprador: IComprador): void {
+  updateOrderComprador: function (comprador: IClient): void {
     throw new Error("Function not implemented.");
   },
 };
@@ -105,7 +124,7 @@ const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     setOrder({ ...order, productos });
   };
 
-  const updateOrderComprador = (comprador: IComprador) => {
+  const updateOrderComprador = (comprador: IClient) => {
     setOrder({ ...order, comprador });
   };
 

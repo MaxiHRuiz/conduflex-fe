@@ -127,6 +127,9 @@ export const orderStatusMapper = (state: string): { label: string, variant: Type
 export const getDisponible = (status: string) =>
     status === "todos" ? undefined : status === "disponibles" ? true : false;
 
+export const getStock = (status: string) =>
+    status === "todos" ? undefined : status === "con_stock" ? true : false;
+
 export const statuses = [
     "no_disponible",
     "solicitud_para_producir",

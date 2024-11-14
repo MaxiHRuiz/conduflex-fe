@@ -88,8 +88,17 @@ const OrderForm = ({ product }: IOrderFromProps) => {
       comprador: {
         nombre: "",
         cuit: "",
-        cp: 0,
-        direccion: ""
+        telefono: "",
+        email: "",
+        notas: "",
+        direccion: {
+          cp: 0,
+          provincia: "",
+          ciudad: "",
+          calle: "",
+          numero: 0,
+          departamento: ""
+        }
       }
     });
   };

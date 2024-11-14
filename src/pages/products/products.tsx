@@ -5,6 +5,11 @@ import {
   Switch,
   Button,
   TextField,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
 } from "@mui/material";
 import CustomContainer from "../../components/customContainer/CustomContainer";
 import CustomCard from "../../components/customCard/customCard";
@@ -18,6 +23,7 @@ import { useGetProducts } from "services/hooks/useGetProducts";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import Loading from "components/Loading";
 import { IProduct } from "types/product";
+import { getStock } from "utils/helpers";
 
 export const Products = () => {
   const [rowsPerPage, setRowsPerPage] = React.useState(3);
@@ -26,12 +32,14 @@ export const Products = () => {
   const { tableChecked, setTableChecked } = useTodo();
   const [id, setId] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [stock, setStock] = useState("todos");
 
   const { data, isFetching } = useGetProducts({
     offset: page * rowsPerPage,
     limit: rowsPerPage,
     id,
     description,
+    hay_stock: getStock(stock),
   });
 
   const onChangePage = (page: number) => {
@@ -51,13 +59,21 @@ export const Products = () => {
       setRowsPerPage(pagination.pageSize);
   };
 
-  const onChangeIdSearch = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setId(e.target.value)
-  }
+  const onChangeIdSearch = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setId(e.target.value);
+  };
 
-  const onChangeDescriptionSearch = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setDescription(e.target.value)
-  }
+  const onChangeDescriptionSearch = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setDescription(e.target.value);
+  };
+
+  const handleStatusChange = (event: SelectChangeEvent) => {
+    setStock(event.target.value as string);
+  };
 
   const handleChange = (
     event: SyntheticEvent<Element, Event>,
@@ -89,7 +105,10 @@ export const Products = () => {
       <>
         {data &&
           data.response.map((x, index) => (
-            <CustomCard key={x.id} product={x as IProduct & {metros_disponibles: number}} />
+            <CustomCard
+              key={x.id}
+              product={x as IProduct & { metros_disponibles: number }}
+            />
           ))}
       </>
     );
@@ -111,18 +130,15 @@ export const Products = () => {
             flexDirection: "row",
           }}
         >
-          <Box sx={{ width: "100%", display: 'flex', flexDirection: 'row', gap: 1, flexWrap: 'wrap'}}>
-            <FormControlLabel
-              control={
-                <Switch
-                  color="secondary"
-                  name="Interruptor para cambiar tabla"
-                  defaultChecked={tableChecked}
-                  onChange={handleChange}
-                />
-              }
-              label="Cambiar tabla"
-            />
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "row",
+              gap: 1,
+              flexWrap: "wrap",
+            }}
+          >
             <TextField
               value={id}
               onChange={onChangeIdSearch}
@@ -137,6 +153,20 @@ export const Products = () => {
               label="Descripcion"
               color="secondary"
             />
+            <FormControl fullWidth size="small" sx={{ width: 200 }}>
+              <InputLabel id="status-select-label">Estado</InputLabel>
+              <Select
+                labelId="status-select-label"
+                id="status-select"
+                value={stock}
+                label="Estado"
+                onChange={handleStatusChange}
+              >
+                <MenuItem value="todos">Todos</MenuItem>
+                <MenuItem value="con_stock">Con stock</MenuItem>
+                <MenuItem value="sin_stock">Sin stock</MenuItem>
+              </Select>
+            </FormControl>
           </Box>
 
           <Box sx={{ flexShrink: 0 }}>
@@ -149,6 +179,24 @@ export const Products = () => {
               Agregar
             </Button>
           </Box>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          <FormControlLabel
+            control={
+              <Switch
+                color="secondary"
+                name="Interruptor para cambiar tabla"
+                defaultChecked={tableChecked}
+                onChange={handleChange}
+              />
+            }
+            label="Cambiar tabla"
+          />
         </Box>
       </Box>
       {dataSection()}

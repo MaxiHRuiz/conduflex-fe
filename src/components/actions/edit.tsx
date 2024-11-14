@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { IActionsButtonProps } from "./IActionsProps";
 import { GridActionsCellItem } from "@mui/x-data-grid";
 
-function Edit({ productId, buttonType, formType }: IActionsButtonProps) {
+function Edit({ productId, clientId, buttonType, formType }: IActionsButtonProps) {
   const navigate = useNavigate();
   const label = "Editar";
 
@@ -13,7 +13,8 @@ function Edit({ productId, buttonType, formType }: IActionsButtonProps) {
     if (formType === "stock") page = "stocks";
     if (formType === "product") page = "productos";
     if (formType === "order") page = "pedidos";
-    return `/${page}/${productId}/editar`;
+    if (formType === "client") page = "clientes";
+    return `/${page}/${productId ?? clientId}/editar`;
   };
 
   const handleClick = () => navigate(getUrl());

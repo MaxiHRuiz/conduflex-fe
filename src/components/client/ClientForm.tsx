@@ -1,38 +1,44 @@
-import { Box, Grid, Paper, styled, Typography } from "@mui/material";
+import { Box, Grid, styled } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { FormInputText } from "../form/FormInputText";
 import { IClientFormProps } from "./IClientFormProps";
-import { IComprador } from "types/order";
-import { FormInputCUIT } from "components/form/FormInputCUIT";
 import TicketActions from "components/orderTicket/TicketActions";
-import { useParams } from "react-router-dom";
+import { IClient, IClientDirection } from "types/client";
+import ClientCard from "components/ClientCard";
 
-const defaultValues: IComprador = {
-  nombre: "",
-  cuit: "",
+const defaultValues: IClientDirection = {
   cp: 0,
-  direccion: "",
+  provincia: "",
+  ciudad: "",
+  calle: "",
+  numero: 0,
+  departamento: "",
 };
 
 export const ClientForm = ({
-  comprador,
+  client,
   isEdit,
   actionIsDisabled,
-  onSubmitComprador,
+  onSubmitClient,
   onCancel,
   onActiveUpdate,
-  estado
+  estado,
 }: IClientFormProps) => {
-  const { handleSubmit, reset, control, setValue } = useForm<IComprador>({
-    defaultValues: comprador ?? defaultValues,
+  const { handleSubmit, control } = useForm<IClientDirection>({
+    defaultValues: client?.direccion ?? defaultValues,
   });
-  const onSubmit = (data: IComprador) => {
-    onSubmitComprador({
-      nombre: data.nombre.toString(),
-      cuit: data.cuit.toString(),
-      cp: Number(data.cp),
-      direccion: data.direccion.toString(),
-    });
+  const onSubmit = (data: IClientDirection) => {
+    onSubmitClient({
+      ...client,
+      direccion: {
+        cp: Number(data.cp),
+        provincia: String(data.provincia),
+        ciudad: String(data.ciudad),
+        calle: String(data.calle),
+        numero: Number(data.numero),
+        departamento: String(data.departamento),
+      },
+    } as IClient);
   };
 
   const FormGrid = styled(Grid)(() => ({
@@ -47,34 +53,54 @@ export const ClientForm = ({
         gridRowGap: !isEdit ? "20px" : undefined,
       }}
     >
-      {!isEdit ? (
-        <div>
-          <Typography fontWeight="bold">{`Cliente: ${
-            comprador?.nombre || "-"
-          }`}</Typography>
-          <Typography fontWeight="bold">{`CUIT: ${
-            comprador?.cuit || "-"
-          }`}</Typography>
-          <Typography fontWeight="bold">{`Dirección: ${
-            comprador?.direccion || "-"
-          }`}</Typography>
-          <Typography fontWeight="bold">{`C.P.: ${
-            comprador?.cp || "-"
-          }`}</Typography>
-        </div>
-      ) : (
+      {client?.nombre && (
+        <ClientCard
+          hiddenDirectionData={isEdit}
+          client={client}
+          isOrderDescription
+        />
+      )}
+      {isEdit && (
         <Grid container spacing={1} mt={1}>
           <FormGrid item xs={12} md={6}>
             <FormInputText
-              name="nombre"
+              name="provincia"
               control={control}
-              label="Cliente"
+              label="Provincia"
               type="text"
-              required
             />
           </FormGrid>
           <FormGrid item xs={12} md={6}>
-            <FormInputCUIT name="cuit" control={control} label="CUIT" />
+            <FormInputText
+              name="ciudad"
+              control={control}
+              label="Ciudad"
+              type="text"
+            />
+          </FormGrid>
+          <FormGrid item xs={12} md={6}>
+            <FormInputText
+              name="calle"
+              control={control}
+              label="Calle"
+              type="text"
+            />
+          </FormGrid>
+          <FormGrid item xs={12} md={6}>
+            <FormInputText
+              name="numero"
+              control={control}
+              label="Numero"
+              type="number"
+            />
+          </FormGrid>
+          <FormGrid item xs={12} md={6}>
+            <FormInputText
+              name="departamento"
+              control={control}
+              label="Piso/departamento"
+              type="text"
+            />
           </FormGrid>
           <FormGrid item xs={12} md={6}>
             <FormInputText
@@ -82,21 +108,11 @@ export const ClientForm = ({
               control={control}
               label="C.P."
               type="number"
-              required
-            />
-          </FormGrid>
-          <FormGrid item xs={12} md={6}>
-            <FormInputText
-              name="direccion"
-              control={control}
-              label="Dirección"
-              type="text"
-              required
             />
           </FormGrid>
         </Grid>
       )}
-      {estado !== 'finalizado' &&
+      {estado !== "finalizado" && (
         <div>
           <TicketActions
             disabledDelete
@@ -107,7 +123,7 @@ export const ClientForm = ({
             disabledActions={actionIsDisabled}
           />
         </div>
-      }
+      )}
     </Box>
   );
 };

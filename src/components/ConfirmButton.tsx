@@ -12,7 +12,7 @@ interface IConfirmButtonProps {
   buttonText: string;
   dialogTitle: string;
   dialogContent: string;
-  disabled: boolean;
+  disabled?: boolean;
   buttonColor:
   | "inherit"
   | "primary"

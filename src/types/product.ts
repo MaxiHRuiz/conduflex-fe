@@ -55,4 +55,5 @@ export interface IProduct extends IBaseProduct {
 export interface IProductParams extends IBaseParams {
     description?: string
     id?: string
+    hay_stock?: boolean
 }

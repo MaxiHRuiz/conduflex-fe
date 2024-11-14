@@ -45,6 +45,7 @@ const DropdownButton: React.FC = () => {
   const handleDeleteOrder = () => {
     deleteOrder();
     toast.info("Se elimino el pedido pendiente");
+    navigate('/pedidos')
     handleClose();
   };
 

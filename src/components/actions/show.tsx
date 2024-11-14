@@ -10,6 +10,7 @@ const Show = ({
   stockId,
   orderId,
   formType,
+  clientId,
 }: IActionsButtonProps) => {
   const navigate = useNavigate();
   const label = "Ver detalle";
@@ -19,6 +20,7 @@ const Show = ({
       return `/productos/${productId}/stocks/${stockId}`;
     if (formType === "product") return `/productos/${productId}`;
     if (formType === "order") return `/pedidos/${orderId}`;
+    if (formType === "client") return `/clientes/${clientId}`;
     return "";
   };
 

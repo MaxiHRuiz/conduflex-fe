@@ -1,12 +1,14 @@
-import { Paper, Typography } from "@mui/material";
+import { Box, Divider, Paper, Typography } from "@mui/material";
 import { IComprador, IOrder } from "types/order";
 import { ISOdateFormatter } from "utils/helpers";
 import OrderState from "components/OrderState";
 import TicketActionsContainer from "./TicketActionsContainer";
 import ConfirmButton from "components/ConfirmButton";
-import { useParams } from "react-router-dom";
 import { useState } from "react";
 import { ClientForm } from "components/client/ClientForm";
+import ClientModal from "components/clientModal/ClientModal";
+import ClientCard from "components/ClientCard";
+import { IClient } from "types/client";
 
 interface TicketHeader {
   role: string;
@@ -14,7 +16,7 @@ interface TicketHeader {
   disabledActions: boolean;
   setIsLoading: (value: boolean) => void;
   generateOrderDisabled: (value: boolean) => void;
-  onSubmitComprador: (comprador: IComprador) => void;
+  onSubmitComprador: (comprador: IClient) => void;
   onDelete: () => void;
   onAuthorize: () => void;
 }
@@ -30,7 +32,7 @@ const TicketHeader = ({
 }: TicketHeader) => {
   const [editActive, setEditActive] = useState(false);
 
-  const handleUpdate = (comprador: IComprador) => {
+  const handleUpdate = (comprador: IClient) => {
     onSubmitComprador(comprador);
     generateOrderDisabled(false);
     setEditActive(false);
@@ -86,15 +88,26 @@ const TicketHeader = ({
         )}`}</Typography>
       )}
       {order.id && <OrderState label bold state={order.estado} />}
-      <ClientForm
-        comprador={order.comprador}
+
+      <Divider sx={{pt: order.id ? 1 : undefined}}>
+        {!order.id && <Box
+          sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+        >
+          <Typography component="h3" variant="h6">
+            Cliente
+          </Typography>
+          <ClientModal onHandleClient={handleUpdate}/>
+        </Box>}
+      </Divider>
+      {order.comprador.id && <ClientForm
+        client={order.comprador}
         isEdit={editActive}
-        onSubmitComprador={handleUpdate}
+        onSubmitClient={handleUpdate}
         actionIsDisabled={disabledActions}
         onActiveUpdate={handleActiveUpdate}
         onCancel={handleCancel}
         estado={order.estado}
-      />
+      />}
     </Paper>
   );
 };

@@ -1,11 +1,12 @@
+import { IClient, IClientDirection } from "types/client"
 import { IComprador } from "types/order"
 
 export interface IClientFormProps {
     isEdit?: boolean
-    comprador?: IComprador
+    client?: IClient
     actionIsDisabled: boolean
     estado: string
-    onSubmitComprador: (comprador: IComprador) => void
+    onSubmitClient: (client: IClient) => void
     onActiveUpdate: () => void
     onCancel: () => void
 }

@@ -1,11 +1,11 @@
 import { Paper, Typography } from "@mui/material";
 import Loading from "components/Loading";
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateOrder } from "services/hooks/useCreateOrder";
 import { numberFormat } from "utils/helpers";
 import OrderCard from "./orderCard";
-import { IComprador, IOrder, IProductStock } from "types/order";
+import { IOrder, IProductStock } from "types/order";
 import TicketFooter from "./TicketFooter";
 import TicketHeader from "./TicketHeader";
 import { useAppContext } from "context/RoleContext";
@@ -14,18 +14,12 @@ import { useUpdateOrder } from "services/hooks/useUpdateOrder";
 import { useTodo } from "context/TodoContext";
 import { useAuthorizeOrder } from "services/hooks/useAuthorizeOrder";
 import { useDeleteOrderById } from "services/hooks/useDeleteOrderById";
+import { IClient } from "types/client";
 
 interface OrderTicketProps {
   order: IOrder;
   onSuccess?: () => void;
 }
-
-const defaultValue: IComprador = {
-  nombre: "",
-  cuit: "",
-  cp: 0,
-  direccion: "",
-};
 
 const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
   const navigate = useNavigate();
@@ -42,24 +36,15 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
   const [disabled, setDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  const total = useCallback(
-    () =>
-      numberFormat(
-        order.productos
-          .map((product) => product.precio)
-          .reduce((a, b) => a + b, 0)
-      ),
-    [order.productos]
-  );
-
-  const onSubmitComprador = (comprador: IComprador) => {
+  const onSubmitComprador = (comprador: IClient) => {
     if (order.id) {
       updateOrder({
         ...order,
-        comprador,
+        direccion: comprador.direccion
       });
       return;
     }
+    console.log(comprador.nombre);
     updateOrderComprador(comprador);
   };
 
@@ -93,12 +78,12 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
   };
 
   const onDeleteOrder = () => {
-    deleteOrder(order.id)
-  }
+    deleteOrder(order.id);
+  };
 
   const onAuthorize = () => {
-    authorizeOrder(order.id)
-  }
+    authorizeOrder(order.id);
+  };
 
   if (
     isPending ||
@@ -149,7 +134,7 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
         disabled={disabled || !order?.productos?.length}
         total={numberFormat(order.precio)}
         onCreateOrder={() =>
-          createOrder(order as unknown as IOrder, {
+          createOrder({...order, id_comprador: order.comprador.id} as IOrder, {
             onSuccess: () => {
               onSuccess?.();
               navigate("/pedidos");

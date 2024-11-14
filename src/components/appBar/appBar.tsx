@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/Auth";
 import OrderList from "components/orderList/orderList";
 
-const pages = ["productos", "stocks", "pedidos"];
+const pages = ["productos", "stocks", "pedidos", "clientes", "fracionamiento"];
 
 function ResponsiveAppBar() {
   const { userSession } = useAuth();
