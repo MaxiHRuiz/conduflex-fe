@@ -9,8 +9,7 @@ import { IDataTableProps } from "./IDataTableProps";
 import { esES } from "@mui/x-data-grid/locales";
 import { ISOdateFormatter } from "utils/helpers";
 import { IFractionate } from "types/fractionate";
-import CheckIcon from "@mui/icons-material/Check";
-import IconButton from "@mui/material/IconButton";
+import { Button } from "@mui/material";
 
 const formType = "stock";
 
@@ -20,9 +19,9 @@ const columns: GridColDef[] = [
     type: "actions",
     headerName: "Acciones",
     getActions: (props) => [
-      <IconButton aria-label="delete">
-        <CheckIcon />
-      </IconButton>,
+      <Button aria-label="Aprobar" size="small" variant="outlined" color="success">
+        Aprobar
+      </Button>,
     ],
   },
   {
