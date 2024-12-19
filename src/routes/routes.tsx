@@ -17,6 +17,7 @@ import ShowClient from "pages/showClient/showClient";
 import EditClient from "pages/editClient/editClient";
 import CreateClient from "pages/createClient/createClient";
 import Fractionates from "pages/fractionates/fractionates";
+import Cost from "pages/cost/cost";
 
 function AppRoutes() {
   return (
@@ -38,7 +39,9 @@ function AppRoutes() {
         <Route path="/productos/:productId/editar" element={<EditProduct />} />
         <Route path="/productos/:productId" element={<ShowProduct />} />
         <Route path="/productos" element={<Products />} />
+        
         {/* <Route path="/stocks/:id" element={<Navigate to={'/stocks'} />} /> */}
+        <Route path="/pedidos/costeo" element={<Cost />} />
         <Route path="/pedidos/nuevo" element={<NewOrder />} />
         <Route path="/pedidos/:orderId" element={<ShowOrders />} />
         <Route path="/pedidos" element={<Orders />} />

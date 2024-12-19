@@ -89,13 +89,13 @@ const Stocks = () => {
               label="Email"
             />
             <TextField
-              value={email}
+              value={product_id}
               onChange={handleProduct_idChange}
               size="small"
               label="Producto"
             />
             <TextField
-              value={email}
+              value={stock_id}
               onChange={handleStock_idChange}
               size="small"
               label="Stock"

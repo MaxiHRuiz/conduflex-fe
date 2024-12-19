@@ -1,0 +1,10 @@
+.custom-date-picker {
+    font-size: 1.5rem;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.react-datepicker__close-icon::after {
+    background-color: gray;
+    color: #fff;
+}

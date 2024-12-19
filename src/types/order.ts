@@ -28,6 +28,8 @@ export interface IOrderParams extends IBaseParams {
     estado: string,
     comprador: string
     fecha: string
+    desde: string
+    hasta: string
 }
 
 export interface IProductStock {

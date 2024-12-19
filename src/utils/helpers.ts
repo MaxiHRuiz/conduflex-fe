@@ -1,5 +1,8 @@
 import { REACT_APP_URL } from "lib/constanst";
 import { toast } from "react-toastify";
+import { saveAs } from "file-saver";
+import * as XLSX from 'xlsx';
+import { IOrderResponse, IProductCost, IProductCostResult } from "types/cost";
 
 type TypeColor = "warning" | "success" | "info" | "error" | undefined;
 
@@ -34,11 +37,13 @@ export const dateFormatter = (date: string, separator: string | undefined = "-",
     return options.map(format).join(separator);
 }
 
-export const ISOdateFormatter = (date: string) => {
+export const ISOdateFormatter = (date: string, otherFormat: boolean = false) => {
     const fecha = new Date(date);
     const dia = fecha.getUTCDate().toString().padStart(2, '0');
     const mes = (fecha.getUTCMonth() + 1).toString().padStart(2, '0');
     const año = fecha.getUTCFullYear();
+
+    if (otherFormat) return `${año}-${mes}-${dia}`
 
     return `${dia}-${mes}-${año}`
 }
@@ -112,7 +117,7 @@ export const orderStatusMapper = (state: string): { label: string, variant: Type
             label: "Cancelado",
             variant: "error"
         }
-    }    if (state === "finalizado") {
+    } if (state === "finalizado") {
         return {
             label: "Finalizado",
             variant: "success"
@@ -157,20 +162,57 @@ export const getStockStatus = (value: string) => statuses.includes(value) ? valu
 export function validarCUIT(cuit: string) {
     if (typeof cuit !== 'string') return false;
     cuit = cuit.replace(/-/g, '');
-  
+
     if (cuit.length !== 11) return false;
-  
+
     const base = [5, 4, 3, 2, 7, 6, 5, 4, 3, 2];
     const verificador = parseInt(cuit[10], 10);
     let suma = 0;
-  
+
     for (let i = 0; i < 10; i++) {
-      suma += parseInt(cuit[i], 10) * base[i];
+        suma += parseInt(cuit[i], 10) * base[i];
     }
-  
+
     let resto = 11 - (suma % 11);
     if (resto === 11) resto = 0;
     if (resto === 10) resto = 9;
-  
+
     return resto === verificador;
-  }
+}
+
+export const separateProductCosts = (orders: IOrderResponse[]): IProductCostResult[] => {
+    let productCosts: IProductCostResult[] = [];
+    orders.forEach(order => {
+        const filteredProducts = order.costeos.map((product: any) => ({
+            fecha: order.fecha,
+            nombre_cliente: order.nombre_cliente,
+            product: product.product_id, 
+            monto_neto: product.monto_neto,
+            comisiones_monto_neto: product.comisiones_monto_neto,
+            order: order.order_id, 
+            kg_cobre: product.material_cost.kg_cobre,
+            kg_almas: product.material_cost.kg_almas,
+            kg_relleno: product.material_cost.kg_relleno,
+            kg_vaina: product.material_cost.kg_vaina,
+            fleje: product.material_cost.fleje,
+            precio_costo: product.material_cost.precio_costo,
+            precio_lista: product.material_cost.precio_lista,
+            precio_venta: product.material_cost.precio_venta
+        }));
+        productCosts = productCosts.concat(filteredProducts);
+    });
+    return productCosts;
+};
+
+export const exportToExcel = (data: any, fileName: any) => {
+    const fechaActual = new Date().toLocaleString();
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+    });
+    const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+    saveAs(blob, `${fileName}-${fechaActual}.xlsx`);
+};

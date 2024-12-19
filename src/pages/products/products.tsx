@@ -114,6 +114,11 @@ export const Products = () => {
     );
   };
 
+  const dataEx = [
+    { id: 1, name: "John Doe", age: 30, profession: "Developer" },
+    { id: 2, name: "Jane Smith", age: 25, profession: "Designer" },
+  ];
+
   return (
     <CustomContainer>
       <Box

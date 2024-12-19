@@ -15,6 +15,8 @@ import { IOrder } from "types/order";
 import { useGetOrders } from "services/hooks/useGetOrders";
 import Loading from "components/Loading";
 import {
+  Button,
+  Divider,
   FormControl,
   InputLabel,
   MenuItem,
@@ -25,10 +27,13 @@ import {
   Typography,
 } from "@mui/material";
 import Show from "components/actions/show";
-import { dateFormatter, ISOdateFormatter } from "utils/helpers";
+import { ISOdateFormatter } from "utils/helpers";
 import OrderState from "components/OrderState";
 import { useState } from "react";
-import CustomDateField from "components/CustomDateField";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import "./style.css";
+import { useNavigate } from "react-router-dom";
 
 function Row(props: { row: IOrder }) {
   const { row } = props;
@@ -104,15 +109,21 @@ export default function CollapsibleTable() {
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [page, setPage] = React.useState(0);
   const [comprador, setComprador] = useState<string>("");
-  const [fecha, setFecha] = useState<string>("");
   const [estado, setEstado] = useState<string>("todos");
-  
+  const date = new Date();
+  const previousMonth = new Date(date.setMonth(date.getMonth() - 1));
+  const [dateRange, setDateRange] = useState([previousMonth, new Date()]);
+  const [startDate, endDate] = dateRange;
+  const navigate = useNavigate();
+
   const { data, isFetching, isError } = useGetOrders({
     offset: page * rowsPerPage,
     limit: rowsPerPage,
     comprador,
-    fecha,
+    fecha: "",
     estado: estado === "todos" ? "" : estado,
+    desde: ISOdateFormatter(startDate as unknown as string, true),
+    hasta: ISOdateFormatter(endDate as unknown as string, true),
   });
 
   const handleChangeRowsPerPage = (
@@ -139,19 +150,8 @@ export default function CollapsibleTable() {
     setEstado(event.target.value as string);
   };
 
-  //implementacion de debounce
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSearchTerm(event.target.value);
-  // };
-
-  // useEffect(() => {
-  //   if (debouncedSearchTerm) {
-  //     // Perform the API call or any other action with the debounced value
-  //     console.log('API call with:', debouncedSearchTerm);
-  //   }
-  // }, [debouncedSearchTerm]);
-
-  if (isError) return <Typography>Hubo un error al cargar los pedidos</Typography>;
+  if (isError)
+    return <Typography>Hubo un error al cargar los pedidos</Typography>;
 
   return (
     <>
@@ -177,6 +177,13 @@ export default function CollapsibleTable() {
             size="small"
             label="Cliente"
           />
+          <Button
+            variant="outlined"
+            color="secondary"
+            onClick={() => navigate("/pedidos/costeo")}
+          >
+            Costeo
+          </Button>
         </Box>
 
         <Box
@@ -187,7 +194,6 @@ export default function CollapsibleTable() {
             gap: 1,
           }}
         >
-          <CustomDateField onSetValue={setFecha} />
           <FormControl fullWidth size="small" sx={{ width: 200 }}>
             <InputLabel id="available-select-label">Estado</InputLabel>
             <Select
@@ -205,6 +211,20 @@ export default function CollapsibleTable() {
           </FormControl>
         </Box>
       </Box>
+      <Divider />
+      <Box sx={{ my: 2, zIndex: 999 }}>
+        <DatePicker
+          className="custom-date-picker"
+          dateFormat="yyyy/MM/dd"
+          selectsRange={true}
+          startDate={startDate}
+          endDate={endDate}
+          onChange={(update: any) => {
+            setDateRange(update);
+          }}
+          isClearable={true}
+        />
+      </Box>
       <Paper sx={{ width: "100%", mb: 2 }}>
         {isFetching ? (
           <Loading />
@@ -217,10 +237,10 @@ export default function CollapsibleTable() {
                   <TableCell />
                   <TableCell>ID</TableCell>
                   <TableCell>Vendedor</TableCell>
-                  <TableCell sx={{minWidth: 100}}>Fecha</TableCell>
+                  <TableCell sx={{ minWidth: 100 }}>Fecha</TableCell>
                   <TableCell>Estado</TableCell>
-                  <TableCell sx={{minWidth: 100}}>Cliente</TableCell>
-                  <TableCell sx={{minWidth: 100}}>Actualizado por</TableCell>
+                  <TableCell sx={{ minWidth: 100 }}>Cliente</TableCell>
+                  <TableCell sx={{ minWidth: 100 }}>Actualizado por</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
