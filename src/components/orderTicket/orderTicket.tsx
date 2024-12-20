@@ -14,7 +14,8 @@ import { useUpdateOrder } from "services/hooks/useUpdateOrder";
 import { useTodo } from "context/TodoContext";
 import { useAuthorizeOrder } from "services/hooks/useAuthorizeOrder";
 import { useDeleteOrderById } from "services/hooks/useDeleteOrderById";
-import { IClient } from "types/client";
+import { IClient, IClientFormData } from "types/client";
+import { useUpdateOrderInformation } from "services/hooks/useUpdateOrderInformation";
 
 interface OrderTicketProps {
   order: IOrder;
@@ -29,6 +30,9 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
   const { mutateAsync: createOrder, isPending } = useCreateOrder();
   const { mutateAsync: updateOrder, isPending: isPendingOrder } =
     useUpdateOrder();
+    const { mutateAsync: updateOrderInformation, isPending: isPendingOrderInformation } =
+    useUpdateOrderInformation();
+    
   const { mutateAsync: deleteOrder, isPending: deleteIsPending } =
     useDeleteOrderById();
   const { mutateAsync: authorizeOrder, isPending: authorizeIsPending } =
@@ -44,8 +48,29 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
       });
       return;
     }
-    console.log(comprador.nombre);
     updateOrderComprador(comprador);
+  };
+
+  const onSubmitCompradorInformation = (data: IClientFormData) => {
+    if (order.id) {
+      updateOrder({
+        ...order,
+        comprador: {
+          ...order.comprador,
+          ...data.comprador
+        },
+        direccion: data.direccion,
+        vendedor: {...data.vendedor}
+      });
+      return;
+    }
+    console.log("cambios pasan por aca")
+    let cliente = {...order.comprador}
+    cliente.email = data.comprador.email
+    cliente.notas = data.comprador.notas
+    cliente.telefono = data.comprador.telefono
+    cliente.direccion = data.direccion
+    updateOrderComprador(cliente);
   };
 
   const onSubmitUpdate = (productStock: IProductStock) => {
@@ -103,6 +128,7 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
         role={role || ""}
         generateOrderDisabled={setDisabled}
         onSubmitComprador={onSubmitComprador}
+        onSubmitCompradorForm={onSubmitCompradorInformation}
         onDelete={onDeleteOrder}
         onAuthorize={onAuthorize}
       />

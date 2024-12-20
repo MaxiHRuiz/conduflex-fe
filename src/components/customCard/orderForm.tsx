@@ -98,6 +98,11 @@ const OrderForm = ({ product }: IOrderFromProps) => {
           calle: "",
           numero: 0,
           departamento: ""
+        },
+        vendedor: {
+          nombre: "",
+          email: "",
+          comision: 0
         }
       }
     });

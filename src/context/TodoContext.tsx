@@ -24,6 +24,11 @@ const defaultOrder: IOrder = {
       calle: "",
       numero: 0,
       departamento: ""
+    },
+    vendedor: {
+      nombre: "",
+      email: "",
+      comision: 0
     }
   },
 };
@@ -54,6 +59,11 @@ const defaultValues: TodoContextType = {
         calle: "",
         numero: 0,
         departamento: ""
+      },
+      vendedor: {
+        nombre: "",
+        email: "",
+        comision: 0
       }
     },
   },

@@ -1,5 +1,5 @@
 import { Box, Divider, Paper, Typography } from "@mui/material";
-import { IComprador, IOrder } from "types/order";
+import { IOrder } from "types/order";
 import { ISOdateFormatter } from "utils/helpers";
 import OrderState from "components/OrderState";
 import TicketActionsContainer from "./TicketActionsContainer";
@@ -7,9 +7,7 @@ import ConfirmButton from "components/ConfirmButton";
 import { useState } from "react";
 import { ClientForm } from "components/client/ClientForm";
 import ClientModal from "components/clientModal/ClientModal";
-import ClientCard from "components/ClientCard";
-import { IClient } from "types/client";
-import { useParams } from "react-router-dom";
+import { IClient, IClientFormData } from "types/client";
 
 interface TicketHeader {
   role: string;
@@ -18,6 +16,7 @@ interface TicketHeader {
   setIsLoading: (value: boolean) => void;
   generateOrderDisabled: (value: boolean) => void;
   onSubmitComprador: (comprador: IClient) => void;
+  onSubmitCompradorForm: (update: IClientFormData) => void;
   onDelete: () => void;
   onAuthorize: () => void;
 }
@@ -29,12 +28,19 @@ const TicketHeader = ({
   generateOrderDisabled,
   onSubmitComprador,
   onDelete,
+  onSubmitCompradorForm,
   onAuthorize,
 }: TicketHeader) => {
   const [editActive, setEditActive] = useState(false);
 
-  const handleUpdate = (comprador: IClient) => {
-    onSubmitComprador(comprador);
+  const handleUpdateForm = (update: IClientFormData) => {
+    onSubmitCompradorForm(update);
+    generateOrderDisabled(false);
+    setEditActive(false);
+  };
+
+  const handleUpdate = (update: IClient) => {
+    onSubmitComprador(update);
     generateOrderDisabled(false);
     setEditActive(false);
   };
@@ -80,9 +86,9 @@ const TicketHeader = ({
           </div>
         </TicketActionsContainer>
       )}
-      <Typography fontWeight="bold">{`Vendedor: ${
-        order.vendedor || "-"
-      }`}</Typography>
+      {order.vendedor && (
+        <Typography fontWeight="bold">{`Vendedor: ${order.vendedor}`}</Typography>
+      )}
       {order.fecha && (
         <Typography fontWeight="bold">{`Fecha: ${ISOdateFormatter(
           order.fecha
@@ -90,20 +96,22 @@ const TicketHeader = ({
       )}
       {order.id && <OrderState label bold state={order.estado} />}
 
-      <Divider sx={{pt: order.id ? 1 : undefined}}>
-        {!order.id && <Box
-          sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
-        >
-          <Typography component="h3" variant="h6">
-            Cliente
-          </Typography>
-          <ClientModal onHandleClient={handleUpdate}/>
-        </Box>}
+      <Divider sx={{ pt: order.id ? 1 : undefined }}>
+        {!order.id && (
+          <Box
+            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+          >
+            <Typography component="h3" variant="h6">
+              Cliente
+            </Typography>
+            <ClientModal onHandleClient={handleUpdate} />
+          </Box>
+        )}
       </Divider>
       <ClientForm
-        client={order.comprador}
+        order={order}
         isEdit={editActive}
-        onSubmitClient={handleUpdate}
+        onSubmitClient={handleUpdateForm}
         actionIsDisabled={disabledActions}
         onActiveUpdate={handleActiveUpdate}
         onCancel={handleCancel}

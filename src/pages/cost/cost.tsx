@@ -1,10 +1,5 @@
 import CustomContainer from "../../components/customContainer/CustomContainer";
-import {
-  Box,
-  Button,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import { GridPaginationModel, GridRowSelectionModel } from "@mui/x-data-grid";
 import CostModal from "components/costModal/costModal";
 import CostTable from "components/DataTable/CostTable";
@@ -22,7 +17,9 @@ const Cost = () => {
   const [page, setPage] = React.useState(0);
   const [rowSelectionModel, setRowSelectionModel] =
     React.useState<GridRowSelectionModel>([]);
-  const [dateRange, setDateRange] = useState([new Date(), new Date()]);
+  const date = new Date();
+  const previousMonth = new Date(date.setMonth(date.getMonth() - 1));
+  const [dateRange, setDateRange] = useState([previousMonth, new Date()]);
   const [startDate, endDate] = dateRange;
 
   const { mutateAsync: cost, isPending } = usePostCost();
@@ -32,7 +29,7 @@ const Cost = () => {
     limit: rowsPerPage,
     comprador: "",
     fecha: "",
-    estado: "finalizado",
+    estado: "",
     desde: ISOdateFormatter(startDate as unknown as string, true),
     hasta: ISOdateFormatter(endDate as unknown as string, true),
   });
@@ -59,7 +56,7 @@ const Cost = () => {
       <Typography component="h1" variant="h5" gutterBottom>
         Costo
       </Typography>
-      <Grid container alignItems="center">
+      <Grid container sx={{ mb: 1 }}>
         <CostModal />
         <Button
           sx={{ ml: 1 }}
@@ -69,7 +66,9 @@ const Cost = () => {
         >
           Calcular costo
         </Button>
-        <Box sx={{ m: 1, zIndex: 999 }}>
+      </Grid>
+      <Divider />
+      <Box sx={{ my: 2, zIndex: 999 }}>
           <DatePicker
             className="custom-date-picker"
             dateFormat="yyyy/MM/dd"
@@ -82,7 +81,6 @@ const Cost = () => {
             isClearable={true}
           />
         </Box>
-      </Grid>
 
       <CostTable
         isLoading={isFetching || isPending}

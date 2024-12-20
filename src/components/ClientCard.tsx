@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import ConfirmButton from "./ConfirmButton";
 import { IClient } from "types/client";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import EditIcon from "@mui/icons-material/ModeEditOutline";
 
 interface IclientProps {
@@ -28,7 +28,8 @@ const ClientCard = ({
   isOrderDescription,
   hiddenDirectionData,
 }: IclientProps) => {
-  const dataMapper = (value: any) => value ? value : "-"
+  const { orderId } = useParams();
+  const dataMapper = (value: any) => (value ? value : "-");
   return (
     <Paper
       sx={{ padding: isOrderDescription ? 1 : 3 }}
@@ -74,31 +75,62 @@ const ClientCard = ({
           </Box>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Typography variant="subtitle1">ID: {dataMapper(client?.id)}</Typography>
-        </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography variant="subtitle1">CUIT: {(client?.cuit)}</Typography>
-        </Grid>
-        <Grid item xs={12} md={6}>
           <Typography variant="subtitle1">
-            Teléfono: {(client?.telefono)}
+            ID: {dataMapper(client?.id)}
           </Typography>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Typography variant="subtitle1">Email: {dataMapper(client?.email)}</Typography>
+          <Typography variant="subtitle1">CUIT: {client?.cuit}</Typography>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Typography variant="subtitle1">
-            Notas: {dataMapper(client?.notas)}
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
-            <Typography sx={{ fontSize: 18, fontWeight: 'bold' } }>
-              Direccion
-            </Typography>
-        </Grid>
+        {orderId === "nuevo" ? (
+          <>
+            {!hiddenDirectionData && (
+              <>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="subtitle1">
+                    Teléfono: {client?.telefono}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="subtitle1">
+                    Email: {dataMapper(client?.email)}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="subtitle1">
+                    Notas: {dataMapper(client?.notas)}
+                  </Typography>
+                </Grid>
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            <Grid item xs={12} md={6}>
+              <Typography variant="subtitle1">
+                Teléfono: {client?.telefono}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Typography variant="subtitle1">
+                Email: {dataMapper(client?.email)}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Typography variant="subtitle1">
+                Notas: {dataMapper(client?.notas)}
+              </Typography>
+            </Grid>
+          </>
+        )}
+
         {!hiddenDirectionData && (
           <>
+            <Grid item xs={12}>
+              <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
+                Dirección
+              </Typography>
+            </Grid>
             <Grid item xs={12} md={6}>
               <Typography variant="subtitle1">
                 Provincia: {dataMapper(client?.direccion.provincia)}
@@ -129,6 +161,30 @@ const ClientCard = ({
                 C.P.: {dataMapper(client?.direccion.cp)}
               </Typography>
             </Grid>
+            {orderId && (
+              <>
+                <Grid item xs={12}>
+                  <Typography sx={{ fontSize: 18, fontWeight: "bold" }}>
+                    Vendedor
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="subtitle1">
+                    Provincia: {dataMapper(client?.vendedor?.nombre)}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="subtitle1">
+                    Ciudad: {dataMapper(client?.vendedor?.email)}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Typography variant="subtitle1">
+                    Dirección: {dataMapper(client?.vendedor?.comision)}
+                  </Typography>
+                </Grid>
+              </>
+            )}
           </>
         )}
       </Grid>

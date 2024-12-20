@@ -5,7 +5,7 @@ import { IBaseCollection } from 'types/base';
 import { IFractionate, IFractionateParams } from 'types/fractionate';
 
 const getFractionates = async (params?: IFractionateParams): Promise<AxiosResponse<IBaseCollection<IFractionate>, any>> => {
-    return await axiosCore.get<IBaseCollection<IFractionate>>('/product/stock/fractionate/search', { params });
+    return await axiosCore.get<IBaseCollection<IFractionate>>(`/product/stock/fractionate/search`, { params });
 };
 
 export const useGetFractionates = (params?: IFractionateParams): QueryObserverResult<IBaseCollection<IFractionate>, any> => {

@@ -57,7 +57,7 @@ function Row(props: { row: IOrder }) {
         <TableCell component="th" scope="row">
           {row.id}
         </TableCell>
-        <TableCell>{row.vendedor}</TableCell>
+        <TableCell>{row.vendedor as string}</TableCell>
         <TableCell>{ISOdateFormatter(row.fecha)}</TableCell>
         <TableCell>{<OrderState state={row.estado} />}</TableCell>
         <TableCell>{row.comprador.nombre}</TableCell>

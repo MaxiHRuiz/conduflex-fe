@@ -1,5 +1,5 @@
 import { IBaseParams } from "./base";
-import { IClient, IClientDirection } from "./client";
+import { IClient, IClientDirection, ISeller } from "./client";
 
 export interface IComprador {
     nombre: string,
@@ -10,7 +10,7 @@ export interface IComprador {
 
 export interface IBaseOrder {
     estado: string,
-    vendedor: string,
+    vendedor: string | ISeller,
     actualizado_por: string,
     fecha: string,
     productos: IProductStock[],

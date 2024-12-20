@@ -7,9 +7,9 @@ import {
 } from "@mui/x-data-grid";
 import { IDataTableProps } from "./IDataTableProps";
 import { esES } from "@mui/x-data-grid/locales";
-import { ISOdateFormatter } from "utils/helpers";
+import { formatString, ISOdateFormatter } from "utils/helpers";
 import { IFractionate } from "types/fractionate";
-import { Button } from "@mui/material";
+import FractionateButton from "components/FractionateButton";
 
 const formType = "stock";
 
@@ -18,10 +18,9 @@ const columns: GridColDef[] = [
     field: "actions",
     type: "actions",
     headerName: "Acciones",
+    width: 200,
     getActions: (props) => [
-      <Button aria-label="Aprobar" size="small" variant="outlined" color="success">
-        Aprobar
-      </Button>,
+      <FractionateButton id={props.row.id} state={props.row.estado} />
     ],
   },
   {
@@ -35,6 +34,14 @@ const columns: GridColDef[] = [
     headerName: "Producto",
     sortable: false,
     disableColumnMenu: true,
+  },
+  {
+    field: "estado",
+    headerName: "Estado",
+    sortable: false,
+    disableColumnMenu: true,
+    width: 180,
+    renderCell: (props) => formatString(props.row.estado as string)
   },
   {
     field: "stock_id",
@@ -118,3 +125,5 @@ export default function FractionateTable({
     />
   );
 }
+
+

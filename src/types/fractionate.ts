@@ -13,4 +13,5 @@ export interface IFractionateParams extends IBaseParams {
     email?: string
     stock_id?: string
     product_id?: string
+    estado?: string
 }

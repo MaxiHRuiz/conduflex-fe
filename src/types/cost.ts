@@ -69,7 +69,10 @@ export interface IProductCostResult {
     fleje: number;
     precio_costo: number;
     precio_lista: number;
-    precio_venta: number
+    precio_venta: number;
+    valor_mano_de_obra?: number;
+    sumatoria_d_e_f?: number;
+    formula_valor?: number;
 }
 
 export interface IProductCost {

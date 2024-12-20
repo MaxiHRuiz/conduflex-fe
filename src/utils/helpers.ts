@@ -183,22 +183,27 @@ export function validarCUIT(cuit: string) {
 export const separateProductCosts = (orders: IOrderResponse[]): IProductCostResult[] => {
     let productCosts: IProductCostResult[] = [];
     orders.forEach(order => {
-        const filteredProducts = order.costeos.map((product: any) => ({
-            fecha: order.fecha,
-            nombre_cliente: order.nombre_cliente,
-            product: product.product_id, 
-            monto_neto: product.monto_neto,
-            comisiones_monto_neto: product.comisiones_monto_neto,
-            order: order.order_id, 
-            kg_cobre: product.material_cost.kg_cobre,
-            kg_almas: product.material_cost.kg_almas,
-            kg_relleno: product.material_cost.kg_relleno,
-            kg_vaina: product.material_cost.kg_vaina,
-            fleje: product.material_cost.fleje,
-            precio_costo: product.material_cost.precio_costo,
-            precio_lista: product.material_cost.precio_lista,
-            precio_venta: product.material_cost.precio_venta
-        }));
+        const filteredProducts = order.costeos.map((product: any): IProductCostResult => {
+            return {
+                fecha: order.fecha,
+                nombre_cliente: order.nombre_cliente,
+                order: order.order_id,
+                monto_neto: product.monto_neto,
+                comisiones_monto_neto: product.comisiones_monto_neto,
+                valor_mano_de_obra: undefined,
+                sumatoria_d_e_f: undefined,
+                formula_valor: undefined,
+                kg_cobre: product.material_cost.kg_cobre,
+                kg_almas: product.material_cost.kg_almas,
+                kg_relleno: product.material_cost.kg_relleno,
+                kg_vaina: product.material_cost.kg_vaina,
+                fleje: product.material_cost.fleje,
+                precio_costo: product.material_cost.precio_costo,
+                precio_lista: product.material_cost.precio_lista,
+                precio_venta: product.material_cost.precio_venta,
+                product: product.product_id
+            }
+        });
         productCosts = productCosts.concat(filteredProducts);
     });
     return productCosts;
@@ -206,7 +211,13 @@ export const separateProductCosts = (orders: IOrderResponse[]): IProductCostResu
 
 export const exportToExcel = (data: any, fileName: any) => {
     const fechaActual = new Date().toLocaleString();
-    const worksheet = XLSX.utils.json_to_sheet(data);
+    const modifiedData = data.map((row: any) => {
+        const newRow = { ...row }; // Insertar la columna vacía en la octava posición 
+        const entries = Object.entries(newRow);
+        const updatedEntries = [...entries.slice(0, 7), ['', ''], ...entries.slice(7)];
+        return Object.fromEntries(updatedEntries);
+    });
+    const worksheet = XLSX.utils.json_to_sheet(modifiedData);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
     const excelBuffer = XLSX.write(workbook, {
@@ -215,4 +226,11 @@ export const exportToExcel = (data: any, fileName: any) => {
     });
     const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
     saveAs(blob, `${fileName}-${fechaActual}.xlsx`);
+};
+
+export const formatString = (str: string) => {
+    return str.split('_') // Divide el string por los guiones bajos 
+        .map((word, index) => index === 0 ? word.charAt(0).toUpperCase() + word.slice(1) // Capitaliza la primera palabra 
+            : word)
+        .join(' '); // Une las palabras con un espacio 
 };
