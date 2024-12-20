@@ -24,7 +24,7 @@ const FractionateButton = ({ id, state }: IFractionateButtonProps) => {
           variant="outlined"
           color="error"
           onClick={() => update({ estado: "rechazada", id })}
-          disabled={role !== 'admin'}
+          // disabled={role !== 'admin'}
         >
           Rechazar
         </Button>
@@ -35,7 +35,7 @@ const FractionateButton = ({ id, state }: IFractionateButtonProps) => {
           variant="outlined"
           color="success"
           onClick={() => update({ estado: "aprobada", id })}
-          disabled={role !== 'admin'}
+          // disabled={role !== 'admin'}
         >
           Aprobar
         </Button>
@@ -51,7 +51,7 @@ const FractionateButton = ({ id, state }: IFractionateButtonProps) => {
         variant="outlined"
         color="success"
         onClick={() => update({ estado: "finalizada", id })}
-        disabled={role !== "operator"}
+        // disabled={role !== "operator"}
       >
         Finalizar
       </Button>
