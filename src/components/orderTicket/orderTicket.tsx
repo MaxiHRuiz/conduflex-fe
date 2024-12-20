@@ -1,6 +1,6 @@
 import { Paper, Typography } from "@mui/material";
 import Loading from "components/Loading";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCreateOrder } from "services/hooks/useCreateOrder";
 import { numberFormat } from "utils/helpers";
@@ -30,9 +30,11 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
   const { mutateAsync: createOrder, isPending } = useCreateOrder();
   const { mutateAsync: updateOrder, isPending: isPendingOrder } =
     useUpdateOrder();
-    const { mutateAsync: updateOrderInformation, isPending: isPendingOrderInformation } =
-    useUpdateOrderInformation();
-    
+  const {
+    mutateAsync: updateOrderInformation,
+    isPending: isPendingOrderInformation,
+  } = useUpdateOrderInformation();
+
   const { mutateAsync: deleteOrder, isPending: deleteIsPending } =
     useDeleteOrderById();
   const { mutateAsync: authorizeOrder, isPending: authorizeIsPending } =
@@ -40,11 +42,21 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
   const [disabled, setDisabled] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
+  const total = useCallback(
+    () =>
+      numberFormat(
+        order.productos
+          .map((product) => product.precio)
+          .reduce((a, b) => a + b, 0)
+      ),
+    [order.productos]
+  );
+
   const onSubmitComprador = (comprador: IClient) => {
     if (order.id) {
       updateOrder({
         ...order,
-        direccion: comprador.direccion
+        direccion: comprador.direccion,
       });
       return;
     }
@@ -57,19 +69,19 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
         ...order,
         comprador: {
           ...order.comprador,
-          ...data.comprador
+          ...data.comprador,
         },
         direccion: data.direccion,
-        vendedor: {...data.vendedor}
+        vendedor: { ...data.vendedor },
       });
       return;
     }
-    console.log("cambios pasan por aca")
-    let cliente = {...order.comprador}
-    cliente.email = data.comprador.email
-    cliente.notas = data.comprador.notas
-    cliente.telefono = data.comprador.telefono
-    cliente.direccion = data.direccion
+    console.log("cambios pasan por aca");
+    let cliente = { ...order.comprador };
+    cliente.email = data.comprador.email;
+    cliente.notas = data.comprador.notas;
+    cliente.telefono = data.comprador.telefono;
+    cliente.direccion = data.direccion;
     updateOrderComprador(cliente);
   };
 
@@ -158,14 +170,17 @@ const OrderTicket = ({ order, onSuccess }: OrderTicketProps) => {
       )}
       <TicketFooter
         disabled={disabled || !order?.productos?.length}
-        total={numberFormat(order.precio)}
+        total={order.id ? numberFormat(order.precio) : total()}
         onCreateOrder={() =>
-          createOrder({...order, id_comprador: order.comprador.id} as IOrder, {
-            onSuccess: () => {
-              onSuccess?.();
-              navigate("/pedidos");
-            },
-          })
+          createOrder(
+            { ...order, id_comprador: order.comprador.id } as IOrder,
+            {
+              onSuccess: () => {
+                onSuccess?.();
+                navigate("/pedidos");
+              },
+            }
+          )
         }
       />
       {!!order.id && !!order?.productos?.length && (
